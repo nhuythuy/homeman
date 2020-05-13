@@ -6,26 +6,28 @@
 // Website: www.arduinesp.com
  
 // https://learn.adafruit.com/dht/using-a-dhtxx-sensor
- 
+
+
 #include <DHT.h>
 #include <ESP8266WiFi.h>
 #include "ThingSpeak.h"
+#include "wifi_pw.h"
 
 // replace with your channel's thingspeak API key, 
-const char* ssid = "VNNO";
-const char* password = "Pw";
+const char* ssid = "matsuya"; //"VNNO";
+const char* password = ""; // ""; // WIFI_PW;
 //const char* ssid = "DNVGuest";
 //const char* password = "";
 
 unsigned long THING_SPEAK_CHANNEL_NO = 447257;
-String myWriteAPIKey = "QFS00KA70KNC5NX6";
+String myWriteAPIKey = "59Y4RMCCJVKVWBOQ";
 // to send data, using this get req: https://api.thingspeak.com/update?api_key=QFS00KA70KNC5NX6&field8=6
 
 #define DELAY_LONG 30000    // 30 seconds
 #define DELAY_SHORT 3000    // 3 seconds
 
 int pinLed = D6;
-String myReadAPIKey = "SBXS87RSOO71AE3A";
+String myReadAPIKey = "9L9ZWCW1QLN39E09";
 
 const char* server = "api.thingspeak.com";
 #define DHTPIN D2 // what pin we're connected to
@@ -53,21 +55,28 @@ void setup() {
   Serial.begin(115200);
   delay(10);
   dht.begin();
-  
-  WiFi.begin(ssid, password);
- 
+
   Serial.println();
-  Serial.println();
+  Serial.print("MAC: ");
+  Serial.println(WiFi.macAddress());
   Serial.print("Connecting to ");
   Serial.println(ssid);
-   
+  
   WiFi.begin(ssid, password);
-   
+
+  int dotCounter = 0;
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+    delay(1000);
     Serial.print(".");
+
+    if(dotCounter++ > 80)
+    {
+      dotCounter = 0;
+      Serial.println("!");
+    }
   }
-  Serial.println("");
+
+  Serial.println(WiFi.localIP());
   Serial.println("WiFi connected");
 
   pinMode(PIN_WORKING_MODE, INPUT);
