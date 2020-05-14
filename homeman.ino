@@ -15,9 +15,10 @@
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 
+int globalError = 0;
 // replace with your channel's thingspeak API key, 
 //const char* ssid = "matsuya"; //"VNNO";
-//const char* password = "kamikaze123"; // "Planetvegen18A"; // WIFI_PW;
+//const char* password = WIFI_PW;
 const char* ssid = "DNVGuest";
 const char* password = WIFI_PW;
 
@@ -180,14 +181,23 @@ void loop() {
   // thingspeak needs minimum 15 sec delay between updates
 //  updateTemperature();
 
-  delay(delayMs);  
+  delayWithErrorCheck();
 }
 
 void blinkLed()
 {
   digitalWrite(PIN_LED, false);
-  delay(200);
+  delay(100);
   digitalWrite(PIN_LED, true);
+  delay(100);
+}
+
+void updateWorkingMode(){
+  bool workingMode = digitalRead(PIN_WORKING_MODE);
+  if(workingMode)
+    delayMs = DELAY_LONG;
+  else
+    delayMs = DELAY_SHORT;
 }
 
 void getTime(){
@@ -206,19 +216,19 @@ bool updateHumidTempe(){
   temp = dht.readTemperature();
   if (isnan(humidity) || isnan(temp)) {
     Serial.println("Failed to read from DHT sensor!");
-    delay(delayMs);
+
+    delayWithErrorCheck();
     return false;
   }
 
   return true;
 }
 
-void updateWorkingMode(){
-  bool workingMode = digitalRead(PIN_WORKING_MODE);
-  if(workingMode)
-    delayMs = DELAY_LONG;
+void delayWithErrorCheck(){
+    if(globalError > 0)
+    blinkLed();
   else
-    delayMs = DELAY_SHORT;
+    delay(delayMs);
 }
 
 void updateSensors(){
@@ -235,6 +245,8 @@ void updateSensors(){
 //  ssSmokeDetectors = (ssSmokeKichen << 3) | (ssSmokeLivingRoom << 2) | (ssSmokeFirstFloor << 1);
   ssDoorDetectors = (ssDoorDownBasement << 2) | (ssDoorBack << 1) | (ssDoorMain << 0);
 
+  globalError = (ssDoorDetectors << 8) | ssDoorDetectors;
+  
   Serial.print("Door sensors: = ");
   Serial.println(ssDoorDetectors);
   Serial.print("Smoke sensors: = ");
