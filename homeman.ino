@@ -1,10 +1,10 @@
-// www.arduinesp.com 
-//
+
 // Plot DTH11 data on thingspeak.com using an ESP8266 
-// April 11 2015
-// Author: Jeroen Beemster
+// May 14 2020
+// Author: Thuy Nguyen, based on an example from Jeroen Beemster reading DTH11 sensor
+
+// Ref.:
 // Website: www.arduinesp.com
- 
 // https://learn.adafruit.com/dht/using-a-dhtxx-sensor
 
 
