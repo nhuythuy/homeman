@@ -1,4 +1,3 @@
-
 // Plot DTH11 data on thingspeak.com using an ESP8266 
 // May 14 2020
 // Author: Thuy Nguyen, based on an example from Jeroen Beemster reading DTH11 sensor
@@ -12,14 +11,15 @@
 #include <ESP8266WiFi.h>
 #include "ThingSpeak.h"
 #include "wifi_pw.h"
-#include <NTPClient.h>
+//#include <NTPClient.h>
 #include <WiFiUdp.h>
 
 int globalError = 0;
+int debugCounter = 0;
+
 // replace with your channel's thingspeak API key, 
-//const char* ssid = "matsuya"; //"VNNO";
-//const char* password = WIFI_PW;
-const char* ssid = "DNVGuest";
+const char* ssid = "VNNO"; //"Thuy's iPhone";//"matsuya"; //  // 
+//const char* ssid = "DNVGuest";
 const char* password = WIFI_PW;
 
 unsigned long THING_SPEAK_CHANNEL_NO = 447257;
@@ -28,17 +28,17 @@ String myWriteAPIKey = "59Y4RMCCJVKVWBOQ";
 
 
 WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "pool.ntp.org");
+//NTPClient timeClient(ntpUDP, "time.nist.gov");
 
-#define DELAY_LONG 10000    // 30 seconds
-#define DELAY_SHORT 3000    // 3 seconds
+#define DELAY_LONG 5000    // 5,0 seconds
+#define DELAY_SHORT 2500   // 2,5 seconds
 
 String myReadAPIKey = "9L9ZWCW1QLN39E09";
 const char* server = "api.thingspeak.com";
 
+// inputs
 #define PIN_SS_ANALOG       A0
 
-#define PIN_LED             D4 // same as built in LED GPIO2
 #define PIN_WORKING_MODE    D0
 #define PIN_SS_DHT          D1 // DHT sensor pin
 #define PIN_SS_DOOR_MAIN    D2
@@ -46,6 +46,9 @@ const char* server = "api.thingspeak.com";
 
 #define PIN_SS_DOOR_DOWN_BASEMENT   D5
 #define PIN_SS_WATER_SMOKE_BASEMENT D6 // smoke, water leak
+
+// outputs
+#define PIN_LED             D4 // same as built in LED GPIO2
 
 #define PIN_AC_POWER_LOAD   D8
 #define PIN_AC_POWER_CAM    D9
@@ -58,9 +61,21 @@ WiFiClient client;
 
 
 
-void setup() {                
-  Serial.begin(115200);
-  delay(10);
+void setup() {
+  pinMode(PIN_WORKING_MODE, INPUT);
+
+  pinMode(PIN_SS_DOOR_MAIN, INPUT);
+  pinMode(PIN_SS_DOOR_BACK, INPUT);
+  pinMode(PIN_SS_DOOR_DOWN_BASEMENT, INPUT);
+  pinMode(PIN_SS_WATER_SMOKE_BASEMENT, INPUT);
+
+  pinMode(PIN_LED, OUTPUT);
+  pinMode(PIN_AC_BUZZER, OUTPUT);
+  pinMode(PIN_AC_POWER_LOAD, OUTPUT);
+  pinMode(PIN_AC_POWER_CAM, OUTPUT);
+
+  Serial.begin(19200);
+  delay(1000);
   dht.begin();
 
   Serial.println();
@@ -71,40 +86,29 @@ void setup() {
   
   WiFi.begin(ssid, password);
 
-  int dotCounter = 0;
+  bool ledStatus = false;
   while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
+    delay(500);
     Serial.print(".");
 
-    if(dotCounter++ > 80)
+    ledStatus = !ledStatus;
+    digitalWrite(PIN_LED, !ledStatus);
+    if(debugCounter++ > 80)
     {
-      dotCounter = 0;
+      debugCounter = 0;
       Serial.println("!");
     }
   }
 
-  Serial.println(WiFi.localIP());
   Serial.println("WiFi connected");
+  Serial.println(WiFi.localIP());
 
 
-  // Initialize a NTPClient to get time
-  timeClient.begin();
-  // Set offset time in seconds to adjust for your timezone, for example:
-  // GMT +1 = 3600, GMT +8 = 28800, GMT -1 = -3600, GMT 0 = 0
-  timeClient.setTimeOffset(3600);
- 
-
-
-  pinMode(PIN_WORKING_MODE, INPUT);
-
-  pinMode(PIN_SS_DOOR_MAIN, INPUT);
-//  pinMode(PIN_SS_DOOR_BACK, INPUT);
-  pinMode(PIN_SS_DOOR_DOWN_BASEMENT, INPUT);
-  pinMode(PIN_SS_WATER_SMOKE_BASEMENT, INPUT);
-
-  pinMode(PIN_LED, OUTPUT);
-  pinMode(PIN_AC_POWER_LOAD, OUTPUT);
-  pinMode(PIN_AC_POWER_CAM, OUTPUT);
+//  // Initialize a NTPClient to get time
+//  timeClient.begin();
+//  // Set offset time in seconds to adjust for your timezone, for example:
+//  // GMT +1 = 3600, GMT +8 = 28800, GMT -1 = -3600, GMT 0 = 0
+//  timeClient.setTimeOffset(3600);
 
 
   ThingSpeak.begin(client);
@@ -136,7 +140,7 @@ void loop() {
   }
 
 
-  getTime();
+ // getTime();
 
   blinkLed();
 
@@ -173,11 +177,11 @@ void loop() {
      Serial.print(temp);
      Serial.print(" degrees Celcius Humidity: "); 
      Serial.print(humidity);
-     Serial.println("% send to Thingspeak");    
+     Serial.println("% sent to Thingspeak");    
   }
   client.stop();
    
-  Serial.println("Waiting...");    
+  Serial.println("Waiting...");
   // thingspeak needs minimum 15 sec delay between updates
 //  updateTemperature();
 
@@ -186,6 +190,13 @@ void loop() {
 
 void blinkLed()
 {
+    Serial.print("-");
+    if(debugCounter++ > 80)
+    {
+      debugCounter = 0;
+      Serial.println("!");
+    }
+
   digitalWrite(PIN_LED, false);
   delay(100);
   digitalWrite(PIN_LED, true);
@@ -200,16 +211,16 @@ void updateWorkingMode(){
     delayMs = DELAY_SHORT;
 }
 
-void getTime(){
-  timeClient.update();
-  unsigned long epochTime = timeClient.getEpochTime();
-  Serial.print("Epoch Time: ");
-  Serial.println(epochTime);
-  
-  String formattedTime = timeClient.getFormattedTime();
-  Serial.print("Formatted Time: ");
-  Serial.println(formattedTime);
-}
+//void getTime(){
+//  timeClient.update();
+//  unsigned long epochTime = timeClient.getEpochTime();
+//  Serial.print("Epoch Time: ");
+//  Serial.println(epochTime);
+//  
+//  String formattedTime = timeClient.getFormattedTime();
+//  Serial.print("Formatted Time: ");
+//  Serial.println(formattedTime);
+//}
 
 bool updateHumidTempe(){
   humidity = dht.readHumidity();
