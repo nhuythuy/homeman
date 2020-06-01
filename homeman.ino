@@ -42,9 +42,9 @@ const char* server = "api.thingspeak.com";
 #define PIN_WORKING_MODE    D0
 #define PIN_SS_DHT          D1 // DHT sensor pin
 #define PIN_SS_DOOR_MAIN    D2
-#define PIN_SS_DOOR_BACK    D3
 
-#define PIN_SS_DOOR_DOWN_BASEMENT   D5
+#define PIN_SS_DOOR_DOWN_BASEMENT   D3
+#define PIN_SS_DOOR_BASEMENT        D5
 #define PIN_SS_WATER_SMOKE_BASEMENT D6 // smoke, water leak
 
 // outputs
@@ -65,7 +65,7 @@ void setup() {
   pinMode(PIN_WORKING_MODE, INPUT);
 
   pinMode(PIN_SS_DOOR_MAIN, INPUT);
-  pinMode(PIN_SS_DOOR_BACK, INPUT);
+  pinMode(PIN_SS_DOOR_BASEMENT, INPUT);
   pinMode(PIN_SS_DOOR_DOWN_BASEMENT, INPUT);
   pinMode(PIN_SS_WATER_SMOKE_BASEMENT, INPUT);
 
@@ -198,9 +198,9 @@ void blinkLed()
     }
 
   digitalWrite(PIN_LED, false);
-  delay(100);
+  delay(1000);
   digitalWrite(PIN_LED, true);
-  delay(100);
+  delay(1000);
 }
 
 void updateWorkingMode(){
@@ -248,7 +248,7 @@ void updateSensors(){
 //  bool ssSmokeFirstFloor = digitalRead(PIN_SS_SMOKE_1_FLOOR);
 
   bool ssDoorMain = digitalRead(PIN_SS_DOOR_MAIN);
-  bool ssDoorBack = 0;//digitalRead(PIN_SS_DOOR_BACK);
+  bool ssDoorBack = 0;//digitalRead(PIN_SS_DOOR_BASEMENT);
   bool ssDoorDownBasement = digitalRead(PIN_SS_DOOR_DOWN_BASEMENT);
 
   bool ssWaterLeak = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
