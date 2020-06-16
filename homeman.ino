@@ -1,4 +1,4 @@
-// Plot DTH11 data on thingspeak.com using an ESP8266 
+// Plot DTH11 data on thingspeak.com using an ESP8266
 // May 14 2020
 // Author: Thuy Nguyen, based on an example from Jeroen Beemster reading DTH11 sensor
 
@@ -37,21 +37,23 @@ String myReadAPIKey = "9L9ZWCW1QLN39E09";
 const char* server = "api.thingspeak.com";
 
 // inputs
-#define PIN_SS_ANALOG       A0
+#define PIN_SS_ANALOG               A0
 
-#define PIN_WORKING_MODE    D0
-#define PIN_SS_DHT          D1 // DHT sensor pin
-#define PIN_SS_DOOR_MAIN    D2
+#define PIN_SS_DHT                  D5 // DHT sensor pin
+#define PIN_SS_DOOR_MAIN            D6 // main door sensor
 
-#define PIN_SS_DOOR_DOWN_BASEMENT   D3
-#define PIN_SS_DOOR_BASEMENT        D5
-#define PIN_SS_WATER_SMOKE_BASEMENT D6 // smoke, water leak
+#define PIN_SS_DOOR_BASEMENT        D3 // door to go down to basement and door to renting area
+#define PIN_SS_ENTRANCE_MOTION      D2 // motion sensor for entrance
+
+#define PIN_SS_WATER_SMOKE_BASEMENT D7 // smoke, water leak
+
 
 // outputs
-#define PIN_LED             D4 // same as built in LED GPIO2
+#define PIN_LED                     D4 // D4: same as built in LED GPIO2
 
-#define PIN_AC_POWER_LOAD   D8
-#define PIN_AC_POWER_CAM    D9
+#define PIN_AC_POWER_LED_ENTRANCE   D0 // power for entrance led
+#define PIN_AC_POWER_CAMERA            D1 // camera power
+
 #define PIN_AC_BUZZER       D10
 #define FIELD_ID_POWER_CAM  8
 #define FIELD_ID_POWER_LOAD 9
@@ -62,17 +64,15 @@ WiFiClient client;
 
 
 void setup() {
-  pinMode(PIN_WORKING_MODE, INPUT);
-
   pinMode(PIN_SS_DOOR_MAIN, INPUT);
   pinMode(PIN_SS_DOOR_BASEMENT, INPUT);
-  pinMode(PIN_SS_DOOR_DOWN_BASEMENT, INPUT);
   pinMode(PIN_SS_WATER_SMOKE_BASEMENT, INPUT);
+  pinMode(PIN_SS_ENTRANCE_MOTION, INPUT);
 
   pinMode(PIN_LED, OUTPUT);
   pinMode(PIN_AC_BUZZER, OUTPUT);
-  pinMode(PIN_AC_POWER_LOAD, OUTPUT);
-  pinMode(PIN_AC_POWER_CAM, OUTPUT);
+  pinMode(PIN_AC_POWER_LED_ENTRANCE, OUTPUT);
+  pinMode(PIN_AC_POWER_CAMERA, OUTPUT);
 
   Serial.begin(19200);
   delay(1000);
@@ -119,33 +119,32 @@ long delayMs = DELAY_LONG;
 float humidity = 0.0;
 float temp = 0.0;
 
+bool ssDoorMain = 0;
+bool ssDoorBasement = 0;
+bool ssDoorBack = 0;
+bool ssEntranceMotion = 0;
+
 int ssSmokeDetectors = 0;
 int ssDoorDetectors = 0;
 int ssWaterLeak = 0;
 
 // actuators
 bool acCamPower = 0;
-bool acLoadPower = 0;
 bool acBuzzer = 0;
 
 bool forceCamPower = 0;
 float camPower = 0;
-float loadPower = 0;
 
 void loop() {
-  bool ret = updateHumidTempe();
-  if(!ret){
+  if(!updateHumidTempe()){
     humidity = -100.0;
     temp = -100.0;
   }
 
-
  // getTime();
 
   blinkLed();
-
   updateSensors();
-  updateWorkingMode();
   updateActuator();
  
   if (client.connect(server,80)) {  //   "184.106.153.149" or api.thingspeak.com
@@ -183,7 +182,6 @@ void loop() {
    
   Serial.println("Waiting...");
   // thingspeak needs minimum 15 sec delay between updates
-//  updateTemperature();
 
   delayWithErrorCheck();
 }
@@ -203,13 +201,6 @@ void blinkLed()
   delay(1000);
 }
 
-void updateWorkingMode(){
-  bool workingMode = digitalRead(PIN_WORKING_MODE);
-  if(workingMode)
-    delayMs = DELAY_LONG;
-  else
-    delayMs = DELAY_SHORT;
-}
 
 //void getTime(){
 //  timeClient.update();
@@ -243,18 +234,13 @@ void delayWithErrorCheck(){
 }
 
 void updateSensors(){
-//  bool ssSmokeKichen = digitalRead(PIN_SS_SMOKE_KITCHEN);
-//  bool ssSmokeLivingRoom = digitalRead(PIN_SS_SMOKE_LIVING);
-//  bool ssSmokeFirstFloor = digitalRead(PIN_SS_SMOKE_1_FLOOR);
-
-  bool ssDoorMain = digitalRead(PIN_SS_DOOR_MAIN);
-  bool ssDoorBack = 0;//digitalRead(PIN_SS_DOOR_BASEMENT);
-  bool ssDoorDownBasement = digitalRead(PIN_SS_DOOR_DOWN_BASEMENT);
+  ssDoorMain = digitalRead(PIN_SS_DOOR_MAIN);
+  ssDoorBasement = digitalRead(PIN_SS_DOOR_BASEMENT);
+  ssEntranceMotion = digitalRead(PIN_SS_ENTRANCE_MOTION);
 
   bool ssWaterLeak = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
 
-//  ssSmokeDetectors = (ssSmokeKichen << 3) | (ssSmokeLivingRoom << 2) | (ssSmokeFirstFloor << 1);
-  ssDoorDetectors = (ssDoorDownBasement << 2) | (ssDoorBack << 1) | (ssDoorMain << 0);
+  ssDoorDetectors = (ssDoorBasement << 2) | (ssDoorBack << 1) | (ssDoorMain << 0);
 
   globalError = (ssDoorDetectors << 8) | ssDoorDetectors;
   
@@ -273,18 +259,14 @@ void updateSensors(){
 
 void updateActuator()
 {
+  digitalWrite(PIN_AC_POWER_LED_ENTRANCE, ssEntranceMotion);
+
   camPower = ThingSpeak.readFloatField(THING_SPEAK_CHANNEL_NO, FIELD_ID_POWER_CAM);
     if(camPower < 1.0)
-      digitalWrite(PIN_AC_POWER_CAM, 0 || forceCamPower);
+      digitalWrite(PIN_AC_POWER_CAMERA, 0 || forceCamPower);
     else
-      digitalWrite(PIN_AC_POWER_CAM, 1);
+      digitalWrite(PIN_AC_POWER_CAMERA, 1);
 
   Serial.print("Cam power: = ");
   Serial.println(camPower);
-
-    loadPower = ThingSpeak.readFloatField(THING_SPEAK_CHANNEL_NO, FIELD_ID_POWER_LOAD);
-    if(loadPower < 1.0)
-      digitalWrite(PIN_AC_POWER_LOAD, 0 || forceCamPower);
-    else
-      digitalWrite(PIN_AC_POWER_LOAD, 1);
 }
