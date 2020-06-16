@@ -11,7 +11,7 @@
 #include <ESP8266WiFi.h>
 #include "ThingSpeak.h"
 #include "wifi_pw.h"
-//#include <NTPClient.h>
+#include <NTPClient.h>
 #include <WiFiUdp.h>
 
 int globalError = 0;
@@ -28,7 +28,7 @@ String myWriteAPIKey = "59Y4RMCCJVKVWBOQ";
 
 
 WiFiUDP ntpUDP;
-//NTPClient timeClient(ntpUDP, "time.nist.gov");
+NTPClient timeClient(ntpUDP, "time.nist.gov");
 
 #define DELAY_LONG 5000    // 5,0 seconds
 #define DELAY_SHORT 2500   // 2,5 seconds
@@ -211,6 +211,7 @@ void getTime(){
   String formattedTime = timeClient.getFormattedTime();
   Serial.print("Formatted Time: ");
   Serial.println(formattedTime);
+  Serial.println();
 }
 
 bool updateHumidTempe(){
@@ -233,6 +234,14 @@ void delayWithErrorCheck(){
     delay(delayMs);
 }
 
+void printBinary(int inInt)
+{
+  for (int b = 15; b >= 0; b--)
+  {
+    Serial.print(bitRead(inInt, b));
+  }
+}
+
 void updateSensors(){
   ssDoorMain = digitalRead(PIN_SS_DOOR_MAIN);
   ssDoorBasement = digitalRead(PIN_SS_DOOR_BASEMENT);
@@ -240,16 +249,18 @@ void updateSensors(){
 
   bool ssWaterLeak = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
 
-  ssDoorDetectors = (ssDoorBasement << 2) | (ssDoorBack << 1) | (ssDoorMain << 0);
+  ssDoorDetectors = (ssDoorBasement << 1) | (ssDoorMain << 0);
 
   globalError = (ssDoorDetectors << 8) | ssDoorDetectors;
   
   Serial.print("Door sensors: = ");
-  Serial.println(ssDoorDetectors);
+  printBinary(ssDoorDetectors);
+  Serial.println();
   Serial.print("Smoke sensors: = ");
   Serial.println(ssSmokeDetectors);
   Serial.print("Water leak. sensors: = ");
   Serial.println(ssWaterLeak);
+  Serial.println();
 
   if((ssSmokeDetectors > 0) || (ssDoorDetectors > 0))
     forceCamPower = 1;
