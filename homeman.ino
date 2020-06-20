@@ -1,3 +1,4 @@
+
 // Plot DTH11 data on thingspeak.com using an ESP8266
 // May 14 2020
 // Author: Thuy Nguyen, based on an example from Jeroen Beemster reading DTH11 sensor
@@ -114,6 +115,9 @@ void setup() {
   ThingSpeak.begin(client);
 }
 
+int minutes = 0; // use this for sending to update to send to thingspeak
+bool minuteChanged = false;
+
 long delayMs = DELAY_LONG;
 // sensors
 float humidity = 0.0;
@@ -142,11 +146,17 @@ void loop() {
   }
 
   getTime();
-
   blinkLed();
   updateSensors();
   updateActuator();
- 
+
+  if(minuteChanged == true)
+    updateCloud();
+
+  delayWithErrorCheck();
+}
+
+void updateCloud(){
   if (client.connect(server,80)) {  //   "184.106.153.149" or api.thingspeak.com
     String postStr = myWriteAPIKey;
            postStr +="&field1=";
@@ -182,8 +192,6 @@ void loop() {
    
   Serial.println("Waiting...");
   // thingspeak needs minimum 15 sec delay between updates
-
-  delayWithErrorCheck();
 }
 
 void blinkLed()
@@ -204,6 +212,13 @@ void blinkLed()
 
 void getTime(){
   timeClient.update();
+  minutes = getMinutes();
+
+  if((minutes % 10) == 0) // to send every 10 minutes
+    minuteChanged = true;
+  else
+    minuteChanged = false;
+  
   unsigned long epochTime = timeClient.getEpochTime();
   Serial.print("Epoch Time: ");
   Serial.println(epochTime);
@@ -249,7 +264,7 @@ void updateSensors(){
 
   bool ssWaterLeak = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
 
-  ssDoorDetectors = (ssDoorBasement << 1) | (ssDoorMain << 0);
+  ssDoorDetectors = (ssEntranceMotion << 2) | (ssDoorBasement << 1) | (ssDoorMain << 0);
 
   globalError = (ssDoorDetectors << 8) | ssDoorDetectors;
   
