@@ -19,8 +19,7 @@ int globalError = 0;
 int debugCounter = 0;
 
 // replace with your channel's thingspeak API key, 
-const char* ssid = "VNNO"; //"Thuy's iPhone";//"matsuya"; //  // 
-//const char* ssid = "DNVGuest";
+const char* ssid = "VNNO"; // "DNVGuest" "Thuy's iPhone"; "matsuya";
 const char* password = WIFI_PW;
 
 unsigned long THING_SPEAK_CHANNEL_NO = 447257;
@@ -111,7 +110,6 @@ void setup() {
 // GMT +1 = 3600, GMT +8 = 28800, GMT -1 = -3600, GMT 0 = 0
   timeClient.setTimeOffset(3600); // Norway GMT + 1
 
-
   ThingSpeak.begin(client);
 }
 
@@ -159,16 +157,11 @@ void loop() {
 void updateCloud(){
   if (client.connect(server,80)) {  //   "184.106.153.149" or api.thingspeak.com
     String postStr = myWriteAPIKey;
-           postStr +="&field1=";
-           postStr += String(temp);
-           postStr +="&field2=";
-           postStr += String(humidity);
-           postStr +="&field3=";
-           postStr += String(ssSmokeDetectors);
-           postStr +="&field4=";
-           postStr += String(ssDoorDetectors);
-           postStr +="&field5=";
-           postStr += String(ssWaterLeak);
+           postStr +="&field1=" + String(temp);
+           postStr +="&field2=" + String(humidity);
+           postStr +="&field3=" + String(ssSmokeDetectors);
+           postStr +="&field4=" + String(ssDoorDetectors);
+           postStr +="&field5=" + String(ssWaterLeak);
            postStr += "\r\n\r\n";
  
      client.print("POST /update HTTP/1.1\n"); 
@@ -180,13 +173,8 @@ void updateCloud(){
      client.print(postStr.length()); 
      client.print("\n\n"); 
      client.print(postStr);
-           
- 
-     Serial.print("Temperature: ");
-     Serial.print(temp);
-     Serial.print(" degrees Celcius Humidity: "); 
-     Serial.print(humidity);
-     Serial.println("% sent to Thingspeak");    
+
+     Serial.print("Temperature: " + String(temp) + " degrees Celcius, Humidity: " + String(humidity) + "% sent to Thingspeak");
   }
   client.stop();
    
@@ -212,9 +200,9 @@ void blinkLed()
 
 void getTime(){
   timeClient.update();
-  minutes = getMinutes();
+  minutes = timeClient.getMinutes();
 
-  if((minutes % 10) == 0) // to send every 10 minutes
+  if((minutes % 20) == 0) // to send every 10 minutes
     minuteChanged = true;
   else
     minuteChanged = false;
