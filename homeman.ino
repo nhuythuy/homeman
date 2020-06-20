@@ -129,6 +129,7 @@ bool ssEntranceMotion = 0;
 int ssSmokeDetectors = 0;
 int ssDoorDetectors = 0;
 int ssWaterLeak = 0;
+int ssOtherSensors = 0;
 
 // actuators
 bool acCamPower = 0;
@@ -240,22 +241,26 @@ void delayWithErrorCheck(){
 void printBinary(int inInt)
 {
   for (int b = 15; b >= 0; b--)
-  {
     Serial.print(bitRead(inInt, b));
-  }
 }
 
 void updateSensors(){
   ssDoorMain = digitalRead(PIN_SS_DOOR_MAIN);
   ssDoorBasement = digitalRead(PIN_SS_DOOR_BASEMENT);
   ssEntranceMotion = digitalRead(PIN_SS_ENTRANCE_MOTION);
-
-  bool ssWaterLeak = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
-
   ssDoorDetectors = (ssEntranceMotion << 2) | (ssDoorBasement << 1) | (ssDoorMain << 0);
 
-  globalError = (ssDoorDetectors << 8) | ssDoorDetectors;
-  
+  ssSmokeDetectors = 0;
+  ssWaterLeak = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
+
+  ssOtherSensors =  ssWaterLeak;
+
+  int gbError = (ssWaterLeak << 8) | ssDoorDetectors;
+  if(gbError != globalError)
+    minuteChanged = true;
+
+  globalError = gbError;
+
   Serial.print("Door sensors: = ");
   printBinary(ssDoorDetectors);
   Serial.println();
