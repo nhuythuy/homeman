@@ -244,8 +244,8 @@ void updateSensors(){
   ssOtherSensors =  ssWaterLeak;
 
   int gbError = (ssOtherSensors << 8) | ssDoorDetectors;
-//  if(gbError != globalError)
-//    needUpdateCloud = true;
+  if(gbError != globalError) // send to cloud only if global error triggered
+    needUpdateCloud = true;
 
   globalError = gbError;
 
