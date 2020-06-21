@@ -1,7 +1,7 @@
 
 // Plot DTH11 data on thingspeak.com using an ESP8266
 // May 14 2020
-// Author: Thuy Nguyen, based on an example from Jeroen Beemster reading DTH11 sensor
+// Author: Thuy Nguyen, based on an examples from Jeroen Beemster reading DTH11 sensor
 
 // Ref.:
 // Website: www.arduinesp.com
@@ -123,9 +123,9 @@ bool ssDoorBasement = 0;
 bool ssDoorBack = 0;
 bool ssEntranceMotion = 0;
 
-int ssSmokeDetectors = 0;
-int ssDoorDetectors = 0;
 int ssWaterLeak = 0;
+
+int ssDoorDetectors = 0;
 int ssOtherSensors = 0;
 
 // actuators
@@ -154,9 +154,8 @@ void updateCloud(){
     String postStr = myWriteAPIKey;
            postStr +="&field1=" + String(temp);
            postStr +="&field2=" + String(humidity);
-           postStr +="&field3=" + String(ssSmokeDetectors);
-           postStr +="&field4=" + String(ssDoorDetectors);
-           postStr +="&field5=" + String(ssWaterLeak);
+           postStr +="&field3=" + String(ssDoorDetectors);
+           postStr +="&field4=" + String(ssOtherSensors);
            postStr += "\r\n\r\n";
  
      client.print("POST /update HTTP/1.1\n"); 
@@ -220,7 +219,7 @@ bool updateHumidTempe(){
 
     delayWithErrorCheck();
     humidity = -100;
-    temp = -100
+    temp = -100;
     return false;
   }
 
@@ -234,36 +233,28 @@ void delayWithErrorCheck(){
     delay(delayMs);
 }
 
-void printBinary(int inInt)
-{
-  for (int b = 15; b >= 0; b--)
-    Serial.print(bitRead(inInt, b));
-}
-
 void updateSensors(){
   ssDoorMain = digitalRead(PIN_SS_DOOR_MAIN);
   ssDoorBasement = digitalRead(PIN_SS_DOOR_BASEMENT);
   ssEntranceMotion = digitalRead(PIN_SS_ENTRANCE_MOTION);
   ssDoorDetectors = (ssEntranceMotion << 2) | (ssDoorBasement << 1) | (ssDoorMain << 0);
 
-  ssSmokeDetectors = 0;
   ssWaterLeak = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
 
   ssOtherSensors =  ssWaterLeak;
 
-  int gbError = (ssWaterLeak << 8) | ssDoorDetectors;
-  if(gbError != globalError)
-    needUpdateCloud = true;
+  int gbError = (ssOtherSensors << 8) | ssDoorDetectors;
+//  if(gbError != globalError)
+//    needUpdateCloud = true;
 
   globalError = gbError;
 
   Serial.println("Door sensors: " + String(ssDoorDetectors, BIN));
-  Serial.println("Smoke sensors: " + String(ssSmokeDetectors, BIN));
-  Serial.println("Water leak. sensors: " + String(ssWaterLeak, BIN));
+  Serial.println("Others sensors: " + String(ssOtherSensors, BIN));
   Serial.println("Global error: " + String(globalError, BIN));
   Serial.println();
 
-  if((ssSmokeDetectors > 0) || (ssDoorDetectors > 0))
+  if(ssDoorDetectors > 0)
     forceCamPower = 1;
   else
     forceCamPower = 0;
