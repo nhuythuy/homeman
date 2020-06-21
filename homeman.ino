@@ -111,7 +111,7 @@ void setup() {
 }
 
 int minutes = 0; // use this for sending to update to send to thingspeak
-bool minuteChanged = false;
+bool needUpdateCloud = false;
 
 long delayMs = DELAY_LONG;
 // sensors
@@ -146,7 +146,7 @@ void loop() {
   updateSensors();
   updateActuator();
 
-  if(minuteChanged == true)
+  if(needUpdateCloud == true)
     updateCloud();
 
   delayWithErrorCheck();
@@ -201,9 +201,9 @@ void getTime(){
   minutes = timeClient.getMinutes();
 
   if((minutes % 20) == 0) // to send every 10 minutes
-    minuteChanged = true;
+    needUpdateCloud = true;
   else
-    minuteChanged = false;
+    needUpdateCloud = false;
   
   unsigned long epochTime = timeClient.getEpochTime();
   Serial.print("Epoch Time: ");
@@ -254,7 +254,7 @@ void updateSensors(){
 
   int gbError = (ssWaterLeak << 8) | ssDoorDetectors;
   if(gbError != globalError)
-    minuteChanged = true;
+    needUpdateCloud = true;
 
   globalError = gbError;
 
@@ -280,6 +280,5 @@ void updateActuator()
     else
       digitalWrite(PIN_AC_POWER_CAMERA, 1);
 
-  Serial.print("Cam power: = ");
-  Serial.println(camPower);
+  Serial.println("Cloud CAM power: " + String(camPower) + " - Force CAM power" + String(forceCamPower));
 }
