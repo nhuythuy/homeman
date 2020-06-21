@@ -136,10 +136,7 @@ bool forceCamPower = 0;
 float camPower = 0;
 
 void loop() {
-  if(!updateHumidTempe()){
-    humidity = -100.0;
-    temp = -100.0;
-  }
+  updateHumidTempe();
 
   getTime();
   blinkLed();
@@ -222,6 +219,8 @@ bool updateHumidTempe(){
     Serial.println("Failed to read from DHT sensor!");
 
     delayWithErrorCheck();
+    humidity = -100;
+    temp = -100
     return false;
   }
 
