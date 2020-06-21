@@ -80,8 +80,7 @@ void setup() {
 
   Serial.println();
   Serial.println("MAC: " + WiFi.macAddress());
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
+  Serial.println("Connecting to " + String(ssid));
   
   WiFi.begin(ssid, password);
 
@@ -259,13 +258,10 @@ void updateSensors(){
 
   globalError = gbError;
 
-  Serial.print("Door sensors: = ");
-  printBinary(ssDoorDetectors);
-  Serial.println();
-  Serial.print("Smoke sensors: = ");
-  Serial.println(ssSmokeDetectors);
-  Serial.print("Water leak. sensors: = ");
-  Serial.println(ssWaterLeak);
+  Serial.println("Door sensors: " + String(ssDoorDetectors, BIN));
+  Serial.println("Smoke sensors: " + String(ssSmokeDetectors, BIN));
+  Serial.println("Water leak. sensors: " + String(ssWaterLeak, BIN));
+  Serial.println("Global error: " + String(globalError, BIN));
   Serial.println();
 
   if((ssSmokeDetectors > 0) || (ssDoorDetectors > 0))
