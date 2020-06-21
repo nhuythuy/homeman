@@ -79,8 +79,7 @@ void setup() {
   dht.begin();
 
   Serial.println();
-  Serial.print("MAC: ");
-  Serial.println(WiFi.macAddress());
+  Serial.println("MAC: " + WiFi.macAddress());
   Serial.print("Connecting to ");
   Serial.println(ssid);
   
@@ -100,8 +99,7 @@ void setup() {
     }
   }
 
-  Serial.println("WiFi connected");
-  Serial.println(WiFi.localIP());
+  Serial.println("WiFi connected, IP: " + WiFi.localIP());
 
 
 // Initialize a NTPClient to get time
