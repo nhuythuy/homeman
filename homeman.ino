@@ -29,10 +29,6 @@ unsigned long THING_SPEAK_CHANNEL_NO = 447257;
 String myWriteAPIKey = "59Y4RMCCJVKVWBOQ";
 // to send data, using this get req: https://api.thingspeak.com/update?api_key=QFS00KA70KNC5NX6&field8=6
 
-
-WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "time.nist.gov");
-
 #define DELAY_LONG 5000    // 5,0 seconds
 #define DELAY_SHORT 2500   // 2,5 seconds
 
@@ -43,6 +39,33 @@ const char* server = "api.thingspeak.com";
 DHT dht(PIN_SS_DHT, DHT11,15);
 WiFiClient client;
 
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "time.nist.gov");
+
+int minutes = 0; // use this for sending to update to send to thingspeak
+bool needUpdateCloud = false;
+
+long delayMs = DELAY_LONG;
+// sensors
+float humidity = 0.0;
+float temp = 0.0;
+
+bool ssDoorMain = 0;
+bool ssDoorBasement = 0;
+bool ssDoorBack = 0;
+bool ssEntranceMotion = 0;
+
+int ssWaterLeak = 0;
+
+int ssDoorDetectors = 0;
+int ssOtherSensors = 0;
+
+// actuators
+bool acCamPower = 0;
+bool acBuzzer = 0;
+
+bool forceCamPower = 0;
+float camPower = 0;
 
 
 void setup() {
@@ -84,39 +107,12 @@ void setup() {
 
   playMelody();
 
-// Initialize a NTPClient to get time
-  timeClient.begin();
-// Set offset time in seconds to adjust for your timezone, for example:
-// GMT +1 = 3600, GMT +8 = 28800, GMT -1 = -3600, GMT 0 = 0
+  timeClient.begin(); // Initialize a NTPClient to get time
+// Set offset time in seconds to adjust for your timezone, ex.: GMT +1 = 3600, GMT +8 = 28800, GMT -1 = -3600, GMT 0 = 0
   timeClient.setTimeOffset(3600); // Norway GMT + 1
 
   ThingSpeak.begin(client);
 }
-
-int minutes = 0; // use this for sending to update to send to thingspeak
-bool needUpdateCloud = false;
-
-long delayMs = DELAY_LONG;
-// sensors
-float humidity = 0.0;
-float temp = 0.0;
-
-bool ssDoorMain = 0;
-bool ssDoorBasement = 0;
-bool ssDoorBack = 0;
-bool ssEntranceMotion = 0;
-
-int ssWaterLeak = 0;
-
-int ssDoorDetectors = 0;
-int ssOtherSensors = 0;
-
-// actuators
-bool acCamPower = 0;
-bool acBuzzer = 0;
-
-bool forceCamPower = 0;
-float camPower = 0;
 
 void loop() {
   updateHumidTempe();
