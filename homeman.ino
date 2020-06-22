@@ -12,9 +12,11 @@
 #include <ESP8266WiFi.h>
 #include "ThingSpeak.h"
 #include "wifi_pw.h"
+#include "pin_define.h"
 #include <NTPClient.h>
 #include <WiFiUdp.h>
-#include "pitches.h"  // for melody
+#include "melody.h"
+
 
 int globalError = 0;
 int debugCounter = 0;
@@ -37,29 +39,6 @@ NTPClient timeClient(ntpUDP, "time.nist.gov");
 String myReadAPIKey = "9L9ZWCW1QLN39E09";
 const char* server = "api.thingspeak.com";
 
-// inputs
-#define PIN_SS_ANALOG               A0
-
-#define PIN_SS_DHT                  D5 // DHT sensor pin
-#define PIN_SS_DOOR_MAIN            D6 // main door sensor
-
-#define PIN_SS_DOOR_BASEMENT        D3 // No. 1, door to go down to basement and door to renting area
-#define PIN_SS_ENTRANCE_MOTION      D2 // No. 2, motion sensor for entrance
-
-#define PIN_SS_WATER_SMOKE_BASEMENT D7 // smoke, water leak
-
-
-// outputs
-#define PIN_LED                     D4 // D4: same as built in LED GPIO2
-#define PIN_TONE_MELODY             D8
-
-#define PIN_AC_POWER_LED_ENTRANCE   D0 // No. 1, power for entrance led
-#define PIN_AC_POWER_CAMERA         D1 // No. 2, camera power
-
-#define PIN_AC_BUZZER       D10
-
-#define FIELD_ID_POWER_CAM  8
-#define FIELD_ID_POWER_LOAD 9
 
 DHT dht(PIN_SS_DHT, DHT11,15);
 WiFiClient client;
@@ -138,30 +117,6 @@ bool acBuzzer = 0;
 
 bool forceCamPower = 0;
 float camPower = 0;
-
-// notes in the melody:
-int melody[] = { NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4 };
-
-// note durations: 4 = quarter note, 8 = eighth note, etc.:
-int noteDurations[] = { 4, 8, 8, 4, 4, 4, 4, 4 };
-
-void playMelody(){
-  // iterate over the notes of the melody:
-  for (int thisNote = 0; thisNote < 8; thisNote++) {
-
-    // to calculate the note duration, take one second divided by the note type.
-    //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-    int noteDuration = 1000 / noteDurations[thisNote];
-    tone(PIN_TONE_MELODY, melody[thisNote], noteDuration);
-
-    // to distinguish the notes, set a minimum time between them.
-    // the note's duration + 30% seems to work well:
-    int pauseBetweenNotes = noteDuration * 1.30;
-    delay(pauseBetweenNotes);
-    // stop the tone playing:
-    noTone(PIN_TONE_MELODY);
-  }  
-}
 
 void loop() {
   updateHumidTempe();
