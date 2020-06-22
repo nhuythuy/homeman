@@ -14,6 +14,7 @@
 #include "wifi_pw.h"
 #include <NTPClient.h>
 #include <WiFiUdp.h>
+#include "pitches.h"  // for melody
 
 int globalError = 0;
 int debugCounter = 0;
@@ -50,11 +51,13 @@ const char* server = "api.thingspeak.com";
 
 // outputs
 #define PIN_LED                     D4 // D4: same as built in LED GPIO2
+#define PIN_TONE_MELODY             D8
 
 #define PIN_AC_POWER_LED_ENTRANCE   D0 // No. 1, power for entrance led
 #define PIN_AC_POWER_CAMERA         D1 // No. 2, camera power
 
 #define PIN_AC_BUZZER       D10
+
 #define FIELD_ID_POWER_CAM  8
 #define FIELD_ID_POWER_LOAD 9
 
@@ -100,6 +103,7 @@ void setup() {
 
   Serial.println("WiFi connected, IP: " + WiFi.localIP());
 
+  playMelody();
 
 // Initialize a NTPClient to get time
   timeClient.begin();
@@ -134,6 +138,30 @@ bool acBuzzer = 0;
 
 bool forceCamPower = 0;
 float camPower = 0;
+
+// notes in the melody:
+int melody[] = { NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4 };
+
+// note durations: 4 = quarter note, 8 = eighth note, etc.:
+int noteDurations[] = { 4, 8, 8, 4, 4, 4, 4, 4 };
+
+void playMelody(){
+  // iterate over the notes of the melody:
+  for (int thisNote = 0; thisNote < 8; thisNote++) {
+
+    // to calculate the note duration, take one second divided by the note type.
+    //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
+    int noteDuration = 1000 / noteDurations[thisNote];
+    tone(PIN_TONE_MELODY, melody[thisNote], noteDuration);
+
+    // to distinguish the notes, set a minimum time between them.
+    // the note's duration + 30% seems to work well:
+    int pauseBetweenNotes = noteDuration * 1.30;
+    delay(pauseBetweenNotes);
+    // stop the tone playing:
+    noTone(PIN_TONE_MELODY);
+  }  
+}
 
 void loop() {
   updateHumidTempe();
@@ -193,6 +221,7 @@ void blinkLed()
 
 
 void getTime(){
+  Serial.println();
   timeClient.update();
   minutes = timeClient.getMinutes();
 
@@ -249,6 +278,7 @@ void updateSensors(){
 
   globalError = gbError;
 
+  Serial.println();
   Serial.println("Door sensors: " + String(ssDoorDetectors, BIN));
   Serial.println("Others sensors: " + String(ssOtherSensors, BIN));
   Serial.println("Global error: " + String(globalError, BIN));
@@ -270,5 +300,5 @@ void updateActuator()
     else
       digitalWrite(PIN_AC_POWER_CAMERA, 1);
 
-  Serial.println("Cloud CAM power: " + String(camPower) + " - Force CAM power" + String(forceCamPower));
+  Serial.println("Cloud CAM power: " + String(camPower) + " - Force CAM power: " + String(forceCamPower));
 }
