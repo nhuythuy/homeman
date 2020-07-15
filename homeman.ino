@@ -6,6 +6,7 @@
 // Ref.:
 // Website: www.arduinesp.com
 // https://learn.adafruit.com/dht/using-a-dhtxx-sensor
+// https://randomnerdtutorials.com/complete-guide-for-ultrasonic-sensor-hc-sr04/
 
 
 #include <DHT.h>
@@ -16,6 +17,8 @@
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 #include "melody.h"
+#include <NewPing.h>
+
 
 
 int globalError = 0;
@@ -35,6 +38,7 @@ String myWriteAPIKey = "59Y4RMCCJVKVWBOQ";
 String myReadAPIKey = "9L9ZWCW1QLN39E09";
 const char* server = "api.thingspeak.com";
 
+NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); // NewPing setup of pins and maximum distance.
 
 DHT dht(PIN_SS_DHT, DHT11,15);
 WiFiClient client;
@@ -128,6 +132,12 @@ void loop() {
   delayWithErrorCheck();
 }
 
+void updateDistanceSensor(){
+  unsigned int uS = sonar.ping(); // Send ping, get ping time in microseconds (uS).
+  // Convert ping time to distance and print result (0 = outside set distance range, no ping echo)
+  Serial.println("Ping: " + String(sonar.convert_cm(uS)) + " cm");
+}
+
 void updateCloud(){
   if (client.connect(server,80)) {  //   "184.106.153.149" or api.thingspeak.com
     String postStr = myWriteAPIKey;
@@ -165,9 +175,9 @@ void blinkLed()
     }
 
   digitalWrite(PIN_LED, false);
-  delay(1000);
+  delay(100);
   digitalWrite(PIN_LED, true);
-  delay(1000);
+  delay(100);
 }
 
 

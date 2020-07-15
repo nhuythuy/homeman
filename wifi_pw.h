@@ -1,0 +1,1 @@
+#define WIFI_PW "Planetvegen18A"
