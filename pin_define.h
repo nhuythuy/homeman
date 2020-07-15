@@ -20,10 +20,6 @@
 
 #define PIN_AC_BUZZER               D10
 
-#define TRIGGER_PIN                 D9
-#define ECHO_PIN                    A0
-#define MAX_DISTANCE 200
-
 
 #define FIELD_ID_POWER_CAM  8
 #define FIELD_ID_POWER_LOAD 9
