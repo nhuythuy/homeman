@@ -9,16 +9,15 @@
 #define PIN_SS_ENTRANCE_MOTION      D2 // No. 2, motion sensor for entrance
 
 #define PIN_SS_WATER_SMOKE_BASEMENT D7 // smoke, water leak
+#define PIN_LIGHT_BASEMENT          D8
 
 
 // outputs
 #define PIN_LED                     D4 // D4: same as built in LED GPIO2
-#define PIN_TONE_MELODY             D8
+#define PIN_TONE_MELODY             D10
 
 #define PIN_AC_POWER_LED_ENTRANCE   D0 // No. 1, power for entrance led
 #define PIN_AC_POWER_CAMERA         D1 // No. 2, camera power
-
-#define PIN_AC_BUZZER               D10
 
 
 #define FIELD_ID_POWER_CAM  8

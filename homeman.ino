@@ -53,6 +53,8 @@ bool ssDoorMain = 0;
 bool ssDoorBasement = 0;
 bool ssDoorBack = 0;
 bool ssEntranceMotion = 0;
+bool ssEntranceMotionPrev = 0;
+bool ssLightBasementOn = 0;
 
 int ssWaterLeak = 0;
 
@@ -60,7 +62,7 @@ int ssDoorDetectors = 0;
 int ssOtherSensors = 0;
 
 // actuators
-bool acCamPower = 0;
+bool acEntranceLed = 0;
 bool acBuzzer = 0;
 
 bool forceCamPower = 0;
@@ -72,9 +74,10 @@ void setup() {
   pinMode(PIN_SS_DOOR_BASEMENT, INPUT);
   pinMode(PIN_SS_WATER_SMOKE_BASEMENT, INPUT);
   pinMode(PIN_SS_ENTRANCE_MOTION, INPUT);
+  pinMode(PIN_LIGHT_BASEMENT, INPUT);
 
   pinMode(PIN_LED, OUTPUT);
-  pinMode(PIN_AC_BUZZER, OUTPUT);
+  pinMode(PIN_TONE_MELODY, OUTPUT);
   pinMode(PIN_AC_POWER_LED_ENTRANCE, OUTPUT);
   pinMode(PIN_AC_POWER_CAMERA, OUTPUT);
 
@@ -125,6 +128,10 @@ void loop() {
     updateCloud();
 
   delayWithErrorCheck();
+  
+  if((!ssDoorBasement) && ssLightBasementOn){
+    playMelody();
+  }
 }
 
 void updateCloud(){
@@ -216,6 +223,8 @@ void updateSensors(){
   ssDoorMain = digitalRead(PIN_SS_DOOR_MAIN);
   ssDoorBasement = digitalRead(PIN_SS_DOOR_BASEMENT);
   ssEntranceMotion = digitalRead(PIN_SS_ENTRANCE_MOTION);
+  ssLightBasementOn = digitalRead(PIN_LIGHT_BASEMENT);
+  
   ssDoorDetectors = (ssEntranceMotion << 2) | (ssDoorBasement << 1) | (ssDoorMain << 0);
 
   ssWaterLeak = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
@@ -233,7 +242,6 @@ void updateSensors(){
   Serial.println("Others sensors: " + String(ssOtherSensors, BIN));
   Serial.println("Global error: " + String(globalError, BIN));
   Serial.println();
-
   if(ssDoorDetectors > 0)
     forceCamPower = 1;
   else
