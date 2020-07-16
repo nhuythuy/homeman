@@ -1,6 +1,6 @@
 #include <ESP8266WiFi.h>
 // inputs
-#define PIN_SS_ANALOG               A0
+//#define PIN_SS_ANALOG               A0
 
 #define PIN_SS_DHT                  D5 // DHT sensor pin
 #define PIN_SS_DOOR_MAIN            D6 // main door sensor
@@ -14,7 +14,7 @@
 
 // outputs
 #define PIN_LED                     D4 // D4: same as built in LED GPIO2
-#define PIN_TONE_MELODY             D10
+#define PIN_TONE_MELODY             A0
 
 #define PIN_AC_POWER_LED_ENTRANCE   D0 // No. 1, power for entrance led
 #define PIN_AC_POWER_CAMERA         D1 // No. 2, camera power

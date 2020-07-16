@@ -171,9 +171,9 @@ void blinkLed()
     }
 
   digitalWrite(PIN_LED, false);
-  delay(100);
+  delay(1000);
   digitalWrite(PIN_LED, true);
-  delay(100);
+  delay(1000);
 }
 
 
@@ -229,7 +229,7 @@ void updateSensors(){
 
   ssWaterLeak = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
 
-  ssOtherSensors =  ssWaterLeak;
+  ssOtherSensors =  (ssLightBasementOn << 1) | (ssWaterLeak << 0);
 
   int gbError = (ssOtherSensors << 8) | ssDoorDetectors;
   if(gbError != globalError) // send to cloud only if global error triggered
