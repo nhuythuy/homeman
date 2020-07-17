@@ -79,7 +79,7 @@ void setup() {
   pinMode(PIN_LED, OUTPUT);
   pinMode(PIN_TONE_MELODY, OUTPUT);
   pinMode(PIN_AC_POWER_LED_ENTRANCE, OUTPUT);
-  pinMode(PIN_AC_POWER_CAMERA, OUTPUT);
+//  pinMode(PIN_AC_POWER_CAMERA, OUTPUT);
 
   Serial.begin(19200);
   delay(1000);
@@ -252,11 +252,11 @@ void updateActuator()
 {
   digitalWrite(PIN_AC_POWER_LED_ENTRANCE, ssEntranceMotion);
 
-  camPower = ThingSpeak.readFloatField(THING_SPEAK_CHANNEL_NO, FIELD_ID_POWER_CAM);
-    if(camPower < 1.0)
-      digitalWrite(PIN_AC_POWER_CAMERA, 0 || forceCamPower);
-    else
-      digitalWrite(PIN_AC_POWER_CAMERA, 1);
+//  camPower = ThingSpeak.readFloatField(THING_SPEAK_CHANNEL_NO, FIELD_ID_POWER_CAM);
+//    if(camPower < 1.0)
+//      digitalWrite(PIN_AC_POWER_CAMERA, 0 || forceCamPower);
+//    else
+//      digitalWrite(PIN_AC_POWER_CAMERA, 1);
 
   Serial.println("Cloud CAM power: " + String(camPower) + " - Force CAM power: " + String(forceCamPower));
 }
