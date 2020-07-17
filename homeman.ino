@@ -223,7 +223,7 @@ void updateSensors(){
   ssDoorMain = digitalRead(PIN_SS_DOOR_MAIN);
   ssDoorBasement = digitalRead(PIN_SS_DOOR_BASEMENT);
   ssEntranceMotion = digitalRead(PIN_SS_ENTRANCE_MOTION);
-  ssLightBasementOn = digitalRead(PIN_LIGHT_BASEMENT);
+  ssLightBasementOn = !digitalRead(PIN_LIGHT_BASEMENT);
   
   ssDoorDetectors = (ssEntranceMotion << 2) | (ssDoorBasement << 1) | (ssDoorMain << 0);
 
