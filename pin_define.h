@@ -8,8 +8,8 @@
 #define PIN_SS_DOOR_BASEMENT        D3 // No. 1, door to go down to basement and door to renting area
 #define PIN_SS_ENTRANCE_MOTION      D2 // No. 2, motion sensor for entrance
 
-#define PIN_SS_WATER_SMOKE_BASEMENT D7 // smoke, water leak
-#define PIN_LIGHT_BASEMENT          D8
+#define PIN_LIGHT_BASEMENT          D7
+#define PIN_SS_WATER_SMOKE_BASEMENT D8 // smoke, water leak
 
 
 // outputs
