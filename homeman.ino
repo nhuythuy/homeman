@@ -128,10 +128,6 @@ void loop() {
     updateCloud();
 
   delayWithErrorCheck();
-  
-  if((!ssDoorBasement) && ssLightBasementOn){
-    playMelody();
-  }
 }
 
 void updateCloud(){
@@ -251,6 +247,10 @@ void updateSensors(){
 void updateActuator()
 {
   digitalWrite(PIN_AC_POWER_LED_ENTRANCE, ssEntranceMotion);
+  
+  if((!ssDoorBasement) && ssLightBasementOn){
+    playMelody();
+  }
 
 //  camPower = ThingSpeak.readFloatField(THING_SPEAK_CHANNEL_NO, FIELD_ID_POWER_CAM);
 //    if(camPower < 1.0)
