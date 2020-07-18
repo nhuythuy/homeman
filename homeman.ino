@@ -29,8 +29,9 @@ unsigned long THING_SPEAK_CHANNEL_NO = 447257;
 String myWriteAPIKey = "59Y4RMCCJVKVWBOQ";
 // to send data, using this get req: https://api.thingspeak.com/update?api_key=QFS00KA70KNC5NX6&field8=6
 
-#define DELAY_LONG 5000    // 5,0 seconds
-#define DELAY_SHORT 2500   // 2,5 seconds
+#define MAX_SUPPLY_VOLT   15.0    15 volt
+#define DELAY_LONG        5000    // 5,0 seconds
+#define DELAY_SHORT       2500    // 2,5 seconds
 
 String myReadAPIKey = "9L9ZWCW1QLN39E09";
 const char* server = "api.thingspeak.com";
@@ -49,6 +50,8 @@ long delayMs = DELAY_LONG;
 float humidity = 0.0;
 float temp = 0.0;
 
+int ssSupplyVoltRaw = 0;
+float ssSupplyVolt = 0;
 bool ssDoorMain = 0;
 bool ssDoorBasement = 0;
 bool ssDoorBack = 0;
@@ -217,6 +220,9 @@ void delayWithErrorCheck(){
 }
 
 void updateSensors(){
+  ssSupplyVoltRaw = analogRead(PIN_SS_SUPPLY_VOLT);
+  ssSupplyVolt = MAX_SUPPLY_VOLT * ssSupplyVoltRaw / 1023;
+
   ssDoorMain = digitalRead(PIN_SS_DOOR_MAIN);
   ssDoorBasement = digitalRead(PIN_SS_DOOR_BASEMENT);
   ssEntranceMotion = digitalRead(PIN_SS_ENTRANCE_MOTION);
