@@ -18,7 +18,7 @@
 #define PIN_TONE_MELODY             D8
 
 #define PIN_AC_POWER_LED_ENTRANCE   D0 // No. 1, power for entrance led
-//#define PIN_AC_POWER_CAMERA         D3 // No. 2, camera power
+//#define PIN_AC_POWER_CAMERA         D3 // not possible to connect to OPTO in: connected to FLASH button, boot fails if pulled LOW
 
 
 #define FIELD_ID_POWER_CAM  8
