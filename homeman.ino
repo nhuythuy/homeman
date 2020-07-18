@@ -29,7 +29,7 @@ unsigned long THING_SPEAK_CHANNEL_NO = 447257;
 String myWriteAPIKey = "59Y4RMCCJVKVWBOQ";
 // to send data, using this get req: https://api.thingspeak.com/update?api_key=QFS00KA70KNC5NX6&field8=6
 
-#define MAX_SUPPLY_VOLT   16.0    // volt
+#define MAX_SUPPLY_VOLT   16.0    // volt: 10K+39K --> 16*10/(10+39) = 3.265V (3.3*4.9=16.17V) 
 #define DELAY_LONG        5000    // 5,0 seconds
 #define DELAY_SHORT       2500    // 2,5 seconds
 
