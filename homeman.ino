@@ -81,7 +81,8 @@ void setup() {
   pinMode(PIN_AC_POWER_LED_ENTRANCE, OUTPUT);
 //  pinMode(PIN_AC_POWER_CAMERA, OUTPUT);
 
-  Serial.begin(19200);
+  //Serial.begin(19200);
+  Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
   delay(1000);
   dht.begin();
 

@@ -10,6 +10,7 @@
 
 #define PIN_LIGHT_BASEMENT          D7
 #define PIN_SS_WATER_SMOKE_BASEMENT D1 // smoke, water leak
+#define PIN_SS_OTHER                RX // try use this as DI, together w.   Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
 
 
 // outputs
