@@ -29,7 +29,7 @@ unsigned long THING_SPEAK_CHANNEL_NO = 447257;
 String myWriteAPIKey = "59Y4RMCCJVKVWBOQ";
 // to send data, using this get req: https://api.thingspeak.com/update?api_key=QFS00KA70KNC5NX6&field8=6
 
-#define MAX_SUPPLY_VOLT   16.0    // volt: 10K+39K --> 16*10/(10+39) = 3.265V (3.3*4.9=16.17V) 
+#define MAX_SUPPLY_VOLT   16.157  // volt: 10K(9910)+39K(38610) --> 3.3*(9910+38610)/9910 = 16.1570131181 V 
 #define DELAY_LONG        5000    // 5,0 seconds
 #define DELAY_SHORT       2500    // 2,5 seconds
 
@@ -43,7 +43,8 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "time.nist.gov");
 
 int minutes = 0; // use this for sending to update to send to thingspeak
-bool needUpdateCloud = false;
+bool needUploadCloud = false;
+bool cloudUploaded = false;
 
 long delayMs = DELAY_LONG;
 // sensors
@@ -128,8 +129,11 @@ void loop() {
   updateSensors();
   updateActuator();
 
-  if(needUpdateCloud == true)
+  if(!cloudUploaded && needUploadCloud == true)
+  {
     updateCloud();
+    cloudUploaded = true;
+  }
 
   delayWithErrorCheck();
 }
@@ -141,6 +145,7 @@ void updateCloud(){
            postStr +="&field2=" + String(humidity);
            postStr +="&field3=" + String(ssDoorDetectors);
            postStr +="&field4=" + String(ssOtherSensors);
+           postStr +="&field5=" + String(ssSupplyVolt);
            postStr += "\r\n\r\n";
  
      client.print("POST /update HTTP/1.1\n"); 
@@ -181,11 +186,15 @@ void getTime(){
   Serial.println();
   timeClient.update();
   minutes = timeClient.getMinutes();
+  int seconds = timeClient.getSeconds();
 
-  if((minutes % 20) == 0) // to send every 10 minutes
-    needUpdateCloud = true;
+  if((minutes % 20) == 0) // to send every 20 minutes
+    needUploadCloud = true;
   else
-    needUpdateCloud = false;
+  {
+    cloudUploaded = false;
+    needUploadCloud = false;
+  }
   
   unsigned long epochTime = timeClient.getEpochTime();
   Serial.print("Epoch Time: ");
@@ -236,11 +245,12 @@ void updateSensors(){
 
   int gbError = (ssOtherSensors << 8) | ssDoorDetectors;
   if(gbError != globalError) // send to cloud only if global error triggered
-    needUpdateCloud = true;
+    needUploadCloud = true;
 
   globalError = gbError;
 
   Serial.println();
+  Serial.println("Supply volt.: " + String(ssSupplyVolt) + " - " + String(ssSupplyVoltRaw));
   Serial.println("Door sensors: " + String(ssDoorDetectors, BIN));
   Serial.println("Others sensors: " + String(ssOtherSensors, BIN));
   Serial.println("Global error: " + String(globalError, BIN));
