@@ -1,6 +1,6 @@
 #include <ESP8266WiFi.h>
 // inputs D1, D2, D5, D6, D7
-//#define PIN_SS_SUPPLY_VOLT        A0
+#define PIN_SS_SUPPLY_VOLT        A0
 
 #define PIN_SS_DHT                  D5 // DHT sensor pin
 #define PIN_SS_DOOR_MAIN            D10 // main door sensor
