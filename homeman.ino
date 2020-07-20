@@ -29,9 +29,10 @@ unsigned long THING_SPEAK_CHANNEL_NO = 447257;
 String myWriteAPIKey = "59Y4RMCCJVKVWBOQ";
 // to send data, using this get req: https://api.thingspeak.com/update?api_key=QFS00KA70KNC5NX6&field8=6
 
-#define MAX_SUPPLY_VOLT   16.157  // volt: 10K(9910)+39K(38610) --> 3.3*(9910+38610)/9910 = 16.1570131181 V 
-#define DELAY_LONG        5000    // 5,0 seconds
-#define DELAY_SHORT       2500    // 2,5 seconds
+#define MAX_SUPPLY_VOLT   16.157    // volt: 10K(9910)+39K(38610) --> 3.3*(9910+38610)/9910 = 16.1570131181 V 
+#define DELAY_LONG        5000      // 5,0 seconds
+#define DELAY_SHORT       2500      // 2,5 seconds
+#define MOTION_DELAY      5*60*000  // 5 mins delay
 
 String myReadAPIKey = "9L9ZWCW1QLN39E09";
 const char* server = "api.thingspeak.com";
@@ -72,6 +73,10 @@ bool acBuzzer = 0;
 bool forceCamPower = 0;
 float camPower = 0;
 
+unsigned long now = millis();
+unsigned long lastTrigger = 0;
+boolean startMotionTimer = false;
+
 
 void setup() {
   pinMode(PIN_SS_DOOR_MAIN, INPUT);
@@ -79,6 +84,8 @@ void setup() {
   pinMode(PIN_SS_WATER_SMOKE_BASEMENT, INPUT);
   pinMode(PIN_SS_ENTRANCE_MOTION, INPUT);
   pinMode(PIN_LIGHT_BASEMENT, INPUT);
+  attachInterrupt(digitalPinToInterrupt(PIN_SS_ENTRANCE_MOTION), detectsMovement, RISING);
+
 
   pinMode(PIN_LED, OUTPUT);
   pinMode(PIN_TONE_MELODY, OUTPUT);
@@ -124,7 +131,7 @@ void setup() {
 void loop() {
   updateHumidTempe();
 
-  getTime();
+  getServerTime();
   blinkLed();
   updateSensors();
   updateActuator();
@@ -182,7 +189,7 @@ void blinkLed()
 }
 
 
-void getTime(){
+void getServerTime(){
   Serial.println();
   timeClient.update();
   minutes = timeClient.getMinutes();
@@ -228,6 +235,13 @@ void delayWithErrorCheck(){
     delay(delayMs);
 }
 
+ICACHE_RAM_ATTR void detectsMovement() {
+  Serial.println("MOTION DETECTED!!!");
+  digitalWrite(PIN_AC_POWER_LED_ENTRANCE, HIGH);
+  startMotionTimer = true;
+  lastTrigger = millis();
+}
+
 void updateSensors(){
   ssSupplyVoltRaw = analogRead(PIN_SS_SUPPLY_VOLT);
   ssSupplyVolt = MAX_SUPPLY_VOLT * ssSupplyVoltRaw / 1023;
@@ -263,7 +277,15 @@ void updateSensors(){
 
 void updateActuator()
 {
-  digitalWrite(PIN_AC_POWER_LED_ENTRANCE, ssEntranceMotion);
+//  digitalWrite(PIN_AC_POWER_LED_ENTRANCE, ssEntranceMotion);
+  now = millis();
+  // Turn off the LED after the number of seconds defined in the MOTION_DELAY variable
+  if(startMotionTimer && (now - lastTrigger > MOTION_DELAY)) {
+    Serial.println("Light stopped...");
+    digitalWrite(PIN_AC_POWER_LED_ENTRANCE, LOW);
+    startMotionTimer = false;
+  }
+
   
   if((!ssDoorBasement) && ssLightBasementOn){
     playMelody();
