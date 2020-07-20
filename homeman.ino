@@ -25,7 +25,7 @@ int debugCounter = 0;
 const char* ssid = "VNNO"; // "DNVGuest" "Thuy's iPhone"; "matsuya";
 const char* password = WIFI_PW;
 
-unsigned long THING_SPEAK_CHANNEL_NO = 447257;
+//unsigned long THING_SPEAK_CHANNEL_NO = 447257;
 String myWriteAPIKey = "59Y4RMCCJVKVWBOQ";
 // to send data, using this get req: https://api.thingspeak.com/update?api_key=QFS00KA70KNC5NX6&field8=6
 
@@ -58,7 +58,6 @@ bool ssDoorMain = 0;
 bool ssDoorBasement = 0;
 bool ssDoorBack = 0;
 bool ssEntranceMotion = 0;
-bool ssEntranceMotionPrev = 0;
 bool ssLightBasementOn = 0;
 
 int ssWaterLeak = 0;
@@ -74,7 +73,7 @@ bool forceCamPower = 0;
 float camPower = 0;
 
 unsigned long now = millis();
-unsigned long lastTrigger = 0;
+unsigned long lastTrigger = millis();
 boolean startMotionTimer = false;
 
 
@@ -248,10 +247,9 @@ void updateSensors(){
 
   ssDoorMain = digitalRead(PIN_SS_DOOR_MAIN);
   ssDoorBasement = digitalRead(PIN_SS_DOOR_BASEMENT);
-  ssEntranceMotion = digitalRead(PIN_SS_ENTRANCE_MOTION);
   ssLightBasementOn = !digitalRead(PIN_LIGHT_BASEMENT);
   
-  ssDoorDetectors = (ssEntranceMotion << 2) | (ssDoorBasement << 1) | (ssDoorMain << 0);
+  ssDoorDetectors = (ssDoorBasement << 1) | (ssDoorMain << 0);
 
   ssWaterLeak = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
 
@@ -277,10 +275,10 @@ void updateSensors(){
 
 void updateActuator()
 {
-//  digitalWrite(PIN_AC_POWER_LED_ENTRANCE, ssEntranceMotion);
   now = millis();
   // Turn off the LED after the number of seconds defined in the MOTION_DELAY variable
   if(startMotionTimer && (now - lastTrigger > MOTION_DELAY)) {
+    Serial.println(String(now) + " - " + String(lastTrigger));
     Serial.println("Light stopped...");
     digitalWrite(PIN_AC_POWER_LED_ENTRANCE, LOW);
     startMotionTimer = false;
@@ -291,11 +289,4 @@ void updateActuator()
     playMelody();
   }
 
-//  camPower = ThingSpeak.readFloatField(THING_SPEAK_CHANNEL_NO, FIELD_ID_POWER_CAM);
-//    if(camPower < 1.0)
-//      digitalWrite(PIN_AC_POWER_CAMERA, 0 || forceCamPower);
-//    else
-//      digitalWrite(PIN_AC_POWER_CAMERA, 1);
-
-  Serial.println("Cloud CAM power: " + String(camPower) + " - Force CAM power: " + String(forceCamPower));
 }
