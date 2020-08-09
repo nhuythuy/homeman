@@ -144,7 +144,16 @@ void loop() {
   delayWithErrorCheck();
 }
 
+#define CH_VOLTAGE 0
 #define CH_TEMPERATURE 1
+#define CH_HUMIDITY 2
+#define CH_DOORS 3
+
+// Supply voltage
+CAYENNE_OUT(CH_VOLTAGE)
+{
+  Cayenne.virtualWrite(CH_VOLTAGE, ssSupplyVolt);
+}
 
 // This function is called at intervals to send sensor data to Cayenne.
 CAYENNE_OUT(CH_TEMPERATURE)
@@ -155,6 +164,17 @@ CAYENNE_OUT(CH_TEMPERATURE)
   //Cayenne.fahrenheitWrite(CH_TEMPERATURE, tmpSensor.getFahrenheit());
   //Cayenne.kelvinWrite(CH_TEMPERATURE, tmpSensor.getKelvin());
 }
+
+CAYENNE_OUT(CH_HUMIDITY)
+{
+  Cayenne.virtualWrite(CH_HUMIDITY, humidity, "rel_hum", "p");
+}
+
+CAYENNE_OUT(CH_DOORS)
+{
+  Cayenne.virtualWrite(CH_DOORS, ssDoorDetectors);
+}
+
 
 void updateCloud(){
     String postStr = "&field1=" + String(temp);
@@ -189,7 +209,7 @@ void getServerTime(){
   minutes = timeClient.getMinutes();
   int seconds = timeClient.getSeconds();
 
-  if((minutes % 20) == 0) // to send every 20 minutes
+  if((minutes % 1) == 0) // to send every 20 minutes
     needUploadCloud = true;
   else
   {
