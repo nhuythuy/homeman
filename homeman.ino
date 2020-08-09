@@ -209,7 +209,7 @@ void getServerTime(){
   minutes = timeClient.getMinutes();
   int seconds = timeClient.getSeconds();
 
-  if((minutes % 1) == 0) // to send every 20 minutes
+  if((minutes % 10) == 0) // to send every 20 minutes
     needUploadCloud = true;
   else
   {
