@@ -32,7 +32,7 @@ String myWriteAPIKey = "59Y4RMCCJVKVWBOQ";
 #define MAX_SUPPLY_VOLT   16.157    // volt: 10K(9910)+39K(38610) --> 3.3*(9910+38610)/9910 = 16.1570131181 V 
 #define DELAY_LONG        5000      // 5,0 seconds
 #define DELAY_SHORT       2500      // 2,5 seconds
-#define MOTION_DELAY      3*60*1000  // 5 mins delay
+#define MOTION_DELAY      1*60*1000  // 1 mins delay
 
 String myReadAPIKey = "9L9ZWCW1QLN39E09";
 const char* server = "api.thingspeak.com";
