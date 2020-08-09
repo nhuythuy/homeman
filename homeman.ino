@@ -10,13 +10,14 @@
 
 #include <DHT.h>
 #include <ESP8266WiFi.h>
-#include "ThingSpeak.h"
+#include <CayenneMQTTESP8266.h>
 #include "wifi_pw.h"
 #include "pin_define.h"
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 #include "melody.h"
 
+#define CAYENNE_PRINT Serial
 
 int globalError = 0;
 int debugCounter = 0;
@@ -25,17 +26,15 @@ int debugCounter = 0;
 const char* ssid = "VNNO"; // "DNVGuest" "Thuy's iPhone"; "matsuya";
 const char* password = WIFI_PW;
 
-//unsigned long THING_SPEAK_CHANNEL_NO = 447257;
-String myWriteAPIKey = "59Y4RMCCJVKVWBOQ";
-// to send data, using this get req: https://api.thingspeak.com/update?api_key=QFS00KA70KNC5NX6&field8=6
+// Cayenne authentication info. This should be obtained from the Cayenne Dashboard.
+char dv_username[] = "3541f5b0-d9b3-11ea-883c-638d8ce4c23d";
+char dv_password[] = "0573b7bfc25b7afb4042b3bb93ed8f16a6dd6fc2";
+char dv_clientID[] = "d175a430-d9b4-11ea-b767-3f1a8f1211ba";
 
 #define MAX_SUPPLY_VOLT   16.157    // volt: 10K(9910)+39K(38610) --> 3.3*(9910+38610)/9910 = 16.1570131181 V 
 #define DELAY_LONG        5000      // 5,0 seconds
 #define DELAY_SHORT       2500      // 2,5 seconds
 #define MOTION_DELAY      1*60*1000  // 1 mins delay
-
-String myReadAPIKey = "9L9ZWCW1QLN39E09";
-const char* server = "api.thingspeak.com";
 
 DHT dht(PIN_SS_DHT, DHT11,15);
 WiFiClient client;
@@ -124,7 +123,7 @@ void setup() {
 // Set offset time in seconds to adjust for your timezone, ex.: GMT +1 = 3600, GMT +8 = 28800, GMT -1 = -3600, GMT 0 = 0
   timeClient.setTimeOffset(3600); // Norway GMT + 1
 
-  ThingSpeak.begin(client);
+  Cayenne.begin(dv_username, dv_password, dv_clientID, ssid, password);
 }
 
 void loop() {
@@ -135,41 +134,37 @@ void loop() {
   updateSensors();
   updateActuator();
 
+  Cayenne.loop();
   if(!cloudUploaded && needUploadCloud == true)
   {
-    updateCloud();
+//    Cayenne.loop();
     cloudUploaded = true;
   }
 
   delayWithErrorCheck();
 }
 
+#define CH_TEMPERATURE 1
+
+// This function is called at intervals to send sensor data to Cayenne.
+CAYENNE_OUT(CH_TEMPERATURE)
+{
+  // This command writes the temperature in Celsius to the Virtual Channel.
+  Cayenne.celsiusWrite(CH_TEMPERATURE, temp);
+  // To send the temperature in Fahrenheit or Kelvin use the corresponding code below.
+  //Cayenne.fahrenheitWrite(CH_TEMPERATURE, tmpSensor.getFahrenheit());
+  //Cayenne.kelvinWrite(CH_TEMPERATURE, tmpSensor.getKelvin());
+}
+
 void updateCloud(){
-  if (client.connect(server,80)) {  //   "184.106.153.149" or api.thingspeak.com
-    String postStr = myWriteAPIKey;
-           postStr +="&field1=" + String(temp);
+    String postStr = "&field1=" + String(temp);
            postStr +="&field2=" + String(humidity);
            postStr +="&field3=" + String(ssDoorDetectors);
            postStr +="&field4=" + String(ssOtherSensors);
            postStr +="&field5=" + String(ssSupplyVolt);
            postStr += "\r\n\r\n";
  
-     client.print("POST /update HTTP/1.1\n"); 
-     client.print("Host: api.thingspeak.com\n"); 
-     client.print("Connection: close\n"); 
-     client.print("X-THINGSPEAKAPIKEY: "+myWriteAPIKey+"\n"); 
-     client.print("Content-Type: application/x-www-form-urlencoded\n"); 
-     client.print("Content-Length: "); 
-     client.print(postStr.length()); 
-     client.print("\n\n"); 
-     client.print(postStr);
-
      Serial.print("Temperature: " + String(temp) + " degrees Celcius, Humidity: " + String(humidity) + "% sent to Thingspeak");
-  }
-  client.stop();
-   
-  Serial.println("Waiting...");
-  // thingspeak needs minimum 15 sec delay between updates
 }
 
 void blinkLed()
