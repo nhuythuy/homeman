@@ -14,6 +14,15 @@ char dv_clientID[] = "d175a430-d9b4-11ea-b767-3f1a8f1211ba";
 #define CH_TEMPERATURE    4
 #define CH_HUMIDITY       5
 
+#define CH_DOOR_MAIN        10
+#define CH_DOOR_BASEMENT    11
+#define CH_DOOR_BACK        12
+#define CH_MOTION_ENTRANCE  15
+#define CH_LIGHT_BASEMENT   16
+#define CH_WATER_LEAK_0     17
+#define CH_WATER_LEAK_1     18
+
+
 // This function is called at intervals to send sensor data to Cayenne.
 CAYENNE_OUT(CH_BATT_VOLTAGE){
   Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
@@ -37,4 +46,8 @@ CAYENNE_OUT(CH_TEMPERATURE){
 
 CAYENNE_OUT(CH_HUMIDITY){
   Cayenne.virtualWrite(CH_HUMIDITY, humidity, "rel_hum", "p");
+}
+
+void writeCayenneDigitalStates(int channelId, int value){
+  Cayenne.virtualWrite(channelId, value, "digital_sensor", "d");
 }

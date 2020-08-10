@@ -187,13 +187,34 @@ ICACHE_RAM_ATTR void detectsMovement() {
 }
 
 void updateSensors(){
+  bool state;
+  
   ssBatteryVoltRaw = analogRead(PIN_SS_SUPPLY_VOLT);
   ssBatteryVolt = MAX_SUPPLY_VOLT * ssBatteryVoltRaw / 1023;
 
-  ssDoorMain = digitalRead(PIN_SS_DOOR_MAIN);
-  ssDoorBasement = digitalRead(PIN_SS_DOOR_BASEMENT);
-  ssLightBasementOn = !digitalRead(PIN_LIGHT_BASEMENT);
-  ssEntranceMotion = digitalRead(PIN_SS_ENTRANCE_MOTION);
+  state = digitalRead(PIN_SS_DOOR_MAIN);
+  if (state != ssDoorMain){
+    writeCayenneDigitalStates(CH_DOOR_MAIN, state);
+    ssDoorMain = state;
+  }
+  
+  state = digitalRead(PIN_SS_DOOR_BASEMENT);
+  if (state != ssDoorBasement){
+    writeCayenneDigitalStates(CH_DOOR_BASEMENT, state);
+    ssDoorBasement = state;
+  }
+
+  state = !digitalRead(PIN_LIGHT_BASEMENT);
+  if (state != ssLightBasementOn){
+    writeCayenneDigitalStates(CH_LIGHT_BASEMENT, state);
+    ssLightBasementOn = state;
+  }
+
+  state = digitalRead(PIN_SS_ENTRANCE_MOTION);
+  if (state != ssEntranceMotion){
+    writeCayenneDigitalStates(CH_MOTION_ENTRANCE, state);
+    ssEntranceMotion = state;
+  }
 
   ssDoorDetectors = (ssDoorBasement << 1) | (ssDoorMain << 0);
 
