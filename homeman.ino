@@ -151,50 +151,29 @@ void loop() {
 #define CH_TEMPERATURE  3
 #define CH_HUMIDITY     4
 
-// Battery voltage
-CAYENNE_OUT(CH_BATT_VOLTAGE)
-{
+// This function is called at intervals to send sensor data to Cayenne.
+CAYENNE_OUT(CH_BATT_VOLTAGE){
   Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
 }
 
-CAYENNE_OUT(CH_DOORS)
-{
+CAYENNE_OUT(CH_DOORS){
   Cayenne.virtualWrite(CH_DOORS, ssDoorDetectors, "counter", null);
 }
 
-CAYENNE_OUT(CH_ACTUATORS)
-{
+CAYENNE_OUT(CH_ACTUATORS){
   Cayenne.virtualWrite(CH_ACTUATORS, ssDoorDetectors, "counter", null);
 }
 
-// This function is called at intervals to send sensor data to Cayenne.
-CAYENNE_OUT(CH_TEMPERATURE)
-{
-  // This command writes the temperature in Celsius to the Virtual Channel.
+CAYENNE_OUT(CH_TEMPERATURE){
   Cayenne.celsiusWrite(CH_TEMPERATURE, temp);
-  // To send the temperature in Fahrenheit or Kelvin use the corresponding code below.
-  //Cayenne.fahrenheitWrite(CH_TEMPERATURE, tmpSensor.getFahrenheit());
-  //Cayenne.kelvinWrite(CH_TEMPERATURE, tmpSensor.getKelvin());
 }
 
-CAYENNE_OUT(CH_HUMIDITY)
-{
+CAYENNE_OUT(CH_HUMIDITY){
   Cayenne.virtualWrite(CH_HUMIDITY, humidity, "rel_hum", "p");
 }
 
-void updateCloud(){
-    String postStr = "&field1=" + String(temp);
-           postStr +="&field2=" + String(humidity);
-           postStr +="&field3=" + String(ssDoorDetectors);
-           postStr +="&field4=" + String(ssOtherSensors);
-           postStr +="&field5=" + String(ssBatteryVolt);
-           postStr += "\r\n\r\n";
- 
-     Serial.print("Temperature: " + String(temp) + " degrees Celcius, Humidity: " + String(humidity) + "% sent to Thingspeak");
-}
 
-void blinkLed()
-{
+void blinkLed(){
     Serial.print("-");
     if(debugCounter++ > 80)
     {
@@ -258,6 +237,9 @@ void delayWithErrorCheck(){
 ICACHE_RAM_ATTR void detectsMovement() {
   Serial.println("MOTION DETECTED!!!");
   digitalWrite(PIN_AC_POWER_LED_ENTRANCE, HIGH);
+  acEntranceLed = true;
+  acActuators |= (1 << 0);
+
   startMotionTimer = true;
   lastTrigger = millis();
 }
@@ -302,6 +284,8 @@ void updateActuator()
     Serial.println(String(now) + " - " + String(lastTrigger));
     Serial.println("Light stopped...");
     digitalWrite(PIN_AC_POWER_LED_ENTRANCE, LOW);
+    acEntranceLed = false;
+    acActuators &= ~(1 << 0);
     startMotionTimer = false;
   }
 
