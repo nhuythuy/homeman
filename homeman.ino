@@ -66,6 +66,7 @@ void WIFI_Connect(){
     }
   }
 
+  delay(500);
   Serial.println("... WiFi connected, IP: " + WiFi.localIP());
   Serial.println();
 }
@@ -192,6 +193,7 @@ ICACHE_RAM_ATTR void detectsMovement() {
   acActuators |= (1 << 0);
 
   startMotionTimer = true;
+  writeCayenneDigitalStates(CH_LIGHT_ENTRANCE, false);
   lastTrigger = millis();
 }
 
@@ -262,6 +264,8 @@ void updateActuator()
     Serial.println("Light stopped...");
     digitalWrite(PIN_AC_POWER_LED_ENTRANCE, LOW);
     acEntranceLed = false;
+    writeCayenneDigitalStates(CH_LIGHT_ENTRANCE, false);
+
     acActuators &= ~(1 << 0);
     startMotionTimer = false;
   }

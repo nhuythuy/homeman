@@ -21,8 +21,9 @@ char dv_clientID[] = "d175a430-d9b4-11ea-b767-3f1a8f1211ba";
 #define CH_MOTION_ENTRANCE      15
 #define CH_LIGHT_BASEMENT       16
 #define CH_LIGHT_STAIR_BASEMENT 17
-#define CH_WATER_LEAK_0         18
-#define CH_WATER_LEAK_1         19
+#define CH_LIGHT_ENTRANCE       18
+#define CH_WATER_LEAK_0         19
+#define CH_WATER_LEAK_1         20
 
 
 // This function is called at intervals to send sensor data to Cayenne.
