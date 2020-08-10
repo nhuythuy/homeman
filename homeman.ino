@@ -152,7 +152,7 @@ void loop() {
 // Supply voltage
 CAYENNE_OUT(CH_VOLTAGE)
 {
-  Cayenne.virtualWrite(CH_VOLTAGE, ssSupplyVolt);
+  Cayenne.virtualWrite(CH_VOLTAGE, ssSupplyVolt, "batt", "V");
 }
 
 // This function is called at intervals to send sensor data to Cayenne.
