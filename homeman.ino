@@ -45,26 +45,7 @@ unsigned long now = millis();
 unsigned long lastTrigger = millis();
 boolean startMotionTimer = false;
 
-
-void setup() {
-  pinMode(PIN_SS_DOOR_MAIN, INPUT);
-  pinMode(PIN_SS_DOOR_BASEMENT, INPUT);
-  pinMode(PIN_SS_WATER_SMOKE_BASEMENT, INPUT);
-  pinMode(PIN_SS_ENTRANCE_MOTION, INPUT);
-  pinMode(PIN_LIGHT_BASEMENT, INPUT);
-  attachInterrupt(digitalPinToInterrupt(PIN_SS_ENTRANCE_MOTION), detectsMovement, RISING);
-
-
-  pinMode(PIN_LED, OUTPUT);
-  pinMode(PIN_TONE_MELODY, OUTPUT);
-  pinMode(PIN_AC_POWER_LED_ENTRANCE, OUTPUT);
-//  pinMode(PIN_AC_POWER_CAMERA, OUTPUT);
-
-  //Serial.begin(19200);
-  Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
-  delay(1000);
-  dht.begin();
-
+void WIFI_Connect(){
   Serial.println();
   Serial.println("MAC: " + WiFi.macAddress());
   Serial.println("Connecting to " + String(ssid));
@@ -85,7 +66,29 @@ void setup() {
     }
   }
 
-  Serial.println("WiFi connected, IP: " + WiFi.localIP());
+  Serial.println("... WiFi connected, IP: " + WiFi.localIP());
+}
+
+void setup() {
+  pinMode(PIN_SS_DOOR_MAIN, INPUT);
+  pinMode(PIN_SS_DOOR_BASEMENT, INPUT);
+  pinMode(PIN_SS_WATER_SMOKE_BASEMENT, INPUT);
+  pinMode(PIN_SS_ENTRANCE_MOTION, INPUT);
+  pinMode(PIN_LIGHT_BASEMENT, INPUT);
+  attachInterrupt(digitalPinToInterrupt(PIN_SS_ENTRANCE_MOTION), detectsMovement, RISING);
+
+
+  pinMode(PIN_LED, OUTPUT);
+  pinMode(PIN_TONE_MELODY, OUTPUT);
+  pinMode(PIN_AC_POWER_LED_ENTRANCE, OUTPUT);
+//  pinMode(PIN_AC_POWER_CAMERA, OUTPUT);
+
+  //Serial.begin(19200);
+  Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
+  delay(1000);
+  dht.begin();
+
+  WIFI_Connect();
 
   playMelody();
 
@@ -104,11 +107,16 @@ void loop() {
   updateSensors();
   updateActuator();
 
-//  Cayenne.loop();
   if(!cloudUploaded && needUploadCloud == true)
   {
     Cayenne.loop();
     cloudUploaded = true;
+  }
+
+  if(WiFi.status() == WL_DISCONNECTED){
+    Serial.println("WiFi connection lost! Reconnecting...");
+    WiFi.disconnect();
+    WIFI_Connect();
   }
 
   delayWithErrorCheck();
