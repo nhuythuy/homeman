@@ -157,11 +157,11 @@ CAYENNE_OUT(CH_BATT_VOLTAGE){
 }
 
 CAYENNE_OUT(CH_DOORS){
-  Cayenne.virtualWrite(CH_DOORS, ssDoorDetectors, "counter", null);
+  Cayenne.virtualWrite(CH_DOORS, ssDoorDetectors, "counter");
 }
 
 CAYENNE_OUT(CH_ACTUATORS){
-  Cayenne.virtualWrite(CH_ACTUATORS, ssDoorDetectors, "counter", null);
+  Cayenne.virtualWrite(CH_ACTUATORS, ssDoorDetectors, "counter");
 }
 
 CAYENNE_OUT(CH_TEMPERATURE){
