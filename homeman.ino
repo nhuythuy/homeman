@@ -67,6 +67,7 @@ void WIFI_Connect(){
   }
 
   Serial.println("... WiFi connected, IP: " + WiFi.localIP());
+  Serial.println();
 }
 
 void setup() {
