@@ -144,15 +144,26 @@ void loop() {
   delayWithErrorCheck();
 }
 
-#define CH_VOLTAGE 0
-#define CH_TEMPERATURE 1
-#define CH_HUMIDITY 2
-#define CH_DOORS 3
+#define CH_BATT_VOLTAGE 0
+#define CH_DOORS        1
+#define CH_ACTUATORS    2
+#define CH_TEMPERATURE  3
+#define CH_HUMIDITY     4
 
-// Supply voltage
-CAYENNE_OUT(CH_VOLTAGE)
+// Battery voltage
+CAYENNE_OUT(CH_BATT_VOLTAGE)
 {
-  Cayenne.virtualWrite(CH_VOLTAGE, ssSupplyVolt, "batt", "V");
+  Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssSupplyVolt, "batt", "V");
+}
+
+CAYENNE_OUT(CH_DOORS)
+{
+  Cayenne.virtualWrite(CH_DOORS, ssDoorDetectors, "counter", null);
+}
+
+CAYENNE_OUT(CH_ACTUATORS)
+{
+  Cayenne.virtualWrite(CH_ACTUATORS, ssDoorDetectors, "counter", null);
 }
 
 // This function is called at intervals to send sensor data to Cayenne.
@@ -169,12 +180,6 @@ CAYENNE_OUT(CH_HUMIDITY)
 {
   Cayenne.virtualWrite(CH_HUMIDITY, humidity, "rel_hum", "p");
 }
-
-CAYENNE_OUT(CH_DOORS)
-{
-  Cayenne.virtualWrite(CH_DOORS, ssDoorDetectors);
-}
-
 
 void updateCloud(){
     String postStr = "&field1=" + String(temp);
