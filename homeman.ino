@@ -270,11 +270,13 @@ void updateSensors(){
   globalState = gbState;
 
   Serial.println();
-  Serial.println("Battery volt.: " + String(ssBatteryVolt) + " - " + String(ssBatteryVoltRaw));
-  Serial.println("Door sensors: " + String(ssDoorDetectors, BIN));
-  Serial.println("Others sensors: " + String(ssOtherSensors, BIN));
-  Serial.println("Actuators: " + String(acActuators, BIN));
-  Serial.println("Global state: " + String(globalState, BIN));
+  Serial.println("0. Battery volt.:  " + String(ssBatteryVolt) + " - " + String(ssBatteryVoltRaw));
+  Serial.println("1. Door sensors:   " + String(ssDoorDetectors, BIN));
+  Serial.println("2. Others sensors: " + String(ssOtherSensors, BIN));
+  Serial.println("3. Actuators:      " + String(acActuators, BIN));
+  Serial.println("4. Temperature:    " + String(temp) + " deg C");
+  Serial.println("5. Humidity:       " + String(humidity) + " %");
+  Serial.println("-- Global state:   " + String(globalState, BIN));
   Serial.println();
   if(ssDoorDetectors > 0)
     forceCamPower = 1;
