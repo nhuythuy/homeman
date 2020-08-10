@@ -210,6 +210,7 @@ void updateSensors(){
   state = digitalRead(PIN_SS_DOOR_BASEMENT);
   if (state != ssDoorBasement){
     writeCayenneDigitalStates(CH_DOOR_BASEMENT, state);
+    writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
     ssDoorBasement = state;
   }
 
