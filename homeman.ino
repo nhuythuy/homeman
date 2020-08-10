@@ -166,7 +166,7 @@ CAYENNE_OUT(CH_OTHER_SENSORS){
 }
 
 CAYENNE_OUT(CH_ACTUATORS){
-  Cayenne.virtualWrite(CH_ACTUATORS, ssDoorDetectors, "counter");
+  Cayenne.virtualWrite(CH_ACTUATORS, acActuators, "counter");
 }
 
 CAYENNE_OUT(CH_TEMPERATURE){
@@ -256,12 +256,13 @@ void updateSensors(){
   ssDoorMain = digitalRead(PIN_SS_DOOR_MAIN);
   ssDoorBasement = digitalRead(PIN_SS_DOOR_BASEMENT);
   ssLightBasementOn = !digitalRead(PIN_LIGHT_BASEMENT);
-  
+  ssEntranceMotion = digitalRead(PIN_SS_ENTRANCE_MOTION);
+
   ssDoorDetectors = (ssDoorBasement << 1) | (ssDoorMain << 0);
 
   ssWaterLeak = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
 
-  ssOtherSensors =  (ssLightBasementOn << 1) | (ssWaterLeak << 0);
+  ssOtherSensors = (ssEntranceMotion << 2) | (ssLightBasementOn << 1) | (ssWaterLeak << 0);
 
   long gbState = (acActuators << 16) | (ssOtherSensors << 8) | ssDoorDetectors;
   if(gbState != globalState) // send to cloud only if global error triggered
