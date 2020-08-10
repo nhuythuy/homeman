@@ -51,8 +51,8 @@ long delayMs = DELAY_LONG;
 float humidity = 0.0;
 float temp = 0.0;
 
-int ssSupplyVoltRaw = 0;
-float ssSupplyVolt = 0;
+int ssBatteryVoltRaw = 0;
+float ssBatteryVolt = 0;
 bool ssDoorMain = 0;
 bool ssDoorBasement = 0;
 bool ssDoorBack = 0;
@@ -67,6 +67,7 @@ int ssOtherSensors = 0;
 // actuators
 bool acEntranceLed = 0;
 bool acBuzzer = 0;
+int acActuators = 0;
 
 bool forceCamPower = 0;
 float camPower = 0;
@@ -153,7 +154,7 @@ void loop() {
 // Battery voltage
 CAYENNE_OUT(CH_BATT_VOLTAGE)
 {
-  Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssSupplyVolt, "batt", "V");
+  Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
 }
 
 CAYENNE_OUT(CH_DOORS)
@@ -186,7 +187,7 @@ void updateCloud(){
            postStr +="&field2=" + String(humidity);
            postStr +="&field3=" + String(ssDoorDetectors);
            postStr +="&field4=" + String(ssOtherSensors);
-           postStr +="&field5=" + String(ssSupplyVolt);
+           postStr +="&field5=" + String(ssBatteryVolt);
            postStr += "\r\n\r\n";
  
      Serial.print("Temperature: " + String(temp) + " degrees Celcius, Humidity: " + String(humidity) + "% sent to Thingspeak");
@@ -262,8 +263,8 @@ ICACHE_RAM_ATTR void detectsMovement() {
 }
 
 void updateSensors(){
-  ssSupplyVoltRaw = analogRead(PIN_SS_SUPPLY_VOLT);
-  ssSupplyVolt = MAX_SUPPLY_VOLT * ssSupplyVoltRaw / 1023;
+  ssBatteryVoltRaw = analogRead(PIN_SS_SUPPLY_VOLT);
+  ssBatteryVolt = MAX_SUPPLY_VOLT * ssBatteryVoltRaw / 1023;
 
   ssDoorMain = digitalRead(PIN_SS_DOOR_MAIN);
   ssDoorBasement = digitalRead(PIN_SS_DOOR_BASEMENT);
@@ -282,7 +283,7 @@ void updateSensors(){
   globalError = gbError;
 
   Serial.println();
-  Serial.println("Supply volt.: " + String(ssSupplyVolt) + " - " + String(ssSupplyVoltRaw));
+  Serial.println("Battery volt.: " + String(ssBatteryVolt) + " - " + String(ssBatteryVoltRaw));
   Serial.println("Door sensors: " + String(ssDoorDetectors, BIN));
   Serial.println("Others sensors: " + String(ssOtherSensors, BIN));
   Serial.println("Global error: " + String(globalError, BIN));
