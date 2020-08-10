@@ -145,11 +145,12 @@ void loop() {
   delayWithErrorCheck();
 }
 
-#define CH_BATT_VOLTAGE 0
-#define CH_DOORS        1
-#define CH_ACTUATORS    2
-#define CH_TEMPERATURE  3
-#define CH_HUMIDITY     4
+#define CH_BATT_VOLTAGE   0
+#define CH_DOORS          1
+#define CH_OTHER_SENSORS  2
+#define CH_ACTUATORS      3
+#define CH_TEMPERATURE    4
+#define CH_HUMIDITY       5
 
 // This function is called at intervals to send sensor data to Cayenne.
 CAYENNE_OUT(CH_BATT_VOLTAGE){
@@ -158,6 +159,10 @@ CAYENNE_OUT(CH_BATT_VOLTAGE){
 
 CAYENNE_OUT(CH_DOORS){
   Cayenne.virtualWrite(CH_DOORS, ssDoorDetectors, "counter");
+}
+
+CAYENNE_OUT(CH_OTHER_SENSORS){
+  Cayenne.virtualWrite(CH_OTHER_SENSORS, ssOtherSensors, "counter");
 }
 
 CAYENNE_OUT(CH_ACTUATORS){
