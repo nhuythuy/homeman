@@ -9,8 +9,9 @@
 
 
 #include <DHT.h>
+#include "global_vars.h"
+#include "mydevices.h"
 #include <ESP8266WiFi.h>
-#include <CayenneMQTTESP8266.h>
 #include "wifi_pw.h"
 #include "pin_define.h"
 #include <NTPClient.h>
@@ -19,17 +20,9 @@
 
 #define CAYENNE_PRINT Serial
 
-long globalState = 0;
-int debugCounter = 0;
-
 // replace with your channel's thingspeak API key, 
 const char* ssid = "VNNO"; // "DNVGuest" "Thuy's iPhone"; "matsuya";
 const char* password = WIFI_PW;
-
-// Cayenne authentication info. This should be obtained from the Cayenne Dashboard.
-char dv_username[] = "3541f5b0-d9b3-11ea-883c-638d8ce4c23d";
-char dv_password[] = "0573b7bfc25b7afb4042b3bb93ed8f16a6dd6fc2";
-char dv_clientID[] = "d175a430-d9b4-11ea-b767-3f1a8f1211ba";
 
 #define MAX_SUPPLY_VOLT   16.157    // volt: 10K(9910)+39K(38610) --> 3.3*(9910+38610)/9910 = 16.1570131181 V 
 #define DELAY_LONG        5000      // 5,0 seconds
@@ -47,30 +40,6 @@ bool needUploadCloud = false;
 bool cloudUploaded = false;
 
 long delayMs = DELAY_LONG;
-// sensors
-float humidity = 0.0;
-float temp = 0.0;
-
-int ssBatteryVoltRaw = 0;
-float ssBatteryVolt = 0;
-bool ssDoorMain = 0;
-bool ssDoorBasement = 0;
-bool ssDoorBack = 0;
-bool ssEntranceMotion = 0;
-bool ssLightBasementOn = 0;
-
-int ssWaterLeak = 0;
-
-int ssDoorDetectors = 0;
-int ssOtherSensors = 0;
-
-// actuators
-bool acEntranceLed = 0;
-bool acBuzzer = 0;
-int acActuators = 0;
-
-bool forceCamPower = 0;
-float camPower = 0;
 
 unsigned long now = millis();
 unsigned long lastTrigger = millis();
@@ -135,46 +104,14 @@ void loop() {
   updateSensors();
   updateActuator();
 
-  Cayenne.loop();
+//  Cayenne.loop();
   if(!cloudUploaded && needUploadCloud == true)
   {
-//    Cayenne.loop();
+    Cayenne.loop();
     cloudUploaded = true;
   }
 
   delayWithErrorCheck();
-}
-
-#define CH_BATT_VOLTAGE   0
-#define CH_DOORS          1
-#define CH_OTHER_SENSORS  2
-#define CH_ACTUATORS      3
-#define CH_TEMPERATURE    4
-#define CH_HUMIDITY       5
-
-// This function is called at intervals to send sensor data to Cayenne.
-CAYENNE_OUT(CH_BATT_VOLTAGE){
-  Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
-}
-
-CAYENNE_OUT(CH_DOORS){
-  Cayenne.virtualWrite(CH_DOORS, ssDoorDetectors, "counter");
-}
-
-CAYENNE_OUT(CH_OTHER_SENSORS){
-  Cayenne.virtualWrite(CH_OTHER_SENSORS, ssOtherSensors, "counter");
-}
-
-CAYENNE_OUT(CH_ACTUATORS){
-  Cayenne.virtualWrite(CH_ACTUATORS, acActuators, "counter");
-}
-
-CAYENNE_OUT(CH_TEMPERATURE){
-  Cayenne.celsiusWrite(CH_TEMPERATURE, temp);
-}
-
-CAYENNE_OUT(CH_HUMIDITY){
-  Cayenne.virtualWrite(CH_HUMIDITY, humidity, "rel_hum", "p");
 }
 
 
@@ -260,7 +197,7 @@ void updateSensors(){
 
   ssDoorDetectors = (ssDoorBasement << 1) | (ssDoorMain << 0);
 
-  ssWaterLeak = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
+  ssWaterLeak = 0; // digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
 
   ssOtherSensors = (ssEntranceMotion << 2) | (ssLightBasementOn << 1) | (ssWaterLeak << 0);
 
