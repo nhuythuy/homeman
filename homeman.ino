@@ -19,7 +19,7 @@
 
 #define CAYENNE_PRINT Serial
 
-int globalError = 0;
+long globalState = 0;
 int debugCounter = 0;
 
 // replace with your channel's thingspeak API key, 
@@ -228,7 +228,7 @@ bool updateHumidTempe(){
 }
 
 void delayWithErrorCheck(){
-    if(globalError > 0)
+    if(globalState > 0)
     blinkLed();
   else
     delay(delayMs);
@@ -258,17 +258,17 @@ void updateSensors(){
 
   ssOtherSensors =  (ssLightBasementOn << 1) | (ssWaterLeak << 0);
 
-  int gbError = (ssOtherSensors << 8) | ssDoorDetectors;
-  if(gbError != globalError) // send to cloud only if global error triggered
+  long gbState = (ssOtherSensors << 8) | ssDoorDetectors;
+  if(gbState != globalState) // send to cloud only if global error triggered
     needUploadCloud = true;
 
-  globalError = gbError;
+  globalState = gbState;
 
   Serial.println();
   Serial.println("Battery volt.: " + String(ssBatteryVolt) + " - " + String(ssBatteryVoltRaw));
   Serial.println("Door sensors: " + String(ssDoorDetectors, BIN));
   Serial.println("Others sensors: " + String(ssOtherSensors, BIN));
-  Serial.println("Global error: " + String(globalError, BIN));
+  Serial.println("Global error: " + String(globalState, BIN));
   Serial.println();
   if(ssDoorDetectors > 0)
     forceCamPower = 1;
