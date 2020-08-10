@@ -258,7 +258,7 @@ void updateSensors(){
 
   ssOtherSensors =  (ssLightBasementOn << 1) | (ssWaterLeak << 0);
 
-  long gbState = (ssOtherSensors << 8) | ssDoorDetectors;
+  long gbState = (acActuators << 16) | (ssOtherSensors << 8) | ssDoorDetectors;
   if(gbState != globalState) // send to cloud only if global error triggered
     needUploadCloud = true;
 
@@ -268,7 +268,8 @@ void updateSensors(){
   Serial.println("Battery volt.: " + String(ssBatteryVolt) + " - " + String(ssBatteryVoltRaw));
   Serial.println("Door sensors: " + String(ssDoorDetectors, BIN));
   Serial.println("Others sensors: " + String(ssOtherSensors, BIN));
-  Serial.println("Global error: " + String(globalState, BIN));
+  Serial.println("Actuators: " + String(acActuators, BIN));
+  Serial.println("Global state: " + String(globalState, BIN));
   Serial.println();
   if(ssDoorDetectors > 0)
     forceCamPower = 1;
