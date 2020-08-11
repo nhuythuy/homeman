@@ -112,6 +112,8 @@ void loop() {
   if(!cloudUploaded && needUploadCloud == true)
   {
     Cayenne.loop();
+    if(cayenneCounter++ > CH_HUMIDITY) // last channel
+      cayenneCounter = 0;
     cloudUploaded = true;
   }
 

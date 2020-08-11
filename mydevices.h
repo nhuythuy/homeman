@@ -25,30 +25,37 @@ char dv_clientID[] = "d175a430-d9b4-11ea-b767-3f1a8f1211ba";
 #define CH_WATER_LEAK_0         19
 #define CH_WATER_LEAK_1         20
 
+int cayenneCounter = 0;
 
 // This function is called at intervals to send sensor data to Cayenne.
 CAYENNE_OUT(CH_BATT_VOLTAGE){
-  Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
+  if(cayenneCounter == CH_BATT_VOLTAGE)
+    Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
 }
 
 CAYENNE_OUT(CH_DOORS){
-  Cayenne.virtualWrite(CH_DOORS, ssDoorDetectors, "counter");
+  if(cayenneCounter == CH_DOORS)
+    Cayenne.virtualWrite(CH_DOORS, ssDoorDetectors, "counter");
 }
 
 CAYENNE_OUT(CH_OTHER_SENSORS){
-  Cayenne.virtualWrite(CH_OTHER_SENSORS, ssOtherSensors, "counter");
+  if(cayenneCounter == CH_OTHER_SENSORS)
+    Cayenne.virtualWrite(CH_OTHER_SENSORS, ssOtherSensors, "counter");
 }
 
 CAYENNE_OUT(CH_ACTUATORS){
-  Cayenne.virtualWrite(CH_ACTUATORS, acActuators, "counter");
+  if(cayenneCounter == CH_ACTUATORS)
+    Cayenne.virtualWrite(CH_ACTUATORS, acActuators, "counter");
 }
 
 CAYENNE_OUT(CH_TEMPERATURE){
-  Cayenne.celsiusWrite(CH_TEMPERATURE, temp);
+  if(cayenneCounter == CH_TEMPERATURE)
+    Cayenne.celsiusWrite(CH_TEMPERATURE, temp);
 }
 
 CAYENNE_OUT(CH_HUMIDITY){
-  Cayenne.virtualWrite(CH_HUMIDITY, humidity, "rel_hum", "p");
+  if(cayenneCounter == CH_HUMIDITY)
+    Cayenne.virtualWrite(CH_HUMIDITY, humidity, "rel_hum", "p");
 }
 
 void writeCayenneDigitalStates(int channelId, int value){
