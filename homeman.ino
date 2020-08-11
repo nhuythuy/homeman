@@ -121,6 +121,11 @@ void loop() {
     Serial.println("WiFi connection lost! Reconnecting...");
     WiFi.disconnect();
     WIFI_Connect();
+    delay(1000);
+
+    Cayenne.begin(dv_username, dv_password, dv_clientID, ssid, password);
+    Serial.println("Cayenne reconnecting...");
+    delay(1000);    
   }
 
   delayWithErrorCheck();
@@ -147,13 +152,6 @@ void getServerTime(){
   timeClient.update();
   minutes = timeClient.getMinutes();
   int seconds = timeClient.getSeconds();
-
-  // reconnect every 5 min
-  if((minutes % 5) == 0){
-    Cayenne.begin(dv_username, dv_password, dv_clientID, ssid, password);
-    Serial.println("Cayenne reconnecting...");
-    delay(1000);
-  }
   
   if((minutes % 1) == 0) // to send every 1 minutes
     needUploadCloud = true;
