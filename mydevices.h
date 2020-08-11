@@ -29,10 +29,7 @@ int cayenneCounter = 0;
 
 // This function is called at intervals to send sensor data to Cayenne.
 CAYENNE_OUT(CH_BATT_VOLTAGE){
-  if(cayenneCounter == CH_BATT_VOLTAGE){
-    Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
-    Serial.println("B");
-  }
+  Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
 }
 
 //CAYENNE_OUT(CH_DOORS){
@@ -49,22 +46,15 @@ CAYENNE_OUT(CH_BATT_VOLTAGE){
 //  if(cayenneCounter == CH_ACTUATORS)
 //    Cayenne.virtualWrite(CH_ACTUATORS, acActuators, "counter");
 //}
-//
-//CAYENNE_OUT(CH_TEMPERATURE){
-//  if(cayenneCounter == CH_TEMPERATURE){
-//    Cayenne.celsiusWrite(CH_TEMPERATURE, temp);
-//    Serial.println("T");
-//  }
-//}
-//
-//CAYENNE_OUT(CH_HUMIDITY){
-//  if(cayenneCounter == CH_HUMIDITY){
-//    Cayenne.virtualWrite(CH_HUMIDITY, humidity, "rel_hum", "p");
-//    Serial.println("H");
-//  }
-//}
+
+CAYENNE_OUT(CH_TEMPERATURE){
+    Cayenne.celsiusWrite(CH_TEMPERATURE, temp);
+}
+
+CAYENNE_OUT(CH_HUMIDITY){
+    Cayenne.virtualWrite(CH_HUMIDITY, humidity, "rel_hum", "p");
+}
 
 void writeCayenneDigitalStates(int channelId, int value){
   Cayenne.virtualWrite(channelId, value, "digital_sensor", "d");
-    Serial.println("D");
 }

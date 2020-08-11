@@ -109,9 +109,9 @@ void loop() {
   updateSensors();
   updateActuator();
 
+  Cayenne.loop();
   if(!cloudUploaded && needUploadCloud == true)
   {
-    Cayenne.loop();
     if(cayenneCounter++ > CH_HUMIDITY) // last channel
       cayenneCounter = 0;
     cloudUploaded = true;
@@ -152,7 +152,7 @@ void getServerTime(){
   if((minutes % 5) == 0){
     Cayenne.begin(dv_username, dv_password, dv_clientID, ssid, password);
     Serial.println("Cayenne reconnecting...");
-    sleep(1000);
+    delay(1000);
   }
   
   if((minutes % 1) == 0) // to send every 1 minutes
@@ -202,7 +202,7 @@ ICACHE_RAM_ATTR void detectsMovement() {
   acActuators |= (1 << 0);
 
   startMotionTimer = true;
-  writeCayenneDigitalStates(CH_LIGHT_ENTRANCE, false);
+  writeCayenneDigitalStates(CH_LIGHT_ENTRANCE, true);
   lastTrigger = millis();
 }
 
@@ -221,7 +221,8 @@ void updateSensors(){
   state = digitalRead(PIN_SS_DOOR_BASEMENT);
   if (state != ssDoorBasement){
     writeCayenneDigitalStates(CH_DOOR_BASEMENT, state);
-//    writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
+    delay(1000);
+    writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
     ssDoorBasement = state;
   }
 
