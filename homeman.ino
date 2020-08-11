@@ -148,6 +148,10 @@ void getServerTime(){
   minutes = timeClient.getMinutes();
   int seconds = timeClient.getSeconds();
 
+  // reconnect every 5 min
+  if((minutes % 5) == 0)
+    Cayenne.begin(dv_username, dv_password, dv_clientID, ssid, password);
+
   if((minutes % 1) == 0) // to send every 1 minutes
     needUploadCloud = true;
   else
@@ -210,11 +214,11 @@ void updateSensors(){
     writeCayenneDigitalStates(CH_DOOR_MAIN, state);
     ssDoorMain = state;
   }
-  
+
   state = digitalRead(PIN_SS_DOOR_BASEMENT);
   if (state != ssDoorBasement){
     writeCayenneDigitalStates(CH_DOOR_BASEMENT, state);
-    writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
+//    writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
     ssDoorBasement = state;
   }
 
@@ -272,7 +276,7 @@ void updateActuator()
     startMotionTimer = false;
   }
 
-  
+
   if((!ssDoorBasement) && ssLightBasementOn){
     playMelody();
   }
