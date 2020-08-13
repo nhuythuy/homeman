@@ -6,7 +6,7 @@
 #define PIN_SS_SUPPLY_VOLT          A0 // battery voltage
 
 #define PIN_SS_DHT                  D5 // DHT sensor pin
-#define PIN_SS_DOOR_MAIN            RX // try use this as DI, together w.   Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
+#define PIN_SS_DOOR_MAIN            RX // = D10, try use this as DI, together w.   Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
 
 #define PIN_SS_DOOR_BASEMENT        D6 // No. 1, door to go down to basement and door to renting area
 #define PIN_SS_ENTRANCE_MOTION      D2 // No. 2, motion sensor for entrance
