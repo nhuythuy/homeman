@@ -83,7 +83,7 @@ void setup() {
   pinMode(PIN_LED, OUTPUT);
   pinMode(PIN_TONE_MELODY, OUTPUT);
   pinMode(PIN_AC_POWER_LED_ENTRANCE, OUTPUT);
-//  pinMode(PIN_AC_POWER_CAMERA, OUTPUT);
+  pinMode(PIN_AC_POWER_RADIO, OUTPUT);
 
   //Serial.begin(19200);
   Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
@@ -210,7 +210,7 @@ void updateSensors(){
   ssBatteryVoltRaw = analogRead(PIN_SS_SUPPLY_VOLT);
   ssBatteryVolt = MAX_SUPPLY_VOLT * ssBatteryVoltRaw / 1023;
 
-  state = digitalRead(PIN_SS_DOOR_MAIN);
+  state = !digitalRead(PIN_SS_DOOR_MAIN);
   if (state != ssDoorMain){
     writeCayenneDigitalStates(CH_DOOR_MAIN, state);
     ssDoorMain = state;
