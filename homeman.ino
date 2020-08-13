@@ -263,6 +263,27 @@ void updateSensors(){
     forceCamPower = 0;
 }
 
+// In 3.0.0 there will be a getDay() function.
+// It will return 0 - 6, from Sunday to Saturday.
+void turnOnRadio(){
+  int currentDay = timeClient.getDay();
+  int currentHour = timeClient.getHours();
+  Serial.println("Current day:  " + String(currentDay) + ", hour: " + String(currentHour));
+
+  if ((ssBatteryVolt > 13.0) // only if battery is full enough
+    && ((((currentDay == 0) || (currentDay == 6)) // Sunday or Saturday
+          && (currentHour > 10) && (currentHour < 21)) //
+      || ((currentDay > 0) && (currentDay < 6)
+          && (currentHour > 9) && (currentHour < 21)))){
+    digitalWrite(PIN_AC_POWER_RADIO, true);
+    writeCayenneDigitalStates(CH_POWER_RADIO, true);
+  }
+  else{
+    digitalWrite(PIN_AC_POWER_RADIO, false);
+    writeCayenneDigitalStates(CH_POWER_RADIO, false);
+  }
+}
+
 void updateActuator()
 {
   now = millis();
@@ -276,6 +297,8 @@ void updateActuator()
 
     acActuators &= ~(1 << 0);
     startMotionTimer = false;
+
+    turnOnRadio();
   }
 
 

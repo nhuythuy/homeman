@@ -22,8 +22,9 @@ char dv_clientID[] = "d175a430-d9b4-11ea-b767-3f1a8f1211ba";
 #define CH_LIGHT_BASEMENT       16
 #define CH_LIGHT_STAIR_BASEMENT 17
 #define CH_LIGHT_ENTRANCE       18
-#define CH_WATER_LEAK_0         19
-#define CH_WATER_LEAK_1         20
+#define CH_POWER_RADIO          19
+#define CH_WATER_LEAK_0         20
+#define CH_WATER_LEAK_1         21
 
 int cayenneCounter = 0;
 
