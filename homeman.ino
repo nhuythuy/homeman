@@ -271,7 +271,7 @@ void turnOnRadio(){
   Serial.println("Current day:  " + String(currentDay) + ", hour: " + String(currentHour));
 
   if ((ssBatteryVolt > 13.0) // only if battery is full enough
-    && (currentHour < 21)
+    && (currentHour < 21)    // no later than 20:00
     && ((((currentDay == 0) || (currentDay == 6)) && (currentHour > 10)) // Sunday or Saturday
       || ((currentDay > 0) && (currentDay < 6) && (currentHour > 9)))){  // weekdays
     digitalWrite(PIN_AC_POWER_RADIO, true);
