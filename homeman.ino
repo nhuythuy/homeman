@@ -265,7 +265,7 @@ void updateSensors(){
 
 // In 3.0.0 there will be a getDay() function.
 // It will return 0 - 6, from Sunday to Saturday.
-void turnOnRadio(){
+void powerRadio(){
   int currentDay = timeClient.getDay();
   int currentHour = timeClient.getHours();
   Serial.println("Current day:  " + String(currentDay) + ", hour: " + String(currentHour));
@@ -296,10 +296,9 @@ void updateActuator()
 
     acActuators &= ~(1 << 0);
     startMotionTimer = false;
-
-    turnOnRadio();
   }
 
+    powerRadio();
 
   if((!ssDoorBasement) && ssLightBasementOn){
     playMelody();
