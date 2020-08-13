@@ -1,4 +1,7 @@
 #include <ESP8266WiFi.h>
+
+// https://randomnerdtutorials.com/esp8266-pinout-reference-gpios/
+
 // inputs D1, D2, D5, D6, D7
 #define PIN_SS_SUPPLY_VOLT        A0
 
@@ -18,8 +21,9 @@
 #define PIN_TONE_MELODY             D8
 
 #define PIN_AC_POWER_LED_ENTRANCE   D0 // No. 1, power for entrance led
-//#define PIN_AC_POWER_CAMERA         D3 // not possible to connect to OPTO in: connected to FLASH button, boot fails if pulled LOW
+//#define PIN_AC_POWER_CAMERA         D3 // not possible to connect to OPTO input: connected to FLASH button, boot fails if pulled LOW
 
+// remaining pins: RX (in), D3
 
 #define FIELD_ID_POWER_CAM  8
 #define FIELD_ID_POWER_LOAD 9
