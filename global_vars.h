@@ -29,4 +29,9 @@ int acActuators = 0;
 bool forceCamPower = 0;
 float camPower = 0;
 
+int timeDoorMainOpened = 0;
+int timeDoorBasementOpened = 0;
+int minutesDoorMainOpened = 0;
+int minutesDoorBasementOpened = 0;
+
 #endif

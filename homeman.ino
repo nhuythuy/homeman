@@ -20,7 +20,6 @@
 
 #define CAYENNE_PRINT Serial
 
-// replace with your channel's thingspeak API key, 
 const char* ssid = "VNNO"; // "DNVGuest" "Thuy's iPhone"; "matsuya";
 const char* password = WIFI_PW;
 
@@ -35,7 +34,6 @@ WiFiClient client;
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "time.nist.gov");
 
-int minutes = 0; // use this for sending to update to send to thingspeak
 bool needUploadCloud = false;
 bool cloudUploaded = false;
 
@@ -109,6 +107,9 @@ void loop() {
   updateSensors();
   updateActuator();
 
+  int minutesDoorBasementOpened = (millis() - timeDoorBasementOpened) / 60000;
+  int minutesDoorMainOpened = (millis() - timeDoorMainOpened) / 60000;
+
   Cayenne.loop();
   if(!cloudUploaded && needUploadCloud == true)
   {
@@ -150,7 +151,7 @@ void blinkLed(){
 void getServerTime(){
   Serial.println();
   timeClient.update();
-  minutes = timeClient.getMinutes();
+  int minutes = timeClient.getMinutes();
   int seconds = timeClient.getSeconds();
   
   if((minutes % 1) == 0) // to send every 1 minutes
@@ -213,6 +214,11 @@ void updateSensors(){
   state = !digitalRead(PIN_SS_DOOR_MAIN);
   if (state != ssDoorMain){
     writeCayenneDigitalStates(CH_DOOR_MAIN, state);
+    if(state)
+      timeDoorMainOpened = millis();
+    else
+      timeDoorMainOpened = 0;
+
     ssDoorMain = state;
   }
 
@@ -221,6 +227,11 @@ void updateSensors(){
     writeCayenneDigitalStates(CH_DOOR_BASEMENT, state);
     delay(1000);
     writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
+    if(state)
+      timeDoorBasementOpened = millis();
+    else
+      timeDoorBasementOpened = 0;
+
     ssDoorBasement = state;
   }
 

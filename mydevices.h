@@ -13,6 +13,8 @@ char dv_clientID[] = "d175a430-d9b4-11ea-b767-3f1a8f1211ba";
 #define CH_ACTUATORS      3
 #define CH_TEMPERATURE    4
 #define CH_HUMIDITY       5
+#define CH_MINUTES_DOOR_MAIN_OPENED     6
+#define CH_MINUTES_DOOR_BASEMENT_OPENED 7
 
 // digital states
 #define CH_DOOR_MAIN            10
@@ -31,6 +33,14 @@ int cayenneCounter = 0;
 // This function is called at intervals to send sensor data to Cayenne.
 CAYENNE_OUT(CH_BATT_VOLTAGE){
   Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
+}
+
+CAYENNE_OUT(CH_MINUTES_DOOR_MAIN_OPENED){
+  Cayenne.virtualWrite(CH_MINUTES_DOOR_MAIN_OPENED, minutesDoorMainOpened, "counter");
+}
+
+CAYENNE_OUT(CH_MINUTES_DOOR_BASEMENT_OPENED){
+  Cayenne.virtualWrite(CH_MINUTES_DOOR_BASEMENT_OPENED, minutesDoorBasementOpened, "counter");
 }
 
 //CAYENNE_OUT(CH_DOORS){
