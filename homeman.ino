@@ -107,8 +107,9 @@ void loop() {
   updateSensors();
   updateActuator();
 
-  int minutesDoorBasementOpened = (millis() - timeDoorBasementOpened) / 60;
-  int minutesDoorMainOpened = (millis() - timeDoorMainOpened) / 60;
+  minutesDoorBasementOpened = (millis() - timeDoorBasementOpened) / 60000;
+  minutesDoorMainOpened = (millis() - timeDoorMainOpened) / 60000;
+  Serial.println("minutes...: " + String(minutesDoorBasementOpened) + " - " + String(minutesDoorMainOpened));
 
   Cayenne.loop();
   if(!cloudUploaded && needUploadCloud == true)
