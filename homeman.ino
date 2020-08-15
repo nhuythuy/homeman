@@ -256,11 +256,11 @@ void updateSensors(){
 
   ssOtherSensors = (ssEntranceMotion << 2) | (ssLightBasementOn << 1) | (ssWaterLeak << 0);
 
-  long gbState = (acActuators << 16) | (ssOtherSensors << 8) | ssDoorDetectors;
-  if(gbState != globalState) // send to cloud only if global error triggered
+  int gbSensorState = (ssOtherSensors << 8) | ssDoorDetectors;
+  if(gbSensorState != globalState) // send to cloud only if global error triggered
     needUploadCloud = true;
 
-  globalState = gbState;
+  globalState = gbSensorState;
 
   Serial.println();
   Serial.println("0. Battery volt.:  " + String(ssBatteryVolt) + " - " + String(ssBatteryVoltRaw));
