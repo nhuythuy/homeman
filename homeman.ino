@@ -212,6 +212,7 @@ void updateSensors(){
 
   state = !digitalRead(PIN_SS_DOOR_MAIN);
   if (state != ssDoorMain){
+    delay(500);
     writeCayenneDigitalStates(CH_DOOR_MAIN, state);
     if(state)
       timeDoorMainOpened = millis();
@@ -223,8 +224,9 @@ void updateSensors(){
 
   state = digitalRead(PIN_SS_DOOR_BASEMENT);
   if (state != ssDoorBasement){
+    delay(500);
     writeCayenneDigitalStates(CH_DOOR_BASEMENT, state);
-    delay(1000);
+    delay(500);
     writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
     if(state)
       timeDoorBasementOpened = millis();
@@ -236,12 +238,14 @@ void updateSensors(){
 
   state = !digitalRead(PIN_LIGHT_BASEMENT);
   if (state != ssLightBasementOn){
+    delay(500);
     writeCayenneDigitalStates(CH_LIGHT_BASEMENT, state);
     ssLightBasementOn = state;
   }
 
   state = digitalRead(PIN_SS_ENTRANCE_MOTION);
   if (state != ssEntranceMotion){
+    delay(500);
     writeCayenneDigitalStates(CH_MOTION_ENTRANCE, state);
     ssEntranceMotion = state;
   }

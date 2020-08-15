@@ -10,9 +10,9 @@ char dv_clientID[] = "d175a430-d9b4-11ea-b767-3f1a8f1211ba";
 #define CH_BATT_VOLTAGE                 0
 #define CH_MINUTES_DOOR_MAIN_OPENED     1
 #define CH_MINUTES_DOOR_BASEMENT_OPENED 2
-#define CH_ACTUATORS      3
-#define CH_TEMPERATURE    4
-#define CH_HUMIDITY       5
+#define CH_ACTUATORS                    3
+#define CH_TEMPERATURE                  4
+#define CH_HUMIDITY                     5
 
 
 // digital states
