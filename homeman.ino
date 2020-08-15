@@ -107,7 +107,7 @@ void loop() {
 
   minutesDoorBasementOpened = (millis() - timeDoorBasementOpened) / 60000;
   minutesDoorMainOpened = (millis() - timeDoorMainOpened) / 60000;
-  Serial.println("minutes...: " + String(minutesDoorBasementOpened) + " - " + String(minutesDoorMainOpened));
+  Serial.println("Doors opened minutes: " + String(minutesDoorBasementOpened) + " - " + String(minutesDoorMainOpened));
 
   Cayenne.loop();
   if(!cloudUploaded && needUploadCloud == true)
@@ -200,6 +200,7 @@ ICACHE_RAM_ATTR void detectsMovement() {
   acActuators |= (1 << 0);
 
   startMotionTimer = true;
+  Serial.println("Light entrance: OFF");
   writeCayenneDigitalStates(CH_LIGHT_ENTRANCE, true);
   lastTrigger = millis();
 }
@@ -212,7 +213,7 @@ void updateSensors(){
 
   state = !digitalRead(PIN_SS_DOOR_MAIN);
   if (state != ssDoorMain){
-    delay(500);
+    Serial.println("Door main: " + String(state));
     writeCayenneDigitalStates(CH_DOOR_MAIN, state);
     if(state)
       timeDoorMainOpened = millis();
@@ -224,9 +225,8 @@ void updateSensors(){
 
   state = digitalRead(PIN_SS_DOOR_BASEMENT);
   if (state != ssDoorBasement){
-    delay(500);
+    Serial.println("Door to basement: " + String(state));
     writeCayenneDigitalStates(CH_DOOR_BASEMENT, state);
-    delay(500);
     writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
     if(state)
       timeDoorBasementOpened = millis();
@@ -238,14 +238,14 @@ void updateSensors(){
 
   state = !digitalRead(PIN_LIGHT_BASEMENT);
   if (state != ssLightBasementOn){
-    delay(500);
+    Serial.println("Light basement: " + String(state));
     writeCayenneDigitalStates(CH_LIGHT_BASEMENT, state);
     ssLightBasementOn = state;
   }
 
   state = digitalRead(PIN_SS_ENTRANCE_MOTION);
   if (state != ssEntranceMotion){
-    delay(500);
+    Serial.println("Main door motion: " + String(state));
     writeCayenneDigitalStates(CH_MOTION_ENTRANCE, state);
     ssEntranceMotion = state;
   }
@@ -289,10 +289,12 @@ void powerRadio(){
     && ((((currentDay == 0) || (currentDay == 6)) && (currentHour > 10)) // Sunday or Saturday
       || ((currentDay > 0) && (currentDay < 6) && (currentHour > 9)))){  // weekdays
     digitalWrite(PIN_AC_POWER_RADIO, true);
+    Serial.println("Radio power: ON");
     writeCayenneDigitalStates(CH_POWER_RADIO, true);
   }
   else{
     digitalWrite(PIN_AC_POWER_RADIO, false);
+    Serial.println("Radio power: OFF");
     writeCayenneDigitalStates(CH_POWER_RADIO, false);
   }
 }
@@ -306,6 +308,7 @@ void updateActuator()
     Serial.println("Light stopped...");
     digitalWrite(PIN_AC_POWER_LED_ENTRANCE, LOW);
     acEntranceLed = false;
+    Serial.println("Light entrance: OFF");
     writeCayenneDigitalStates(CH_LIGHT_ENTRANCE, false);
 
     acActuators &= ~(1 << 0);

@@ -31,14 +31,17 @@ int cayenneCounter = 0;
 
 // This function is called at intervals to send sensor data to Cayenne.
 CAYENNE_OUT(CH_BATT_VOLTAGE){
+  delay(1000);
   Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
 }
 
 CAYENNE_OUT(CH_MINUTES_DOOR_MAIN_OPENED){
+  delay(1000);
   Cayenne.virtualWrite(CH_MINUTES_DOOR_MAIN_OPENED, minutesDoorMainOpened, "counter");
 }
 
 CAYENNE_OUT(CH_MINUTES_DOOR_BASEMENT_OPENED){
+  delay(1000);
   Cayenne.virtualWrite(CH_MINUTES_DOOR_BASEMENT_OPENED, minutesDoorBasementOpened, "counter");
 }
 
@@ -58,13 +61,16 @@ CAYENNE_OUT(CH_MINUTES_DOOR_BASEMENT_OPENED){
 //}
 
 CAYENNE_OUT(CH_TEMPERATURE){
-    Cayenne.celsiusWrite(CH_TEMPERATURE, temp);
+  delay(1000);
+  Cayenne.celsiusWrite(CH_TEMPERATURE, temp);
 }
 
 CAYENNE_OUT(CH_HUMIDITY){
-    Cayenne.virtualWrite(CH_HUMIDITY, humidity, "rel_hum", "p");
+  delay(1000);
+  Cayenne.virtualWrite(CH_HUMIDITY, humidity, "rel_hum", "p");
 }
 
 void writeCayenneDigitalStates(int channelId, int value){
+  delay(1000);
   Cayenne.virtualWrite(channelId, value, "digital_sensor", "d");
 }
