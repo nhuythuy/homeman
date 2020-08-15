@@ -1,7 +1,5 @@
-
-// Plot DTH11 data on thingspeak.com using an ESP8266
 // May 14 2020
-// Author: Thuy Nguyen, based on an examples from Jeroen Beemster reading DTH11 sensor
+// Author: Thuy Nguyen
 
 // Ref.:
 // Website: www.arduinesp.com

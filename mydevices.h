@@ -7,14 +7,13 @@ char dv_password[] = "0573b7bfc25b7afb4042b3bb93ed8f16a6dd6fc2";
 char dv_clientID[] = "d175a430-d9b4-11ea-b767-3f1a8f1211ba";
 
 
-#define CH_BATT_VOLTAGE   0
-#define CH_DOORS          1
-#define CH_OTHER_SENSORS  2
+#define CH_BATT_VOLTAGE                 0
+#define CH_MINUTES_DOOR_MAIN_OPENED     1
+#define CH_MINUTES_DOOR_BASEMENT_OPENED 2
 #define CH_ACTUATORS      3
 #define CH_TEMPERATURE    4
 #define CH_HUMIDITY       5
-#define CH_MINUTES_DOOR_MAIN_OPENED     6
-#define CH_MINUTES_DOOR_BASEMENT_OPENED 7
+
 
 // digital states
 #define CH_DOOR_MAIN            10
