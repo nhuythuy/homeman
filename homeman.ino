@@ -68,7 +68,7 @@ void WIFI_Connect(){
 }
 
 void setup() {
-  pinMode(PIN_SS_DOOR_MAIN, INPUT);
+  //pinMode(PIN_SS_DOOR_MAIN, INPUT);
   pinMode(PIN_SS_DOOR_BASEMENT, INPUT);
   pinMode(PIN_SS_WATER_SMOKE_BASEMENT, INPUT);
   pinMode(PIN_SS_ENTRANCE_MOTION, INPUT);
@@ -79,7 +79,7 @@ void setup() {
   pinMode(PIN_LED, OUTPUT);
   pinMode(PIN_TONE_MELODY, OUTPUT);
   pinMode(PIN_AC_POWER_LED_ENTRANCE, OUTPUT);
-  pinMode(PIN_AC_POWER_RADIO, OUTPUT);
+  //pinMode(PIN_AC_POWER_RADIO, OUTPUT);
 
   //Serial.begin(19200);
   Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
@@ -211,7 +211,7 @@ void updateSensors(){
   ssBatteryVoltRaw = analogRead(PIN_SS_SUPPLY_VOLT);
   ssBatteryVolt = MAX_SUPPLY_VOLT * ssBatteryVoltRaw / 1023;
 
-  state = !digitalRead(PIN_SS_DOOR_MAIN);
+  state = 0;//!digitalRead(PIN_SS_DOOR_MAIN);
   if (state != ssDoorMain){
     Serial.println("Door main: " + String(state));
     writeCayenneDigitalStates(CH_DOOR_MAIN, state);
@@ -288,13 +288,13 @@ void powerRadio(){
     && (currentHour < 20)    // no later than 19:00
     && ((((currentDay == 0) || (currentDay == 6)) && (currentHour > 10)) // Sunday or Saturday
       || ((currentDay > 0) && (currentDay < 6) && (currentHour > 9)))){  // weekdays
-    digitalWrite(PIN_AC_POWER_RADIO, true);
-    Serial.println("Radio power: ON");
+    //digitalWrite(PIN_AC_POWER_RADIO, true);
+    //Serial.println("Radio power: ON");
     writeCayenneDigitalStates(CH_POWER_RADIO, true);
   }
   else{
-    digitalWrite(PIN_AC_POWER_RADIO, false);
-    Serial.println("Radio power: OFF");
+    //digitalWrite(PIN_AC_POWER_RADIO, false);
+    //Serial.println("Radio power: OFF");
     writeCayenneDigitalStates(CH_POWER_RADIO, false);
   }
 }
@@ -315,7 +315,7 @@ void updateActuator()
     startMotionTimer = false;
   }
 
-    powerRadio();
+//  powerRadio();
 
   if((!ssDoorBasement) && ssLightBasementOn){
     playMelody();
