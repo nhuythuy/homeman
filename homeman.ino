@@ -111,7 +111,7 @@ void loop() {
     minutesDoorBasementOpened = 0;
 
   if(ssDoorMain)
-  minutesDoorMainOpened = (millis() - timeDoorMainOpened) / 60000;
+    minutesDoorMainOpened = (millis() - timeDoorMainOpened) / 60000;
   else
     minutesDoorMainOpened = 0;
 
