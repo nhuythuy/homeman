@@ -38,13 +38,17 @@ CAYENNE_OUT(CH_BATT_VOLTAGE){
 }
 
 CAYENNE_OUT(CH_MINUTES_DOOR_MAIN_OPENED){
-  delay(1000);
-  Cayenne.virtualWrite(CH_MINUTES_DOOR_MAIN_OPENED, minutesDoorMainOpened, "counter");
+  if(timeDoorMainOpened != 0){
+    delay(1000);
+    Cayenne.virtualWrite(CH_MINUTES_DOOR_MAIN_OPENED, minutesDoorMainOpened, "counter");
+  }
 }
 
 CAYENNE_OUT(CH_MINUTES_DOOR_BASEMENT_OPENED){
-  delay(1000);
-  Cayenne.virtualWrite(CH_MINUTES_DOOR_BASEMENT_OPENED, minutesDoorBasementOpened, "counter");
+  if(timeDoorBasementOpened != 0){
+    delay(1000);
+    Cayenne.virtualWrite(CH_MINUTES_DOOR_BASEMENT_OPENED, minutesDoorBasementOpened, "counter");
+  }
 }
 
 //CAYENNE_OUT(CH_DOORS){
