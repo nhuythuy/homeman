@@ -270,6 +270,7 @@ void updateSensors(){
   Serial.println("4. Temperature:    " + String(temp) + " deg C");
   Serial.println("5. Humidity:       " + String(humidity) + " %");
   Serial.println("-- Global state:   " + String(globalState, BIN));
+  Serial.println("Radio power force: " + String(forceRadioPower));
   Serial.println();
   if(ssDoorDetectors > 0)
     forceCamPower = 1;

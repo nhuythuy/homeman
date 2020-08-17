@@ -26,6 +26,9 @@ char dv_clientID[] = "d175a430-d9b4-11ea-b767-3f1a8f1211ba";
 #define CH_WATER_LEAK_0         20
 #define CH_WATER_LEAK_1         21
 
+#define CH_FORCE_RADIO_POWER    100
+
+
 int cayenneCounter = 0;
 
 // This function is called at intervals to send sensor data to Cayenne.
@@ -72,4 +75,10 @@ CAYENNE_OUT(CH_HUMIDITY){
 void writeCayenneDigitalStates(int channelId, int value){
   delay(1000);
   Cayenne.virtualWrite(channelId, value, "digital_sensor", "d");
+}
+
+CAYENNE_IN(CH_FORCE_RADIO_POWER)
+{
+  forceRadioPower = getValue.asInt(); // Get value as integer
+  Serial.println("Radio power force: " + String(forceRadioPower));
 }

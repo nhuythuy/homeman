@@ -27,6 +27,7 @@ bool acBuzzer = 0;
 int acActuators = 0;
 
 bool forceCamPower = 0;
+bool forceRadioPower = 0;
 
 int timeDoorMainOpened = 0;
 int timeDoorBasementOpened = 0;
