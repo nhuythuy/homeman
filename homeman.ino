@@ -37,7 +37,7 @@ bool cloudUploaded = false;
 
 long delayMs = DELAY_LONG;
 
-unsigned long now = millis();
+unsigned long timeNow = millis();
 unsigned long lastTrigger = millis();
 boolean startMotionTimer = false;
 
@@ -310,10 +310,10 @@ void powerRadio(){
 
 void updateActuator()
 {
-  now = millis();
+  timeNow = millis();
   // Turn off the LED after the number of seconds defined in the MOTION_DELAY variable
-  if(startMotionTimer && (now - lastTrigger > MOTION_DELAY)) {
-    Serial.println(String(now) + " - " + String(lastTrigger));
+  if(startMotionTimer && (timeNow - lastTrigger > MOTION_DELAY)) {
+    Serial.println(String(timeNow) + " - " + String(lastTrigger));
     Serial.println("Light stopped...");
     digitalWrite(PIN_AC_POWER_LED_ENTRANCE, LOW);
     acEntranceLed = false;
