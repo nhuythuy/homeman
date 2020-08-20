@@ -220,8 +220,8 @@ void updateSensors(){
   ssBatteryVolt = MAX_SUPPLY_VOLT * ssBatteryVoltRaw / 1023;
 
   state = digitalRead(PIN_SS_DOOR_MAIN);
+  Serial.println("Door main: " + String(state));
   if (state != ssDoorMain){
-    Serial.println("Door main: " + String(state));
     writeCayenneDigitalStates(CH_DOOR_MAIN, state);
     if(state)
       timeDoorMainOpened = millis();
@@ -232,8 +232,8 @@ void updateSensors(){
   }
 
   state = digitalRead(PIN_SS_DOOR_BASEMENT);
+  Serial.println("Door to basement: " + String(state));
   if (state != ssDoorBasement){
-    Serial.println("Door to basement: " + String(state));
     writeCayenneDigitalStates(CH_DOOR_BASEMENT, state);
     writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
     if(state)
