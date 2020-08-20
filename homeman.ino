@@ -105,6 +105,8 @@ void loop() {
   updateSensors();
   updateActuator();
 
+  runtimeMinutes = millis() / 60000;
+  
   if(ssDoorBasement)
     minutesDoorBasementOpened = (millis() - timeDoorBasementOpened) / 60000;
   else
