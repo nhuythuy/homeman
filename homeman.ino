@@ -24,7 +24,7 @@ const char* password = WIFI_PW;
 #define MAX_SUPPLY_VOLT   16.157    // volt: 10K(9910)+39K(38610) --> 3.3*(9910+38610)/9910 = 16.1570131181 V 
 #define DELAY_LONG        5000      // 5,0 seconds
 #define DELAY_SHORT       2500      // 2,5 seconds
-#define MOTION_DELAY      1*60*1000  // 1 mins delay
+#define MOTION_DELAY      0*60*1000  // 1 mins delay
 
 DHT dht(PIN_SS_DHT, DHT11,15);
 WiFiClient client;
@@ -205,14 +205,17 @@ void delayWithErrorCheck(){
 
 ICACHE_RAM_ATTR void detectsMovement() {
   Serial.println("MOTION DETECTED!!!");
-  digitalWrite(PIN_AC_POWER_LED_ENTRANCE, HIGH);
-  acEntranceLed = true;
-  acActuators |= (1 << 0);
 
-  startMotionTimer = true;
-  Serial.println("Light entrance: OFF");
-  writeCayenneDigitalStates(CH_LIGHT_ENTRANCE, true);
-  lastTrigger = millis();
+  if(ssBatteryVolt > 12.50){
+    digitalWrite(PIN_AC_POWER_LED_ENTRANCE, HIGH);
+    acEntranceLed = true;
+    acActuators |= (1 << 0);
+
+    startMotionTimer = true;
+    Serial.println("Light entrance: ON");
+    writeCayenneDigitalStates(CH_LIGHT_ENTRANCE, true);
+    lastTrigger = millis();
+  }
 }
 
 void updateSensors(){
