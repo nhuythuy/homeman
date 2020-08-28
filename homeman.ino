@@ -122,7 +122,7 @@ void loop() {
   else
     motionSeconds = 0;
 
-  Serial.println("Sensors detected: " + String(minutesDoorMainOpened)) + " - " + String(minutesDoorBasementOpened) + " - " + String(motionSeconds));
+  Serial.println("Sensors detected: " + String(minutesDoorMainOpened) + " - " + String(minutesDoorBasementOpened) + " - " + String(motionSeconds));
 
   Cayenne.loop();
   if(!cloudUploaded && needUploadCloud == true)
