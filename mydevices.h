@@ -13,7 +13,7 @@ char dv_clientID[] = "d175a430-d9b4-11ea-b767-3f1a8f1211ba";
 #define CH_TEMPERATURE                  4
 #define CH_HUMIDITY                     5
 #define CH_RUNTIME                      6
-
+#define CH_SECONDS_MOTION_DETECTED      7
 
 // digital states
 #define CH_DOOR_MAIN            10
@@ -51,6 +51,11 @@ CAYENNE_OUT(CH_MINUTES_DOOR_BASEMENT_OPENED){
 CAYENNE_OUT(CH_RUNTIME){
   delay(1000);
   Cayenne.virtualWrite(CH_RUNTIME, runtimeMinutes, "counter");
+}
+
+CAYENNE_OUT(CH_SECONDS_MOTION_DETECTED){
+  delay(1000);
+  Cayenne.virtualWrite(CH_SECONDS_MOTION_DETECTED, motionSeconds, "counter");
 }
 
 //CAYENNE_OUT(CH_DOORS){

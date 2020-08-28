@@ -36,4 +36,7 @@ int minutesDoorBasementOpened = 0;
 
 int runtimeMinutes = 0;
 
+int timeMotionDetected = 0;
+int motionSeconds = 0;
+
 #endif

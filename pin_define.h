@@ -10,10 +10,10 @@
 #define PIN_SS_DOOR_MAIN            D9 // = RX, try use this as DI, together w.   Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
 
 #define PIN_SS_DOOR_BASEMENT        D6 // No. 1, door to go down to basement and door to renting area
-#define PIN_SS_ENTRANCE_MOTION      D0 // No. 2, motion sensor for entrance
+#define PIN_SS_ENTRANCE_MOTION      D1 // No. 2, motion sensor for entrance
 
 #define PIN_LIGHT_BASEMENT          D7
-#define PIN_SS_WATER_SMOKE_BASEMENT D1 // smoke, water leak
+#define PIN_SS_WATER_SMOKE_BASEMENT D0 // smoke, water leak
 
 
 // outputs

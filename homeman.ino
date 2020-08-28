@@ -117,7 +117,12 @@ void loop() {
   else
     minutesDoorMainOpened = 0;
 
-  Serial.println("Doors opened minutes: " + String(minutesDoorBasementOpened) + " - " + String(minutesDoorMainOpened));
+  if(ssEntranceMotion)
+    motionSeconds = (millis() - timeMotionDetected) / 1000;
+  else
+    motionSeconds = 0;
+
+  Serial.println("Sensors detected: " + String(minutesDoorMainOpened)) + " - " + String(minutesDoorBasementOpened) + " - " + String(motionSeconds));
 
   Cayenne.loop();
   if(!cloudUploaded && needUploadCloud == true)
@@ -260,6 +265,12 @@ void updateSensors(){
   if (state != ssEntranceMotion){
     Serial.println("Main door motion: " + String(state));
     writeCayenneDigitalStates(CH_MOTION_ENTRANCE, state);
+
+    if(state)
+      timeMotionDetected = millis();
+    else
+      timeMotionDetected = 0;
+
     ssEntranceMotion = state;
   }
 
