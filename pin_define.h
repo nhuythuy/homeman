@@ -1,6 +1,7 @@
 #include <ESP8266WiFi.h>
 
 // https://randomnerdtutorials.com/esp8266-pinout-reference-gpios/
+// IMPORTANT NOTE: Remove PIN_SS_DOOR_MAIN connector b4 uploading code to NodeMcu, uploading fail otherwise
 
 // inputs D1, D2, D5, D6, D7
 #define PIN_SS_SUPPLY_VOLT          A0 // battery voltage

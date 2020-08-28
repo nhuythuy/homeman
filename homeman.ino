@@ -73,7 +73,7 @@ void setup() {
   pinMode(PIN_SS_WATER_SMOKE_BASEMENT, INPUT);
   pinMode(PIN_SS_ENTRANCE_MOTION, INPUT);
   pinMode(PIN_LIGHT_BASEMENT, INPUT);
-  attachInterrupt(digitalPinToInterrupt(PIN_SS_ENTRANCE_MOTION), detectsMovement, RISING);
+//  attachInterrupt(digitalPinToInterrupt(PIN_SS_ENTRANCE_MOTION), detectsMovement, RISING);
 
 
   pinMode(PIN_LED, OUTPUT);
