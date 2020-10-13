@@ -346,9 +346,14 @@ void updateActuator()
 
   // play melody only twice if it happens during the sleeping time 22:00 to 8:00
   if((!ssDoorBasement) && ssLightBasementOn){
-    if((currentHours > 8) && (currentHours < 22) && (playMelodyCounter < 2)){
+    if((currentHours > 8) && (currentHours < 22)){
       playMelody();
-      playMelodyCounter++;
+    }
+    else{
+      if (playMelodyCounter < 2){
+          playMelody();
+          playMelodyCounter++;
+      }
     }
   }
   else
