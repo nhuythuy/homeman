@@ -88,8 +88,6 @@ void setup() {
 
   WIFI_Connect();
 
-  playMelody();
-
   timeClient.begin(); // Initialize a NTPClient to get time
 // Set offset time in seconds to adjust for your timezone, ex.: GMT +1 = 3600, GMT +8 = 28800, GMT -1 = -3600, GMT 0 = 0
   timeClient.setTimeOffset(3600); // Norway GMT + 1
@@ -144,6 +142,9 @@ void loop() {
   }
 
   delayWithErrorCheck();
+
+  if((currentHours > 8) && (currentHours < 22))
+    playMelody();
 }
 
 
@@ -165,6 +166,7 @@ void blinkLed(){
 void getServerTime(){
   Serial.println();
   timeClient.update();
+  currentHours = timeClient.getHours();
   int minutes = timeClient.getMinutes();
   int seconds = timeClient.getSeconds();
   
@@ -340,10 +342,16 @@ void updateActuator()
     startMotionTimer = false;
   }
 
-//  powerRadio();
+  powerRadio();
 
+  // play melody only twice if it happens during the sleeping time 22:00 to 8:00
   if((!ssDoorBasement) && ssLightBasementOn){
-    playMelody();
+    if((currentHours > 8) && (currentHours < 22) && (playMelodyCounter < 2)){
+      playMelody();
+      playMelodyCounter++;
+    }
   }
+  else
+    playMelodyCounter = 0;
 
 }
