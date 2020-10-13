@@ -34,6 +34,7 @@ int timeDoorBasementOpened = 0;
 int minutesDoorMainOpened = 0;
 int minutesDoorBasementOpened = 0;
 
+int playMelodyCounter = 0;
 int runtimeMinutes = 0;
 int currentHours = -1;
 
