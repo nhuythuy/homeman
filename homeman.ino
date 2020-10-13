@@ -1,5 +1,6 @@
 // May 14 2020
 // Author: Thuy Nguyen
+// NOTE: Disconnect Door main sensor cable to upload new code, otherwise not possible
 
 // Ref.:
 // Website: www.arduinesp.com
