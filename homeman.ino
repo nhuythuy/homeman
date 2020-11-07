@@ -346,7 +346,8 @@ void updateActuator()
   powerRadio();
 
   // play melody only twice if it happens during the sleeping time 22:00 to 8:00
-  if((!ssDoorBasement) && ssLightBasementOn){
+  // can detect door to basement OPENED/CLOSED only if the solar charger giving power from the battery
+  if((!ssDoorBasement) && ssLightBasementOn && (ssBatteryVolt > 12.0)){
     if((currentHours > 8) && (currentHours < 22)){
       playMelody();
     }
