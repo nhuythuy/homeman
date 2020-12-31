@@ -25,9 +25,9 @@ const char* password = WIFI_PW;
 #define MAX_SUPPLY_VOLT   16.157    // volt: 10K(9910)+39K(38610) --> 3.3*(9910+38610)/9910 = 16.1570131181 V 
 #define DELAY_LONG        5000      // 5,0 seconds
 #define DELAY_SHORT       2500      // 2,5 seconds
-#define MOTION_DELAY      0*60*1000  // 1 mins delay
+#define MOTION_DELAY      0*60*1000 // 1 mins delay
 
-DHT dht(PIN_SS_DHT, DHT11,15);
+DHT dht(PIN_SS_DHT, DHT11, 15);
 WiFiClient client;
 
 WiFiUDP ntpUDP;
@@ -96,7 +96,23 @@ void setup() {
   Cayenne.begin(dv_username, dv_password, dv_clientID, ssid, password);
 }
 
+bool PowerLedState = false;
+int PowerLedDelay = 1000;
+
+void blinkPowerLed(){
+  PowerLedDelay += 500;
+  if(PowerLedDelay > 5000)
+    PowerLedDelay = 1000;
+
+  for(int i = 0; i < 20; i++){
+    PowerLedState = !PowerLedState;
+    digitalWrite(PIN_AC_POWER_LED_ENTRANCE, PowerLedState);
+    delay(PowerLedDelay);
+  }
+}
+
 void loop() {
+  blinkPowerLed();
   updateHumidTempe();
 
   getServerTime();
@@ -215,7 +231,7 @@ ICACHE_RAM_ATTR void detectsMovement() {
   Serial.println("MOTION DETECTED!!!");
 
   if(ssBatteryVolt > 12.50){
-    digitalWrite(PIN_AC_POWER_LED_ENTRANCE, HIGH);
+    //digitalWrite(PIN_AC_POWER_LED_ENTRANCE, HIGH);
     acEntranceLed = true;
     acActuators |= (1 << 0);
 
@@ -334,7 +350,7 @@ void updateActuator()
   if(startMotionTimer && (timeNow - lastTrigger > MOTION_DELAY)) {
     Serial.println(String(timeNow) + " - " + String(lastTrigger));
     Serial.println("Light stopped...");
-    digitalWrite(PIN_AC_POWER_LED_ENTRANCE, LOW);
+    //digitalWrite(PIN_AC_POWER_LED_ENTRANCE, LOW);
     acEntranceLed = false;
     Serial.println("Light entrance: OFF");
     writeCayenneDigitalStates(CH_LIGHT_ENTRANCE, false);
