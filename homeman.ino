@@ -306,14 +306,19 @@ void updateSensors(){
   globalState = gbSensorState;
 
   Serial.println();
-  Serial.println("0. Battery volt.:  " + String(ssBatteryVolt) + " - " + String(ssBatteryVoltRaw));
-  Serial.println("1. Door sensors:   " + String(ssDoorDetectors, BIN));
-  Serial.println("2. Others sensors: " + String(ssOtherSensors, BIN));
-  Serial.println("3. Actuators:      " + String(acActuators, BIN));
-  Serial.println("4. Temperature:    " + String(temp) + " deg C");
-  Serial.println("5. Humidity:       " + String(humidity) + " %");
-  Serial.println("-- Global state:   " + String(globalState, BIN));
-  Serial.println("Radio power force: " + String(forceRadioPower));
+  Serial.println("0. Battery volt.:     " + String(ssBatteryVolt) + " - " + String(ssBatteryVoltRaw));
+  Serial.println("1. Temperature:       " + String(temp) + " deg C");
+  Serial.println("2. Humidity:          " + String(humidity) + " %");
+  Serial.println("3. Door sensors:      " + String(ssDoorDetectors, BIN));
+  Serial.println("3.1. Door main:       " + String(ssDoorMain, BIN));
+  Serial.println("3.2. Door basement:   " + String(ssDoorBasement, BIN));
+  Serial.println("4. Others sensors:    " + String(ssOtherSensors, BIN));
+  Serial.println("4.1 Light basement:   " + String(ssLightBasementOn, BIN));
+  Serial.println("4.2. Entrance motion: " + String(ssEntranceMotion, BIN));
+  Serial.println("4.3. Water Smoke:     " + String(ssWaterLeak, BIN));
+  Serial.println("-- Global state:      " + String(globalState, BIN));
+  Serial.println("5. Actuators:         " + String(acActuators, BIN));
+  Serial.println("Radio power force:    " + String(forceRadioPower));
   Serial.println();
   if(ssDoorDetectors > 0)
     forceCamPower = 1;
@@ -365,6 +370,7 @@ void updateActuator()
   // can detect door to basement OPENED/CLOSED only if the solar charger giving power from the battery
   if((!ssDoorBasement) && ssLightBasementOn && (ssBatteryVolt > 12.0)){
     if((currentHours > 8) && (currentHours < 22)){
+      Serial.println("Playing melody...");
       playMelody();
     }
     else{
