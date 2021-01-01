@@ -260,7 +260,6 @@ void updateSensors(){
   }
 
   state = digitalRead(PIN_SS_DOOR_BASEMENT);
-  Serial.println("Door to basement: " + String(state));
   if (state != ssDoorBasement){
     writeCayenneDigitalStates(CH_DOOR_BASEMENT, state);
     writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
@@ -274,14 +273,12 @@ void updateSensors(){
 
   state = !digitalRead(PIN_LIGHT_BASEMENT);
   if (state != ssLightBasementOn){
-    Serial.println("Light basement: " + String(state));
     writeCayenneDigitalStates(CH_LIGHT_BASEMENT, state);
     ssLightBasementOn = state;
   }
 
   state = digitalRead(PIN_SS_ENTRANCE_MOTION);
   if (state != ssEntranceMotion){
-    Serial.println("Main door motion: " + String(state));
     writeCayenneDigitalStates(CH_MOTION_ENTRANCE, state);
 
     if(state)
