@@ -248,8 +248,7 @@ void updateSensors(){
   ssBatteryVoltRaw = analogRead(PIN_SS_SUPPLY_VOLT);
   ssBatteryVolt = MAX_SUPPLY_VOLT * ssBatteryVoltRaw / 1023;
 
-  state = digitalRead(PIN_SS_DOOR_MAIN);
-  Serial.println("Door main: " + String(state));
+  state = !digitalRead(PIN_SS_DOOR_MAIN);
   if (state != ssDoorMain){
     writeCayenneDigitalStates(CH_DOOR_MAIN, state);
     if(state)
