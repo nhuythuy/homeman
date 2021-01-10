@@ -6,7 +6,6 @@
 // Website: www.arduinesp.com
 // https://learn.adafruit.com/dht/using-a-dhtxx-sensor
 
-
 #include <DHT.h>
 #include "global_vars.h"
 #include "mydevices.h"
@@ -17,7 +16,6 @@
 #include <WiFiUdp.h>
 #include "melody.h"
 
-#define CAYENNE_PRINT Serial
 
 const char* ssid = "VNNO"; // "DNVGuest" "Thuy's iPhone"; "matsuya";
 const char* password = WIFI_PW;
@@ -42,11 +40,19 @@ unsigned long timeNow = millis();
 unsigned long lastTrigger = millis();
 boolean startMotionTimer = false;
 
+IPAddress ip(192, 168, 1, 5);             // IP address of the server
+IPAddress gateway(192,168,1,1);           // gateway of your network
+IPAddress subnet(255,255,255,0);          // subnet mask of your network
+
+WiFiServer serverHome(80);
+
+
 void WIFI_Connect(){
   Serial.println();
   Serial.println("MAC: " + WiFi.macAddress());
   Serial.println("Connecting to " + String(ssid));
-  
+
+  WiFi.config(ip, gateway, subnet);       // forces to use the fix IP
   WiFi.begin(ssid, password);
 
   bool ledStatus = false;
@@ -72,6 +78,8 @@ void WIFI_Connect(){
   Serial.print("SSID: ");     Serial.println(WiFi.SSID());
   Serial.print("Signal: ");   Serial.println(WiFi.RSSI());
   Serial.println();
+
+  serverHome.begin();
 }
 
 void setup() {
@@ -117,6 +125,24 @@ void blinkPowerLed(){
   }
 }
 
+void MainClientComm(){
+  WiFiClient client = serverHome.available();
+  if (client) {
+    if (client.connected()) {
+      digitalWrite(PIN_LED, LOW);  // to show the communication only (inverted logic)
+      Serial.println(".");
+      String request = client.readStringUntil('\r');    // receives the message from the client
+      Serial.print("From client: "); Serial.println(request);
+      client.flush();
+      client.println("Hi client! No, I am listening.\r"); // sends the answer to the client
+      digitalWrite(PIN_LED, HIGH);
+    }
+    client.stop();                // tarminates the connection with the client
+  }
+  else
+    Serial.println("Home server is not available");
+}
+
 void loop() {
   blinkPowerLed();
   updateHumidTempe();
@@ -152,6 +178,8 @@ void loop() {
       cayenneCounter = 0;
     cloudUploaded = true;
   }
+
+  MainClientComm();
 
   if(WiFi.status() == WL_DISCONNECTED){
     Serial.println("WiFi connection lost! Reconnecting...");
