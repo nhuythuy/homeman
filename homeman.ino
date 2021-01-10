@@ -40,11 +40,8 @@ unsigned long timeNow = millis();
 unsigned long lastTrigger = millis();
 boolean startMotionTimer = false;
 
-IPAddress ip(192, 168, 1, 5);             // IP address of the server
-IPAddress gateway(192,168,1,1);           // gateway of your network
-IPAddress subnet(255,255,255,0);          // subnet mask of your network
-
-WiFiServer serverHome(80);
+IPAddress serverHome(192,168,1,5);          // the fix IP address of the server
+WiFiClient clientHome;
 
 
 void WIFI_Connect(){
@@ -52,7 +49,6 @@ void WIFI_Connect(){
   Serial.println("MAC: " + WiFi.macAddress());
   Serial.println("Connecting to " + String(ssid));
 
-  WiFi.config(ip, gateway, subnet);       // forces to use the fix IP
   WiFi.begin(ssid, password);
 
   bool ledStatus = false;
@@ -79,7 +75,6 @@ void WIFI_Connect(){
   Serial.print("Signal: ");   Serial.println(WiFi.RSSI());
   Serial.println();
 
-  serverHome.begin();
 }
 
 void setup() {
@@ -125,25 +120,22 @@ void blinkPowerLed(){
   }
 }
 
-void MainClientComm(){
-  WiFiClient client = serverHome.available();
-  if (client) {
-    if (client.connected()) {
-      digitalWrite(PIN_LED, LOW);  // to show the communication only (inverted logic)
-      Serial.println(".");
-      String request = client.readStringUntil('\r');    // receives the message from the client
-      Serial.print("From client: "); Serial.println(request);
-      client.flush();
-      client.println("Hi client! No, I am listening.\r"); // sends the answer to the client
-      digitalWrite(PIN_LED, HIGH);
-    }
-    client.stop();                // tarminates the connection with the client
-  }
-  else
-    Serial.println("Home server is not available");
+void MainServerComm(){
+
+  clientHome.connect(serverHome, 80);   // Connection to the server
+  digitalWrite(PIN_LED, LOW);       // to show the communication only (inverted logic)
+  Serial.println("Connecting to server Home.");
+  clientHome.println("Hello Home server! Are you sleeping?\r");  // sends the message to the server
+  String answer = clientHome.readStringUntil('\r');   // receives the answer from the sever
+  Serial.println("from Home server: " + answer);
+  clientHome.flush();
+  digitalWrite(PIN_LED, HIGH);
+
 }
 
 void loop() {
+  MainServerComm();
+
   blinkPowerLed();
   updateHumidTempe();
 
@@ -178,8 +170,6 @@ void loop() {
       cayenneCounter = 0;
     cloudUploaded = true;
   }
-
-  MainClientComm();
 
   if(WiFi.status() == WL_DISCONNECTED){
     Serial.println("WiFi connection lost! Reconnecting...");
