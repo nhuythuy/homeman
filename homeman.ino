@@ -64,7 +64,13 @@ void WIFI_Connect(){
   }
 
   delay(500);
-  Serial.println("... WiFi connected, IP: " + WiFi.localIP());
+  Serial.println("Connected to wifi");
+  Serial.print("Status: ");   Serial.println(WiFi.status());    // Network parameters
+  Serial.print("IP: ");       Serial.println(WiFi.localIP());
+  Serial.print("Subnet: ");   Serial.println(WiFi.subnetMask());
+  Serial.print("Gateway: ");  Serial.println(WiFi.gatewayIP());
+  Serial.print("SSID: ");     Serial.println(WiFi.SSID());
+  Serial.print("Signal: ");   Serial.println(WiFi.RSSI());
   Serial.println();
 }
 
@@ -137,7 +143,7 @@ void loop() {
   else
     motionSeconds = 0;
 
-  Serial.println("Sensors detected: " + String(minutesDoorMainOpened) + " - " + String(minutesDoorBasementOpened) + " - " + String(motionSeconds));
+  Serial.println("Sensors detected: " + String(minutesDoorMainOpened) + " min - " + String(minutesDoorBasementOpened) + " min - " + String(motionSeconds)  + " sec");
 
   Cayenne.loop();
   if(!cloudUploaded && needUploadCloud == true)
