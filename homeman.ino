@@ -15,6 +15,7 @@
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 #include "melody.h"
+#include <ArduinoJson.h>
 
 
 const char* ssid = "VNNO"; // "Thuy's iPhone";
@@ -118,19 +119,6 @@ void blinkPowerLed(){
     digitalWrite(PIN_AC_POWER_LED_ENTRANCE, PowerLedState);
     delay(PowerLedDelay);
   }
-}
-
-void MainServerComm(){
-
-  clientHome.connect(serverHome, 80);   // Connection to the server
-  digitalWrite(PIN_LED, LOW);       // to show the communication only (inverted logic)
-  Serial.println("Connecting to server Home.");
-  clientHome.println("Hello Home server! Are you sleeping?\r");  // sends the message to the server
-  String answer = clientHome.readStringUntil('\r');   // receives the answer from the sever
-  Serial.println("from Home server: " + answer);
-  clientHome.flush();
-  digitalWrite(PIN_LED, HIGH);
-
 }
 
 void loop() {
@@ -344,6 +332,48 @@ void updateSensors(){
     forceCamPower = 1;
   else
     forceCamPower = 0;
+}
+
+void MainServerComm(){
+  clientHomeHeartbeat++;
+
+  clientHome.connect(serverHome, 80);   // Connection to the server
+  digitalWrite(PIN_LED, LOW);       // to show the communication only (inverted logic)
+  Serial.println("Connecting to server Home.");
+//  clientHome.println("Hello Home server! Are you sleeping?\r");  // sends the message to the server
+//  String answer = clientHome.readStringUntil('\r');   // receives the answer from the sever
+//  Serial.println("from Home server: " + answer);
+
+  // send client state to the server
+  // https://arduinojson.org/v6/example/
+
+  DynamicJsonDocument doc(256);
+  doc["node"] = "homeman";
+  doc["heartbeat"] = clientHomeHeartbeat;
+  doc["runtime"] = runtimeMinutes;
+  doc["battvolt"] = String(ssBatteryVolt, 2);
+  doc["temp"] = String(temp, 2);
+  doc["humidity"] = String(humidity, 2);
+  doc["ssDoorMain"] = ssDoorMain;
+  doc["ssDoorMainOpenMin"] = minutesDoorMainOpened;
+  doc["ssDoorBasement"] = ssDoorBasement;
+  doc["ssDoorBasementOpenMin"] = minutesDoorBasementOpened;
+  doc["ssLightBasementOn"] = ssLightBasementOn;
+  doc["ssEntranceMotion"] = ssEntranceMotion;
+  doc["ssEntranceMotionDetectedSec"] = motionSeconds;
+  doc["ssWaterLeak"] = ssWaterLeak;
+  doc["acActuators"] = acActuators;
+
+  char jsonHomeMan[256];
+  serializeJson(doc, jsonHomeMan);
+
+  clientHome.println(jsonHomeMan);
+  String answer = clientHome.readStringUntil('\r');   // receives the answer from the sever
+  Serial.println("from Home server: " + answer);
+  
+  clientHome.flush();
+  digitalWrite(PIN_LED, HIGH);
+
 }
 
 // In 3.0.0 there will be a getDay() function.
