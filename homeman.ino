@@ -342,30 +342,25 @@ void MainServerComm(){
   // send client state to the server
   // https://arduinojson.org/v6/example/
 
+  clientHome.println("livingroomstate");
+  String reply = clientHome.readStringUntil('\r');   // receives the answer from the sever
+  Serial.println("from Home server: " + reply);
+
   DynamicJsonDocument doc(256);
-  doc["node"] = "homeman";
-  doc["heartbeat"] = clientHomeHeartbeat;
-  doc["runtime"] = runtimeMinutes;
-  doc["battvolt"] = String(ssBatteryVolt, 2);
-  doc["temp"] = String(temp, 2);
-  doc["humidity"] = String(humidity, 2);
-  doc["ssDoorMain"] = ssDoorMain;
-  doc["ssDoorMainOpenMin"] = minutesDoorMainOpened;
-  doc["ssDoorBasement"] = ssDoorBasement;
-  doc["ssDoorBasementOpenMin"] = minutesDoorBasementOpened;
-  doc["ssLightBasementOn"] = ssLightBasementOn;
-  doc["ssEntranceMotion"] = ssEntranceMotion;
-  doc["ssEntranceMotionDetectedSec"] = motionSeconds;
-  doc["ssWaterLeak"] = ssWaterLeak;
-  doc["acActuators"] = acActuators;
+  deserializeJson(doc, reply);
+  String node = doc["node"];
+  int heartbeat = doc["heartbeat"];
+  runtimeMinutesMain = doc["runtime"];
+//  float ssBatteryVolt = String(doc["battvolt"]).toFloat();
+//  String tmp = doc["temp"];
+//  temp = tmp.toFloat();
+//  String humid = doc["humidity"];
+//  humidity = humid.toFloat();
 
-  char jsonHomeMan[256];
-  serializeJson(doc, jsonHomeMan);
+  ssDoorBack = doc["ssDoorBack"];
+  minutesDoorBackOpened = doc["ssDoorBackOpenMin"];
 
-  clientHome.println(jsonHomeMan);
-  String answer = clientHome.readStringUntil('\r');   // receives the answer from the sever
-  Serial.println("from Home server: " + answer);
-  
+
   clientHome.flush();
   digitalWrite(PIN_LED, HIGH);
 
