@@ -75,7 +75,12 @@ void WIFI_Connect(){
   Serial.print("SSID: ");     Serial.println(WiFi.SSID());
   Serial.print("Signal: ");   Serial.println(WiFi.RSSI());
   Serial.println();
+  delay(1000);
 
+  Serial.println("Cayenne connecting...");
+  Cayenne.begin(dv_username, dv_password, dv_clientID, ssid, password);
+  Serial.println("Cayenne connected!");
+  delay(1000); 
 }
 
 void setup() {
@@ -162,12 +167,7 @@ void loop() {
   if(WiFi.status() == WL_DISCONNECTED){
     Serial.println("WiFi connection lost! Reconnecting...");
     WiFi.disconnect();
-    WIFI_Connect();
-    delay(1000);
-
-    Cayenne.begin(dv_username, dv_password, dv_clientID, ssid, password);
-    Serial.println("Cayenne reconnecting...");
-    delay(1000);    
+    WIFI_Connect();    
   }
 
   delayWithErrorCheck();
@@ -207,13 +207,8 @@ void getServerTime(){
     needUploadCloud = false;
   }
   
-  unsigned long epochTime = timeClient.getEpochTime();
-  Serial.print("Epoch Time: ");
-  Serial.println(epochTime);
-  
-  String formattedTime = timeClient.getFormattedTime();
-  Serial.print("Formatted Time: ");
-  Serial.println(formattedTime);
+  Serial.print("Epoch Time: " + String(timeClient.getEpochTime()));  
+  Serial.print("Formatted Time: " + timeClient.getFormattedTime());
   Serial.println();
 }
 
