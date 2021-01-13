@@ -107,8 +107,6 @@ void setup() {
   timeClient.begin(); // Initialize a NTPClient to get time
 // Set offset time in seconds to adjust for your timezone, ex.: GMT +1 = 3600, GMT +8 = 28800, GMT -1 = -3600, GMT 0 = 0
   timeClient.setTimeOffset(3600); // Norway GMT + 1
-
-  Cayenne.begin(dv_username, dv_password, dv_clientID, ssid, password);
 }
 
 bool PowerLedState = false;
@@ -334,15 +332,15 @@ void MainServerComm(){
 
   clientHome.connect(serverHome, 80);   // Connection to the server
   digitalWrite(PIN_LED, LOW);       // to show the communication only (inverted logic)
-  Serial.println("Connecting to server Home.");
+  Serial.println("Connecting to server (Living room)");
 //  clientHome.println("Hello Home server! Are you sleeping?\r");  // sends the message to the server
 //  String answer = clientHome.readStringUntil('\r');   // receives the answer from the sever
-//  Serial.println("from Home server: " + answer);
+//  Serial.println("from server (Living room): " + answer);
 
   // send client state to the server
   // https://arduinojson.org/v6/example/
 
-  clientHome.println("livingroomstate");
+  clientHome.println("livingroomstate\r");
   String reply = clientHome.readStringUntil('\r');   // receives the answer from the sever
   Serial.println("from Home server: " + reply);
 
