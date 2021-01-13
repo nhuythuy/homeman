@@ -342,7 +342,7 @@ void MainServerComm(){
 
   clientHome.println("livingroomstate\r");
   String reply = clientHome.readStringUntil('\r');   // receives the answer from the sever
-  Serial.println("from Home server: " + reply);
+  Serial.println("from server (Living room): " + reply);
 
   DynamicJsonDocument doc(256);
   deserializeJson(doc, reply);
