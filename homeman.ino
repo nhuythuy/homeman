@@ -355,7 +355,7 @@ void MainServerComm(){
 //  String humid = doc["humidity"];
 //  humidity = humid.toFloat();
 
-  state = doc["ssDoorBack"];
+  bool state = doc["ssDoorBack"];
   if (state != ssDoorBack){
     writeCayenneDigitalStates(CH_DOOR_BACK, state);
     ssDoorBack = state;
