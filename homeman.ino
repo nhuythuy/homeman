@@ -355,7 +355,12 @@ void MainServerComm(){
 //  String humid = doc["humidity"];
 //  humidity = humid.toFloat();
 
-  ssDoorBack = doc["ssDoorBack"];
+  state = doc["ssDoorBack"];
+  if (state != ssDoorBack){
+    writeCayenneDigitalStates(CH_DOOR_BACK, state);
+    ssDoorBack = state;
+  }
+
   minutesDoorBackOpened = doc["ssDoorBackOpenMin"];
 
   Serial.println("from server (Living room): " + String(runtimeMinutesLivingRoom) + " - " + String(ssDoorBack) + " - " + String(minutesDoorBackOpened));
