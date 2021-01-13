@@ -348,7 +348,7 @@ void MainServerComm(){
   deserializeJson(doc, reply);
   String node = doc["node"];
   int heartbeat = doc["heartbeat"];
-  runtimeMinutesMain = doc["runtime"];
+  runtimeMinutesLivingRoom = doc["runtime"];
 //  float ssBatteryVolt = String(doc["battvolt"]).toFloat();
 //  String tmp = doc["temp"];
 //  temp = tmp.toFloat();
@@ -358,7 +358,7 @@ void MainServerComm(){
   ssDoorBack = doc["ssDoorBack"];
   minutesDoorBackOpened = doc["ssDoorBackOpenMin"];
 
-  Serial.println("from server (Living room): " + String(runtimeMinutesMain) + " - " + String(ssDoorBack) + " - " + String(minutesDoorBackOpened));
+  Serial.println("from server (Living room): " + String(runtimeMinutesLivingRoom) + " - " + String(ssDoorBack) + " - " + String(minutesDoorBackOpened));
 
   clientHome.flush();
   digitalWrite(PIN_LED, HIGH);

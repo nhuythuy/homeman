@@ -38,7 +38,7 @@ int minutesDoorBackOpened = 0;
 
 int playMelodyCounter = 0;
 int runtimeMinutes = 0;
-int runtimeMinutesMain = 0;
+int runtimeMinutesLivingRoom = 0;
 int currentHours = -1;
 
 int timeMotionDetected = 0;

@@ -62,7 +62,7 @@ CAYENNE_OUT(CH_RUNTIME){
 
 CAYENNE_OUT(CH_RUNTIME_LIVING_ROOM){
   delay(1000);
-  Cayenne.virtualWrite(CH_RUNTIME_LIVING_ROOM, runtimeMinutesMain, "counter");
+  Cayenne.virtualWrite(CH_RUNTIME_LIVING_ROOM, runtimeMinutesLivingRoom, "counter");
 }
 
 CAYENNE_OUT(CH_SECONDS_MOTION_DETECTED){
