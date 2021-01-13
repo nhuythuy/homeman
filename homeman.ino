@@ -358,6 +358,7 @@ void MainServerComm(){
   ssDoorBack = doc["ssDoorBack"];
   minutesDoorBackOpened = doc["ssDoorBackOpenMin"];
 
+  Serial.println("from server (Living room): " + String(runtimeMinutesMain) + " - " + String(ssDoorBack) + " - " + String(minutesDoorBackOpened));
 
   clientHome.flush();
   digitalWrite(PIN_LED, HIGH);
