@@ -3,7 +3,7 @@
 
 long globalState = 0;
 int debugCounter = 0;
-int clientHomeHeartbeat = 0;
+int bmHeartbeat = 0;
 
 // sensors
 float bmHumidity = 0.0;

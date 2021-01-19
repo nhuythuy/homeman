@@ -328,8 +328,6 @@ void updateSensors(){
 }
 
 void MainServerComm(){
-  clientHomeHeartbeat++;
-
   clientHome.connect(serverHome, 80);   // Connection to the server
   digitalWrite(PIN_LED, LOW);       // to show the communication only (inverted logic)
   Serial.println("Connecting to server (Living room)");
@@ -340,7 +338,7 @@ void MainServerComm(){
   // send client state to the server
   // https://arduinojson.org/v6/example/
 
-  clientHome.println("livingroomstate\r");
+  clientHome.println("livingroomstate:" + String(bmHeartbeat++) + "\r");
   String reply = clientHome.readStringUntil('\r');   // receives the answer from the sever
   Serial.println("from server (Living room): " + reply);
 
