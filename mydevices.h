@@ -1,40 +1,40 @@
 #include "global_vars.h"
 #include <CayenneMQTTESP8266.h>
 
-// Name convention: Area_SensorType_Time_Type_ID, ex.: DOOR_MAIN_MINUTES_OPENED, LR_HUMIDITY
+// Name convention: Area_SensorType_Time_Type, ex.: DOOR_MAIN_MINUTES_OPENED, LR_HUMIDITY
 
 // Cayenne authentication info. This should be obtained from the Cayenne Dashboard.
-char dv_username[] = "3541f5b0-d9b3-11ea-883c-638d8ce4c23d";
-char dv_password[] = "0573b7bfc25b7afb4042b3bb93ed8f16a6dd6fc2";
-char dv_clientID[] = "d175a430-d9b4-11ea-b767-3f1a8f1211ba";
+char dvUsername[] = "3541f5b0-d9b3-11ea-883c-638d8ce4c23d";
+char dvPassword[] = "0573b7bfc25b7afb4042b3bb93ed8f16a6dd6fc2";
+char dvClientID[] = "10df0a00-5a78-11eb-883c-638d8ce4c23d";
 
 
-#define CH_BATT_VOLTAGE                 1
-#define CH_MINUTES_DOOR_MAIN_OPENED     2
-#define CH_MINUTES_DOOR_BASEMENT_OPENED 3
-#define CH_BM_TEMPERATURE               4 // basement
-#define CH_BM_HUMIDITY                  5
-#define CH_BM_RUNTIME                      6
-#define CH_SECONDS_MOTION_DETECTED      7
-#define CH_MINUTES_DOOR_BACK_OPENED     8
-#define CH_LR_RUNTIME          9
+#define CH_BATT_VOLTAGE                     1
+#define CH_BM_RUNTIME                       2
+#define CH_BM_TEMPERATURE                   3   // basement
+#define CH_BM_HUMIDITY                      4
+#define CH_MOTION_ENTRANCE_DETECTED_SECONDS 5
+#define CH_DOOR_MAIN_OPENED_MINUTES         6
+#define CH_DOOR_BASEMENT_OPENED_MINUTES     7
+#define CH_DOOR_BACK_OPENED_MINUTES         8
 
-#define CH_LR_TEMPERATURE               101 // living room
-#define CH_LR_HUMIDITY                  102
+#define CH_LR_RUNTIME                       11   // living room
+#define CH_LR_TEMPERATURE                   12
+#define CH_LR_HUMIDITY                      13
 
 // digital states
-#define CH_DOOR_MAIN            10
-#define CH_DOOR_BASEMENT        11
-#define CH_DOOR_BACK            12
-#define CH_MOTION_ENTRANCE      15
-#define CH_LIGHT_BASEMENT       16
-#define CH_LIGHT_STAIR_BASEMENT 17
-#define CH_LIGHT_ENTRANCE       18
-#define CH_POWER_RADIO          19
-#define CH_WATER_LEAK_0         20
-#define CH_WATER_LEAK_1         21
+#define CH_DOOR_MAIN                51
+#define CH_DOOR_BASEMENT            52
+#define CH_DOOR_BACK                53
+#define CH_MOTION_ENTRANCE          54
+#define CH_LIGHT_BASEMENT           55
+#define CH_LIGHT_STAIR_BASEMENT     56
+#define CH_LIGHT_ENTRANCE           57
+#define CH_POWER_RADIO              58
+#define CH_WATER_LEAK_0             59
+#define CH_WATER_LEAK_1             60
 
-#define CH_FORCE_RADIO_POWER    200
+#define CH_FORCE_RADIO_POWER        100
 
 
 int cayenneCounter = 0;
@@ -45,19 +45,19 @@ CAYENNE_OUT(CH_BATT_VOLTAGE){
   Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
 }
 
-CAYENNE_OUT(CH_MINUTES_DOOR_MAIN_OPENED){
+CAYENNE_OUT(CH_DOOR_MAIN_OPENED_MINUTES){
   delay(1000);
-  Cayenne.virtualWrite(CH_MINUTES_DOOR_MAIN_OPENED, minutesDoorMainOpened, "counter");
+  Cayenne.virtualWrite(CH_DOOR_MAIN_OPENED_MINUTES, minutesDoorMainOpened, "counter");
 }
 
-CAYENNE_OUT(CH_MINUTES_DOOR_BACK_OPENED){
+CAYENNE_OUT(CH_DOOR_BACK_OPENED_MINUTES){
   delay(1000);
-  Cayenne.virtualWrite(CH_MINUTES_DOOR_BACK_OPENED, minutesDoorBackOpened, "counter");
+  Cayenne.virtualWrite(CH_DOOR_BACK_OPENED_MINUTES, minutesDoorBackOpened, "counter");
 }
 
-CAYENNE_OUT(CH_MINUTES_DOOR_BASEMENT_OPENED){
+CAYENNE_OUT(CH_DOOR_BASEMENT_OPENED_MINUTES){
   delay(1000);
-  Cayenne.virtualWrite(CH_MINUTES_DOOR_BASEMENT_OPENED, minutesDoorBasementOpened, "counter");
+  Cayenne.virtualWrite(CH_DOOR_BASEMENT_OPENED_MINUTES, minutesDoorBasementOpened, "counter");
 }
 
 CAYENNE_OUT(CH_BM_RUNTIME){
@@ -70,9 +70,9 @@ CAYENNE_OUT(CH_LR_RUNTIME){
   Cayenne.virtualWrite(CH_LR_RUNTIME, lrRuntimeMinutes, "counter");
 }
 
-CAYENNE_OUT(CH_SECONDS_MOTION_DETECTED){
+CAYENNE_OUT(CH_MOTION_ENTRANCE_DETECTED_SECONDS){
   delay(1000);
-  Cayenne.virtualWrite(CH_SECONDS_MOTION_DETECTED, motionSeconds, "counter");
+  Cayenne.virtualWrite(CH_MOTION_ENTRANCE_DETECTED_SECONDS, motionSeconds, "counter");
 }
 
 CAYENNE_OUT(CH_BM_TEMPERATURE){

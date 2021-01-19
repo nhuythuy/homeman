@@ -18,8 +18,8 @@
 #include <ArduinoJson.h>
 
 
-const char* ssid = "VNNO"; // "Thuy's iPhone";
-const char* password = WIFI_PW;
+const char* wifiSsid = "VNNO"; // "Thuy's iPhone";
+const char* wifiPassword = WIFI_PW;
 
 #define MAX_SUPPLY_VOLT   16.157    // volt: 10K(9910)+39K(38610) --> 3.3*(9910+38610)/9910 = 16.1570131181 V 
 #define DELAY_LONG        5000      // 5,0 seconds
@@ -48,9 +48,9 @@ WiFiClient clientHome;
 void WIFI_Connect(){
   Serial.println();
   Serial.println("MAC: " + WiFi.macAddress());
-  Serial.println("Connecting to " + String(ssid));
+  Serial.println("Connecting to " + String(wifiSsid));
 
-  WiFi.begin(ssid, password);
+  WiFi.begin(wifiSsid, wifiPassword);
 
   bool ledStatus = false;
   while (WiFi.status() != WL_CONNECTED) {
@@ -78,7 +78,7 @@ void WIFI_Connect(){
   delay(1000);
 
   Serial.println("Cayenne connecting...");
-  Cayenne.begin(dv_username, dv_password, dv_clientID, ssid, password);
+  Cayenne.begin(dvUsername, dvPassword, dvClientID, wifiSsid, wifiPassword);
   Serial.println("Cayenne connected!");
   delay(1000); 
 }
