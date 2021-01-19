@@ -10,15 +10,15 @@ char dvClientID[] = "10df0a00-5a78-11eb-883c-638d8ce4c23d";
 
 
 #define CH_BATT_VOLTAGE                     1
-#define CH_BM_RUNTIME                       2
-#define CH_BM_TEMPERATURE                   3   // basement
+#define CH_BM_RUNTIME                       2   // basement node
+#define CH_BM_TEMPERATURE                   3
 #define CH_BM_HUMIDITY                      4
 #define CH_MOTION_ENTRANCE_DETECTED_SECONDS 5
 #define CH_DOOR_MAIN_OPENED_MINUTES         6
 #define CH_DOOR_BASEMENT_OPENED_MINUTES     7
 #define CH_DOOR_BACK_OPENED_MINUTES         8
 
-#define CH_LR_RUNTIME                       11   // living room
+#define CH_LR_RUNTIME                       11   // living room node
 #define CH_LR_TEMPERATURE                   12
 #define CH_LR_HUMIDITY                      13
 
