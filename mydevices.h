@@ -47,17 +47,17 @@ CAYENNE_OUT(CH_BATT_VOLTAGE){
 
 CAYENNE_OUT(CH_DOOR_MAIN_OPENED_MINUTES){
   delay(1000);
-  Cayenne.virtualWrite(CH_DOOR_MAIN_OPENED_MINUTES, minutesDoorMainOpened, "counter");
+  Cayenne.virtualWrite(CH_DOOR_MAIN_OPENED_MINUTES, doorMainOpenedMinutes, "counter");
 }
 
 CAYENNE_OUT(CH_DOOR_BACK_OPENED_MINUTES){
   delay(1000);
-  Cayenne.virtualWrite(CH_DOOR_BACK_OPENED_MINUTES, minutesDoorBackOpened, "counter");
+  Cayenne.virtualWrite(CH_DOOR_BACK_OPENED_MINUTES, doorBackOpenedMinutes, "counter");
 }
 
 CAYENNE_OUT(CH_DOOR_BASEMENT_OPENED_MINUTES){
   delay(1000);
-  Cayenne.virtualWrite(CH_DOOR_BASEMENT_OPENED_MINUTES, minutesDoorBasementOpened, "counter");
+  Cayenne.virtualWrite(CH_DOOR_BASEMENT_OPENED_MINUTES, doorBasementOpenedMinutes, "counter");
 }
 
 CAYENNE_OUT(CH_BM_RUNTIME){
@@ -72,7 +72,7 @@ CAYENNE_OUT(CH_LR_RUNTIME){
 
 CAYENNE_OUT(CH_MOTION_ENTRANCE_DETECTED_SECONDS){
   delay(1000);
-  Cayenne.virtualWrite(CH_MOTION_ENTRANCE_DETECTED_SECONDS, motionSeconds, "counter");
+  Cayenne.virtualWrite(CH_MOTION_ENTRANCE_DETECTED_SECONDS, entranceMotionSeconds, "counter");
 }
 
 CAYENNE_OUT(CH_BM_TEMPERATURE){

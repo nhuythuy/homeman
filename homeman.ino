@@ -138,21 +138,21 @@ void loop() {
   bmRuntimeMinutes = millis() / 60000;
   
   if(ssDoorBasement)
-    minutesDoorBasementOpened = (millis() - timeDoorBasementOpened) / 60000;
+    doorBasementOpenedMinutes = (millis() - doorBasementOpenedAt) / 60000;
   else
-    minutesDoorBasementOpened = 0;
+    doorBasementOpenedMinutes = 0;
 
   if(ssDoorMain)
-    minutesDoorMainOpened = (millis() - timeDoorMainOpened) / 60000;
+    doorMainOpenedMinutes = (millis() - doorMainOpenedAt) / 60000;
   else
-    minutesDoorMainOpened = 0;
+    doorMainOpenedMinutes = 0;
 
   if(ssEntranceMotion)
-    motionSeconds = (millis() - timeMotionDetected) / 1000;
+    entranceMotionSeconds = (millis() - entranceMotionDetectedAt) / 1000;
   else
-    motionSeconds = 0;
+    entranceMotionSeconds = 0;
 
-  Serial.println("Sensors detected: " + String(minutesDoorMainOpened) + " min - " + String(minutesDoorBasementOpened) + " min - " + String(motionSeconds)  + " sec");
+  Serial.println("Sensors detected: " + String(doorMainOpenedMinutes) + " min - " + String(doorBasementOpenedMinutes) + " min - " + String(entranceMotionSeconds)  + " sec");
 
   Cayenne.loop();
   if(!cloudUploaded && needUploadCloud == true)
@@ -257,9 +257,9 @@ void updateSensors(){
   if (state != ssDoorMain){
     writeCayenneDigitalStates(CH_DOOR_MAIN, state);
     if(state)
-      timeDoorMainOpened = millis();
+      doorMainOpenedAt = millis();
     else
-      timeDoorMainOpened = 0;
+      doorMainOpenedAt = 0;
 
     ssDoorMain = state;
   }
@@ -269,9 +269,9 @@ void updateSensors(){
     writeCayenneDigitalStates(CH_DOOR_BASEMENT, state);
     writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
     if(state)
-      timeDoorBasementOpened = millis();
+      doorBasementOpenedAt = millis();
     else
-      timeDoorBasementOpened = 0;
+      doorBasementOpenedAt = 0;
 
     ssDoorBasement = state;
   }
@@ -287,9 +287,9 @@ void updateSensors(){
     writeCayenneDigitalStates(CH_MOTION_ENTRANCE, state);
 
     if(state)
-      timeMotionDetected = millis();
+      entranceMotionDetectedAt = millis();
     else
-      timeMotionDetected = 0;
+      entranceMotionDetectedAt = 0;
 
     ssEntranceMotion = state;
   }
@@ -361,9 +361,9 @@ void MainServerComm(){
     ssDoorBack = state;
   }
 
-  minutesDoorBackOpened = doc["ssDoorBackOpenMin"];
+  doorBackOpenedMinutes = doc["ssDoorBackOpenMin"];
 
-  Serial.println("from server (Living room): " + String(lrRuntimeMinutes) + " - " + String(ssDoorBack) + " - " + String(minutesDoorBackOpened));
+  Serial.println("from server (Living room): " + String(lrRuntimeMinutes) + " - " + String(ssDoorBack) + " - " + String(doorBackOpenedMinutes));
 
   clientHome.flush();
   digitalWrite(PIN_LED, HIGH);

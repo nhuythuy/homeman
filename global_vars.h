@@ -33,18 +33,18 @@ int acActuators = 0;
 bool forceCamPower = 0;
 bool forceRadioPower = 0;
 
-int timeDoorMainOpened = 0;
-int timeDoorBasementOpened = 0;
-int minutesDoorMainOpened = 0;
-int minutesDoorBasementOpened = 0;
-int minutesDoorBackOpened = 0;
-
-int playMelodyCounter = 0;
 int bmRuntimeMinutes = 0;
 int lrRuntimeMinutes = 0;
+int doorMainOpenedAt = 0;
+int doorMainOpenedMinutes = 0;
+int doorBasementOpenedAt = 0;
+int doorBasementOpenedMinutes = 0;
+int doorBackOpenedMinutes = 0;
+
+int playMelodyCounter = 0;
 int currentHours = -1;
 
-int timeMotionDetected = 0;
-int motionSeconds = 0;
+int entranceMotionDetectedAt = 0;
+int entranceMotionSeconds = 0;
 
 #endif
