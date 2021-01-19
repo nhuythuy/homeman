@@ -157,7 +157,7 @@ void loop() {
   Cayenne.loop();
   if(!cloudUploaded && needUploadCloud == true)
   {
-    if(cayenneCounter++ > CH_HUMIDITY) // last channel
+    if(cayenneCounter++ > CH_BM_HUMIDITY) // last channel
       cayenneCounter = 0;
     cloudUploaded = true;
   }
@@ -211,14 +211,14 @@ void getServerTime(){
 }
 
 bool updateHumidTempe(){
-  humidity = dht.readHumidity();
-  temp = dht.readTemperature();
-  if (isnan(humidity) || isnan(temp)) {
+  bmHumidity = dht.readHumidity();
+  bmTemp = dht.readTemperature();
+  if (isnan(bmHumidity) || isnan(bmTemp)) {
     Serial.println("Failed to read from DHT sensor!");
 
     delayWithErrorCheck();
-    humidity = -100;
-    temp = -100;
+    bmHumidity = -100;
+    bmTemp = -100;
     return false;
   }
 
@@ -308,8 +308,8 @@ void updateSensors(){
 
   Serial.println();
   Serial.println("0. Battery volt.:     " + String(ssBatteryVolt) + " - " + String(ssBatteryVoltRaw));
-  Serial.println("1. Temperature:       " + String(temp) + " deg C");
-  Serial.println("2. Humidity:          " + String(humidity) + " %");
+  Serial.println("1. Temperature:       " + String(bmTemp) + " deg C");
+  Serial.println("2. Humidity:          " + String(bmHumidity) + " %");
   Serial.println("3. Door sensors:      " + String(ssDoorDetectors, BIN));
   Serial.println("3.1. Door main:       " + String(ssDoorMain, BIN));
   Serial.println("3.2. Door basement:   " + String(ssDoorBasement, BIN));
@@ -350,10 +350,10 @@ void MainServerComm(){
   int heartbeat = doc["heartbeat"];
   runtimeMinutesLivingRoom = doc["runtime"];
 //  float ssBatteryVolt = String(doc["battvolt"]).toFloat();
-//  String tmp = doc["temp"];
-//  temp = tmp.toFloat();
-//  String humid = doc["humidity"];
-//  humidity = humid.toFloat();
+  String tmp = doc["temp"];
+  lrTemp = tmp.toFloat();
+  String humid = doc["humidity"];
+  lrHumidity = humid.toFloat();
 
   bool state = doc["ssDoorBack"];
   if (state != ssDoorBack){

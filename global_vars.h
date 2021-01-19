@@ -6,8 +6,11 @@ int debugCounter = 0;
 int clientHomeHeartbeat = 0;
 
 // sensors
-float humidity = 0.0;
-float temp = 0.0;
+float bmHumidity = 0.0;
+float bmTemp = 0.0;
+
+float lrHumidity = 0.0;
+float lrTemp = 0.0;
 
 int ssBatteryVoltRaw = 0;
 float ssBatteryVolt = 0;

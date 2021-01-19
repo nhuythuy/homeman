@@ -1,6 +1,8 @@
 #include "global_vars.h"
 #include <CayenneMQTTESP8266.h>
 
+// Name convention: Area_SensorType_Time_Type_ID, ex.: DOOR_MAIN_MINUTES_OPENED, LR_HUMIDITY
+
 // Cayenne authentication info. This should be obtained from the Cayenne Dashboard.
 char dv_username[] = "3541f5b0-d9b3-11ea-883c-638d8ce4c23d";
 char dv_password[] = "0573b7bfc25b7afb4042b3bb93ed8f16a6dd6fc2";
@@ -10,12 +12,15 @@ char dv_clientID[] = "d175a430-d9b4-11ea-b767-3f1a8f1211ba";
 #define CH_BATT_VOLTAGE                 1
 #define CH_MINUTES_DOOR_MAIN_OPENED     2
 #define CH_MINUTES_DOOR_BASEMENT_OPENED 3
-#define CH_TEMPERATURE                  4
-#define CH_HUMIDITY                     5
+#define CH_BM_TEMPERATURE               4 // basement
+#define CH_BM_HUMIDITY                  5
 #define CH_RUNTIME                      6
 #define CH_SECONDS_MOTION_DETECTED      7
 #define CH_MINUTES_DOOR_BACK_OPENED     8
 #define CH_RUNTIME_LIVING_ROOM          9
+
+#define CH_LR_TEMPERATURE               101 // living room
+#define CH_LR_HUMIDITY                  102
 
 // digital states
 #define CH_DOOR_MAIN            10
@@ -29,7 +34,7 @@ char dv_clientID[] = "d175a430-d9b4-11ea-b767-3f1a8f1211ba";
 #define CH_WATER_LEAK_0         20
 #define CH_WATER_LEAK_1         21
 
-#define CH_FORCE_RADIO_POWER    100
+#define CH_FORCE_RADIO_POWER    200
 
 
 int cayenneCounter = 0;
@@ -70,29 +75,24 @@ CAYENNE_OUT(CH_SECONDS_MOTION_DETECTED){
   Cayenne.virtualWrite(CH_SECONDS_MOTION_DETECTED, motionSeconds, "counter");
 }
 
-//CAYENNE_OUT(CH_DOORS){
-//  if(cayenneCounter == CH_DOORS)
-//    Cayenne.virtualWrite(CH_DOORS, ssDoorDetectors, "counter");
-//}
-//
-//CAYENNE_OUT(CH_OTHER_SENSORS){
-//  if(cayenneCounter == CH_OTHER_SENSORS)
-//    Cayenne.virtualWrite(CH_OTHER_SENSORS, ssOtherSensors, "counter");
-//}
-//
-//CAYENNE_OUT(CH_ACTUATORS){
-//  if(cayenneCounter == CH_ACTUATORS)
-//    Cayenne.virtualWrite(CH_ACTUATORS, acActuators, "counter");
-//}
-
-CAYENNE_OUT(CH_TEMPERATURE){
+CAYENNE_OUT(CH_BM_TEMPERATURE){
   delay(1000);
-  Cayenne.celsiusWrite(CH_TEMPERATURE, temp);
+  Cayenne.celsiusWrite(CH_BM_TEMPERATURE, bmTemp);
 }
 
-CAYENNE_OUT(CH_HUMIDITY){
+CAYENNE_OUT(CH_BM_HUMIDITY){
   delay(1000);
-  Cayenne.virtualWrite(CH_HUMIDITY, humidity, "rel_hum", "p");
+  Cayenne.virtualWrite(CH_BM_HUMIDITY, bmHumidity, "rel_hum", "p");
+}
+
+CAYENNE_OUT(CH_LR_TEMPERATURE){
+  delay(1000);
+  Cayenne.celsiusWrite(CH_LR_TEMPERATURE, lrTemp);
+}
+
+CAYENNE_OUT(CH_LR_HUMIDITY){
+  delay(1000);
+  Cayenne.virtualWrite(CH_LR_HUMIDITY, lrHumidity, "rel_hum", "p");
 }
 
 void writeCayenneDigitalStates(int channelId, int value){
