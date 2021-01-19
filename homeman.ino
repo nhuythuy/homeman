@@ -347,7 +347,6 @@ void MainServerComm(){
   String node = doc["node"];
   int heartbeat = doc["heartbeat"];
   lrRuntimeMinutes = doc["runtime"];
-//  float ssBatteryVolt = String(doc["battvolt"]).toFloat();
   String tmp = doc["temp"];
   lrTemp = tmp.toFloat();
   String humid = doc["humidity"];
@@ -361,7 +360,9 @@ void MainServerComm(){
 
   doorBackOpenedMinutes = doc["ssDoorBackOpenMin"];
 
-  Serial.println("from server (Living room): " + String(lrRuntimeMinutes) + " - " + String(ssDoorBack) + " - " + String(doorBackOpenedMinutes));
+  Serial.println("from server (Living room): Runtime (" + String(lrRuntimeMinutes)
+  + "), Door back: (" + String(ssDoorBack)
+  + "), Door back opened: (" + String(doorBackOpenedMinutes) + ") min");
 
   clientHome.flush();
   digitalWrite(PIN_LED, HIGH);
