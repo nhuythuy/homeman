@@ -14,10 +14,10 @@ char dv_clientID[] = "d175a430-d9b4-11ea-b767-3f1a8f1211ba";
 #define CH_MINUTES_DOOR_BASEMENT_OPENED 3
 #define CH_BM_TEMPERATURE               4 // basement
 #define CH_BM_HUMIDITY                  5
-#define CH_RUNTIME                      6
+#define CH_BM_RUNTIME                      6
 #define CH_SECONDS_MOTION_DETECTED      7
 #define CH_MINUTES_DOOR_BACK_OPENED     8
-#define CH_RUNTIME_LIVING_ROOM          9
+#define CH_LR_RUNTIME          9
 
 #define CH_LR_TEMPERATURE               101 // living room
 #define CH_LR_HUMIDITY                  102
@@ -60,14 +60,14 @@ CAYENNE_OUT(CH_MINUTES_DOOR_BASEMENT_OPENED){
   Cayenne.virtualWrite(CH_MINUTES_DOOR_BASEMENT_OPENED, minutesDoorBasementOpened, "counter");
 }
 
-CAYENNE_OUT(CH_RUNTIME){
+CAYENNE_OUT(CH_BM_RUNTIME){
   delay(1000);
-  Cayenne.virtualWrite(CH_RUNTIME, runtimeMinutes, "counter");
+  Cayenne.virtualWrite(CH_BM_RUNTIME, bmRuntimeMinutes, "counter");
 }
 
-CAYENNE_OUT(CH_RUNTIME_LIVING_ROOM){
+CAYENNE_OUT(CH_LR_RUNTIME){
   delay(1000);
-  Cayenne.virtualWrite(CH_RUNTIME_LIVING_ROOM, runtimeMinutesLivingRoom, "counter");
+  Cayenne.virtualWrite(CH_LR_RUNTIME, lrRuntimeMinutes, "counter");
 }
 
 CAYENNE_OUT(CH_SECONDS_MOTION_DETECTED){

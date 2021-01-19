@@ -135,7 +135,7 @@ void loop() {
   updateSensors();
   updateActuator();
 
-  runtimeMinutes = millis() / 60000;
+  bmRuntimeMinutes = millis() / 60000;
   
   if(ssDoorBasement)
     minutesDoorBasementOpened = (millis() - timeDoorBasementOpened) / 60000;
@@ -348,7 +348,7 @@ void MainServerComm(){
   deserializeJson(doc, reply);
   String node = doc["node"];
   int heartbeat = doc["heartbeat"];
-  runtimeMinutesLivingRoom = doc["runtime"];
+  lrRuntimeMinutes = doc["runtime"];
 //  float ssBatteryVolt = String(doc["battvolt"]).toFloat();
   String tmp = doc["temp"];
   lrTemp = tmp.toFloat();
@@ -363,7 +363,7 @@ void MainServerComm(){
 
   minutesDoorBackOpened = doc["ssDoorBackOpenMin"];
 
-  Serial.println("from server (Living room): " + String(runtimeMinutesLivingRoom) + " - " + String(ssDoorBack) + " - " + String(minutesDoorBackOpened));
+  Serial.println("from server (Living room): " + String(lrRuntimeMinutes) + " - " + String(ssDoorBack) + " - " + String(minutesDoorBackOpened));
 
   clientHome.flush();
   digitalWrite(PIN_LED, HIGH);
