@@ -206,8 +206,7 @@ void getServerTime(){
   }
   
   Serial.print("Epoch Time: " + String(timeClient.getEpochTime()));  
-  Serial.print("Formatted Time: " + timeClient.getFormattedTime());
-  Serial.println();
+  Serial.println(" - " + timeClient.getFormattedTime());
 }
 
 bool updateHumidTempe(){
