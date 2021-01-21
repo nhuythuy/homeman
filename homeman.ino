@@ -15,6 +15,7 @@
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 #include "melody.h"
+#include "blynk.h"
 #include <ArduinoJson.h>
 
 
@@ -103,7 +104,7 @@ void setup() {
   dht.begin();
 
   WIFI_Connect();
-
+  blynkSetup();
   timeClient.begin(); // Initialize a NTPClient to get time
 // Set offset time in seconds to adjust for your timezone, ex.: GMT +1 = 3600, GMT +8 = 28800, GMT -1 = -3600, GMT 0 = 0
   timeClient.setTimeOffset(3600); // Norway GMT + 1
@@ -162,6 +163,7 @@ void loop() {
     cloudUploaded = true;
   }
 
+  blynkLoop();
   if(WiFi.status() == WL_DISCONNECTED){
     Serial.println("WiFi connection lost! Reconnecting...");
     WiFi.disconnect();
@@ -241,7 +243,7 @@ ICACHE_RAM_ATTR void detectsMovement() {
 
     startMotionTimer = true;
     Serial.println("Light entrance: ON");
-    writeCayenneDigitalStates(CH_LIGHT_ENTRANCE, true);
+    writeCayenneDigitalStates(CH_ENTRANCE_LIGHT, true);
     lastTrigger = millis();
   }
 }
@@ -283,7 +285,7 @@ void updateSensors(){
 
   state = digitalRead(PIN_SS_ENTRANCE_MOTION);
   if (state != ssEntranceMotion){
-    writeCayenneDigitalStates(CH_MOTION_ENTRANCE, state);
+    writeCayenneDigitalStates(CH_ENTRANCE_MOTION, state);
 
     if(state)
       entranceMotionDetectedAt = millis();
@@ -402,7 +404,7 @@ void updateActuator()
     //digitalWrite(PIN_AC_POWER_LED_ENTRANCE, LOW);
     acEntranceLed = false;
     Serial.println("Light entrance: OFF");
-    writeCayenneDigitalStates(CH_LIGHT_ENTRANCE, false);
+    writeCayenneDigitalStates(CH_ENTRANCE_LIGHT, false);
 
     acActuators &= ~(1 << 0);
     startMotionTimer = false;

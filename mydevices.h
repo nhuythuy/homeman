@@ -8,13 +8,13 @@ char dvUsername[] = "3541f5b0-d9b3-11ea-883c-638d8ce4c23d";
 char dvPassword[] = "0573b7bfc25b7afb4042b3bb93ed8f16a6dd6fc2";
 char dvClientID[] = "10df0a00-5a78-11eb-883c-638d8ce4c23d";
 
-#define MESSAGE_DELAY                       500
+#define MESSAGE_DELAY                       200
 
 #define CH_BATT_VOLTAGE                     1
 #define CH_BM_RUNTIME                       2   // basement node
 #define CH_BM_TEMPERATURE                   3
 #define CH_BM_HUMIDITY                      4
-#define CH_MOTION_ENTRANCE_DETECTED_SECONDS 5
+#define CH_ENTRANCE_MOTION_DETECTED_SECONDS 5
 #define CH_DOOR_MAIN_OPENED_MINUTES         6
 #define CH_DOOR_BASEMENT_OPENED_MINUTES     7
 #define CH_DOOR_BACK_OPENED_MINUTES         8
@@ -27,10 +27,10 @@ char dvClientID[] = "10df0a00-5a78-11eb-883c-638d8ce4c23d";
 #define CH_DOOR_MAIN                51
 #define CH_DOOR_BASEMENT            52
 #define CH_DOOR_BACK                53
-#define CH_MOTION_ENTRANCE          54
+#define CH_ENTRANCE_MOTION          54
 #define CH_LIGHT_BASEMENT           55
 #define CH_LIGHT_STAIR_BASEMENT     56
-#define CH_LIGHT_ENTRANCE           57
+#define CH_ENTRANCE_LIGHT           57
 #define CH_POWER_RADIO              58
 #define CH_WATER_LEAK_0             59
 #define CH_WATER_LEAK_1             60
@@ -71,9 +71,9 @@ CAYENNE_OUT(CH_LR_RUNTIME){
   Cayenne.virtualWrite(CH_LR_RUNTIME, lrRuntimeMinutes, "counter");
 }
 
-CAYENNE_OUT(CH_MOTION_ENTRANCE_DETECTED_SECONDS){
+CAYENNE_OUT(CH_ENTRANCE_MOTION_DETECTED_SECONDS){
   delay(MESSAGE_DELAY);
-  Cayenne.virtualWrite(CH_MOTION_ENTRANCE_DETECTED_SECONDS, entranceMotionSeconds, "counter");
+  Cayenne.virtualWrite(CH_ENTRANCE_MOTION_DETECTED_SECONDS, entranceMotionSeconds, "counter");
 }
 
 CAYENNE_OUT(CH_BM_TEMPERATURE){
