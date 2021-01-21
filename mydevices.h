@@ -104,5 +104,5 @@ void writeCayenneDigitalStates(int channelId, int value){
 CAYENNE_IN(CH_FORCE_RADIO_POWER)
 {
   forceRadioPower = getValue.asInt(); // Get value as integer
-  Serial.println("Radio power force: " + String(forceRadioPower));
+//  Serial.println("Radio power force: " + String(forceRadioPower));
 }

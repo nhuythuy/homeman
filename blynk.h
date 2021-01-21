@@ -42,14 +42,28 @@ char pass[] = WIFI_PW;
 char auth[] = "79pVr226PqcM-DKB7ldkaWVULxeAC5i4";
 
 BlynkTimer timer;
+
+void blynkReconnect() {
+  if (!Blynk.connected()) {
+    if (Blynk.connect()) {
+      BLYNK_LOG("Reconnected");
+    }
+    else {
+      BLYNK_LOG("Not reconnected");
+    }
+  }
+}
+
 // This function sends Arduino's up time every second to Virtual Pin (5).
 // In the app, Widget's reading frequency should be set to PUSH. This means
 // that you define how often to send data to Blynk App.
-void myTimerEvent()
+void blynkTimerEvent()
 {
+  blynkReconnect();
+
   // You can send any value at any time.
   // Please don't send more that 10 values per second.
-  Serial.println("Sending V2...");
+  Serial.println("Sending to Blynk...");
   Blynk.virtualWrite(VP_BATT_VOLTAGE, ssBatteryVolt);
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_BM_RUNTIME, bmRuntimeMinutes);
@@ -84,12 +98,13 @@ void myTimerEvent()
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_DOOR_BACK, ssLightBasementOn);
 
+  Serial.println("Sent to Blynk...");
 }
 
 void blynkSetup(){
   Serial.println("Connecting to Blynk ...");
   Blynk.begin(auth, ssid, pass);
-  timer.setInterval(1000L, myTimerEvent);
+  timer.setInterval(500L, blynkTimerEvent);
   Serial.println("Connected to Blynk !");
 }
 
