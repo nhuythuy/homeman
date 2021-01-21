@@ -87,16 +87,18 @@ void blynkTimerEvent()
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_LR_HUMIDITY, lrHumidity);
   delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(VP_DOOR_MAIN, ssDoorMain);
+  Blynk.virtualWrite(VP_DOOR_MAIN, (ssDoorMain ? 255 : 0));
   delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(VP_DOOR_BASEMENT, ssDoorBasement);
+  Blynk.virtualWrite(VP_DOOR_BASEMENT, (ssDoorBasement ? 255 : 0));
   delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(VP_DOOR_BACK, ssDoorBack);
+  Blynk.virtualWrite(VP_DOOR_BACK, (ssDoorBack ? 255 : 0));
 
   delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(VP_DOOR_BACK, ssEntranceMotion);
+  Blynk.virtualWrite(VP_ENTRANCE_MOTION, (ssEntranceMotion ? 255 : 0));
   delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(VP_DOOR_BACK, ssLightBasementOn);
+  Blynk.virtualWrite(CH_LIGHT_BASEMENT, (ssLightBasementOn ? 255 : 0));
+  delay(MESSAGE_DELAY);
+  Blynk.virtualWrite(CH_LIGHT_STAIR_BASEMENT, (ssDoorBasement ? 255 : 0)); // same as this signal
 
   Serial.println("Sent to Blynk...");
 }
