@@ -75,11 +75,11 @@ void blynkTimerEvent()
 //  Blynk.virtualWrite(VP_ENTRANCE_MOTION_DETECTED_SECONDS, entranceMotionSeconds);
 
   delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(VP_DOOR_MAIN_OPENED_MINUTES, bmTemp);
+  Blynk.virtualWrite(VP_DOOR_MAIN_OPENED_MINUTES, doorMainOpenedMinutes);
   delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(VP_DOOR_BASEMENT_OPENED_MINUTES, bmTemp);
+  Blynk.virtualWrite(VP_DOOR_BASEMENT_OPENED_MINUTES, doorBasementOpenedMinutes);
   delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(VP_DOOR_BACK_OPENED_MINUTES, bmTemp);
+  Blynk.virtualWrite(VP_DOOR_BACK_OPENED_MINUTES, doorBackOpenedMinutes);
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_LR_RUNTIME, lrRuntimeMinutes);
   delay(MESSAGE_DELAY);
