@@ -1,5 +1,5 @@
 #include "global_vars.h"
-#include <CayenneMQTTESP8266.h>
+#include <CayenneMQTTESP32.h>
 
 // Name convention: Area_SensorType_Time_Type, ex.: DOOR_MAIN_MINUTES_OPENED, LR_HUMIDITY
 

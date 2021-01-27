@@ -9,7 +9,7 @@
 #include <DHT.h>
 #include "global_vars.h"
 #include "mydevices.h"
-#include <ESP8266WiFi.h>
+#include <WiFi.h>
 #include "wifi_pw.h"
 #include "pin_define.h"
 #include <NTPClient.h>
@@ -99,7 +99,7 @@ void setup() {
   //pinMode(PIN_AC_POWER_RADIO, OUTPUT);
 
   //Serial.begin(19200);
-  Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
+//--  Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
   delay(1000);
   dht.begin();
 
@@ -171,9 +171,6 @@ void loop() {
   }
 
   delayWithErrorCheck();
-
-  if((currentHours > 8) && (currentHours < 22))
-    playMelody();
 }
 
 
@@ -209,6 +206,15 @@ void getServerTime(){
   
   Serial.print("Epoch Time: " + String(timeClient.getEpochTime()));  
   Serial.println(" - " + timeClient.getFormattedTime());
+}
+
+bool updateTemp(){
+  bmTemp = dht.readTemperature();
+// https://microcontrollerslab.com/lm35-temperature-sensor-with-esp32-web-server/
+
+// https://www.reddit.com/r/esp32/comments/gg0ic6/esp32_with_lm35_temperature_sensor/
+
+  return true;
 }
 
 bool updateHumidTempe(){

@@ -1,4 +1,4 @@
-#include <BlynkSimpleEsp8266.h>
+#include <BlynkSimpleEsp32.h>
 #include "wifi_pw.h"
 #include "global_vars.h"
 
