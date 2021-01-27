@@ -16,24 +16,26 @@ char dvClientID[] = "10df0a00-5a78-11eb-883c-638d8ce4c23d";
 #define CH_BM_HUMIDITY                      4
 #define CH_ENTRANCE_MOTION_DETECTED_SECONDS 5
 #define CH_DOOR_MAIN_OPENED_MINUTES         6
-#define CH_DOOR_BASEMENT_OPENED_MINUTES     7
-#define CH_DOOR_BACK_OPENED_MINUTES         8
+#define CH_DOOR_TO_BASEMENT_OPENED_MINUTES  7
+#define CH_DOOR_BASEMENT_OPENED_MINUTES     8
+#define CH_DOOR_BACK_OPENED_MINUTES         9
 
-#define CH_LR_RUNTIME                       11   // living room node
-#define CH_LR_TEMPERATURE                   12
-#define CH_LR_HUMIDITY                      13
+#define CH_LR_RUNTIME                       21   // living room node
+#define CH_LR_TEMPERATURE                   22
+#define CH_LR_HUMIDITY                      23
 
 // digital states
 #define CH_DOOR_MAIN                51
-#define CH_DOOR_BASEMENT            52
-#define CH_DOOR_BACK                53
-#define CH_ENTRANCE_MOTION          54
-#define CH_LIGHT_BASEMENT           55
-#define CH_LIGHT_STAIR_BASEMENT     56
-#define CH_ENTRANCE_LIGHT           57
-#define CH_POWER_RADIO              58
-#define CH_WATER_LEAK_0             59
-#define CH_WATER_LEAK_1             60
+#define CH_DOOR_TO_BASEMENT         52
+#define CH_DOOR_BASEMENT            53
+#define CH_DOOR_BACK                54
+#define CH_ENTRANCE_MOTION          55
+#define CH_LIGHT_BASEMENT           56
+#define CH_LIGHT_STAIR_BASEMENT     57
+#define CH_ENTRANCE_LIGHT           58
+#define CH_POWER_RADIO              59
+#define CH_WATER_SMOKE_BASEMENT     60
+#define CH_WATER_LEAK_1             61
 
 #define CH_FORCE_RADIO_POWER        100
 
@@ -54,6 +56,11 @@ CAYENNE_OUT(CH_DOOR_MAIN_OPENED_MINUTES){
 CAYENNE_OUT(CH_DOOR_BACK_OPENED_MINUTES){
   delay(MESSAGE_DELAY);
   Cayenne.virtualWrite(CH_DOOR_BACK_OPENED_MINUTES, doorBackOpenedMinutes, "counter");
+}
+
+CAYENNE_OUT(CH_DOOR_TO_BASEMENT_OPENED_MINUTES){
+  delay(MESSAGE_DELAY);
+  Cayenne.virtualWrite(CH_DOOR_TO_BASEMENT_OPENED_MINUTES, doorToBasementOpenedMinutes, "counter");
 }
 
 CAYENNE_OUT(CH_DOOR_BASEMENT_OPENED_MINUTES){

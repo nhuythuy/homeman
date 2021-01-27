@@ -8,8 +8,8 @@
 #define PIN_SS_TEMP                 35 // temperature sensor pin
 #define PIN_SS_DOOR_MAIN            34 // = RX, try use this as DI, together w.   Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
 
-#define PIN_SS_DOOR_BASEMENT        39 // No. 1, door to go down to basement and door to renting area
-#define PIN_SS_DOOR_BASEMENT_TRUE   36 
+#define PIN_SS_DOOR_TO_BASEMENT     39 // No. 1, door to go down to basement and door to renting area
+#define PIN_SS_DOOR_BASEMENT        36 
 #define PIN_SS_ENTRANCE_MOTION      33 // No. 2, motion sensor for entrance
 
 #define PIN_LIGHT_BASEMENT          15

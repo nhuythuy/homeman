@@ -85,7 +85,8 @@ void WIFI_Connect(){
 }
 
 void setup() {
-  //pinMode(PIN_SS_DOOR_MAIN, INPUT);
+  pinMode(PIN_SS_DOOR_MAIN, INPUT);
+  pinMode(PIN_SS_DOOR_TO_BASEMENT, INPUT);
   pinMode(PIN_SS_DOOR_BASEMENT, INPUT);
   pinMode(PIN_SS_WATER_SMOKE_BASEMENT, INPUT);
   pinMode(PIN_SS_ENTRANCE_MOTION, INPUT);
@@ -138,6 +139,11 @@ void loop() {
 
   bmRuntimeMinutes = millis() / 60000;
   
+  if(ssDoorToBasement)
+    doorToBasementOpenedMinutes = (millis() - doorToBasementOpenedAt) / 60000;
+  else
+    doorToBasementOpenedMinutes = 0;
+
   if(ssDoorBasement)
     doorBasementOpenedMinutes = (millis() - doorBasementOpenedAt) / 60000;
   else
@@ -153,7 +159,10 @@ void loop() {
   else
     entranceMotionSeconds = 0;
 
-  Serial.println("Sensors detected: " + String(doorMainOpenedMinutes) + " min - " + String(doorBasementOpenedMinutes) + " min - " + String(entranceMotionSeconds)  + " sec");
+  Serial.println("Sensors detected: " + String(doorMainOpenedMinutes) + " min - "
+  + String(doorToBasementOpenedMinutes) + " min - "
+  + String(doorBasementOpenedMinutes) + " min - "
+  + String(entranceMotionSeconds)  + " sec");
 
   Cayenne.loop();
   if(!cloudUploaded && needUploadCloud == true)
@@ -276,6 +285,18 @@ void updateSensors(){
     ssDoorMain = state;
   }
 
+  state = digitalRead(PIN_SS_DOOR_TO_BASEMENT);
+  if (state != ssDoorToBasement){
+    writeCayenneDigitalStates(CH_DOOR_TO_BASEMENT, state);
+    writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
+    if(state)
+      doorToBasementOpenedAt = millis();
+    else
+      doorToBasementOpenedAt = 0;
+
+    ssDoorToBasement = state;
+  }
+
   state = digitalRead(PIN_SS_DOOR_BASEMENT);
   if (state != ssDoorBasement){
     writeCayenneDigitalStates(CH_DOOR_BASEMENT, state);
@@ -306,9 +327,20 @@ void updateSensors(){
     ssEntranceMotion = state;
   }
 
-  ssDoorDetectors = (ssDoorBasement << 1) | (ssDoorMain << 0);
+  ssDoorDetectors = (ssDoorBasement << 1) | (ssDoorToBasement << 1) | (ssDoorMain << 0);
 
-  ssWaterLeak = 0; // digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
+  //ssWaterLeak = 0; // digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
+  state = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
+  if (state != ssWaterLeak){
+    writeCayenneDigitalStates(CH_WATER_SMOKE_BASEMENT, state);
+
+//    if(state)
+//      entranceMotionDetectedAt = millis();
+//    else
+//      entranceMotionDetectedAt = 0;
+
+    ssWaterLeak = state;
+  }
 
   ssOtherSensors = (ssEntranceMotion << 2) | (ssLightBasementOn << 1) | (ssWaterLeak << 0);
 
@@ -319,19 +351,20 @@ void updateSensors(){
   globalState = gbSensorState;
 
   Serial.println();
-  Serial.println("0. Battery volt.:     " + String(ssBatteryVolt) + " - " + String(ssBatteryVoltRaw));
-  Serial.println("1. Temperature:       " + String(bmTemp) + " deg C");
-  Serial.println("2. Humidity:          " + String(bmHumidity) + " %");
-  Serial.println("3. Door sensors:      " + String(ssDoorDetectors, BIN));
-  Serial.println("3.1. Door main:       " + String(ssDoorMain, BIN));
-  Serial.println("3.2. Door basement:   " + String(ssDoorBasement, BIN));
-  Serial.println("4. Others sensors:    " + String(ssOtherSensors, BIN));
-  Serial.println("4.1 Light basement:   " + String(ssLightBasementOn, BIN));
-  Serial.println("4.2. Entrance motion: " + String(ssEntranceMotion, BIN));
-  Serial.println("4.3. Water Smoke:     " + String(ssWaterLeak, BIN));
-  Serial.println("-- Global state:      " + String(globalState, BIN));
-  Serial.println("5. Actuators:         " + String(acActuators, BIN));
-  Serial.println("Radio power force:    " + String(forceRadioPower));
+  Serial.println("0. Battery volt.:       " + String(ssBatteryVolt) + " - " + String(ssBatteryVoltRaw));
+  Serial.println("1. Temperature:         " + String(bmTemp) + " deg C");
+  Serial.println("2. Humidity:            " + String(bmHumidity) + " %");
+  Serial.println("3. Door sensors:        " + String(ssDoorDetectors, BIN));
+  Serial.println("3.1. Door main:         " + String(ssDoorMain, BIN));
+  Serial.println("3.2. Door to basement:  " + String(ssDoorToBasement, BIN));
+  Serial.println("3.3. Door basement:     " + String(ssDoorBasement, BIN));
+  Serial.println("4. Others sensors:      " + String(ssOtherSensors, BIN));
+  Serial.println("4.1 Light basement:     " + String(ssLightBasementOn, BIN));
+  Serial.println("4.2. Entrance motion:   " + String(ssEntranceMotion, BIN));
+  Serial.println("4.3. Water Smoke:       " + String(ssWaterLeak, BIN));
+  Serial.println("-- Global state:        " + String(globalState, BIN));
+  Serial.println("5. Actuators:           " + String(acActuators, BIN));
+  Serial.println("Radio power force:      " + String(forceRadioPower));
   Serial.println();
   if(ssDoorDetectors > 0)
     forceCamPower = 1;
@@ -425,7 +458,7 @@ void updateActuator()
 
   // play melody only twice if it happens during the sleeping time 22:00 to 8:00
   // can detect door to basement OPENED/CLOSED only if the solar charger giving power from the battery
-  if((!ssDoorBasement) && ssLightBasementOn && (ssBatteryVolt > 12.0)){
+  if((!ssDoorToBasement) && ssLightBasementOn && (ssBatteryVolt > 12.0)){
     if((currentHours > 8) && (currentHours < 22)){
       Serial.println("Playing melody...");
       playMelody();

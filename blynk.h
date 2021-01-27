@@ -10,24 +10,26 @@
 #define VP_BM_HUMIDITY                      V4
 #define VP_ENTRANCE_MOTION_DETECTED_SECONDS V5
 #define VP_DOOR_MAIN_OPENED_MINUTES         V6
-#define VP_DOOR_BASEMENT_OPENED_MINUTES     V7
-#define VP_DOOR_BACK_OPENED_MINUTES         V8
+#define VP_DOOR_TO_BASEMENT_OPENED_MINUTES  V7
+#define VP_DOOR_BASEMENT_OPENED_MINUTES     V8
+#define VP_DOOR_BACK_OPENED_MINUTES         V9
 
-#define VP_LR_RUNTIME                       V11   // living room node
-#define VP_LR_TEMPERATURE                   V12
-#define VP_LR_HUMIDITY                      V13
+#define VP_LR_RUNTIME                       V21   // living room node
+#define VP_LR_TEMPERATURE                   V22
+#define VP_LR_HUMIDITY                      V23
 
 // digital states
 #define VP_DOOR_MAIN                V51
-#define VP_DOOR_BASEMENT            V52
-#define VP_DOOR_BACK                V53
-#define VP_ENTRANCE_MOTION          V54
-#define VP_LIGHT_BASEMENT           V55
-#define VP_LIGHT_STAIR_BASEMENT     V56
-#define VP_ENTRANCE_LIGHT           V57
-#define VP_POWER_RADIO              V58
-#define VP_WATER_LEAK_0             V59
-#define VP_WATER_LEAK_1             V60
+#define VP_DOOR_TO_BASEMENT         V52
+#define VP_DOOR_BASEMENT            V53
+#define VP_DOOR_BACK                V54
+#define VP_ENTRANCE_MOTION          V55
+#define VP_LIGHT_BASEMENT           V56
+#define VP_LIGHT_STAIR_BASEMENT     V57
+#define VP_ENTRANCE_LIGHT           V58
+#define VP_POWER_RADIO              V59
+#define CH_WATER_SMOKE_BASEMENT     V60
+#define VP_WATER_LEAK_1             V61
 
 #define VP_FORCE_RADIO_POWER        V100
 
@@ -77,6 +79,8 @@ void blynkTimerEvent()
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_DOOR_MAIN_OPENED_MINUTES, doorMainOpenedMinutes);
   delay(MESSAGE_DELAY);
+  Blynk.virtualWrite(VP_DOOR_TO_BASEMENT_OPENED_MINUTES, doorToBasementOpenedMinutes);
+  delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_DOOR_BASEMENT_OPENED_MINUTES, doorBasementOpenedMinutes);
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_DOOR_BACK_OPENED_MINUTES, doorBackOpenedMinutes);
@@ -89,6 +93,8 @@ void blynkTimerEvent()
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_DOOR_MAIN, (ssDoorMain ? 255 : 0));
   delay(MESSAGE_DELAY);
+  Blynk.virtualWrite(VP_DOOR_TO_BASEMENT, (ssDoorToBasement ? 255 : 0));
+  delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_DOOR_BASEMENT, (ssDoorBasement ? 255 : 0));
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_DOOR_BACK, (ssDoorBack ? 255 : 0));
@@ -98,7 +104,7 @@ void blynkTimerEvent()
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(CH_LIGHT_BASEMENT, (ssLightBasementOn ? 255 : 0));
   delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(CH_LIGHT_STAIR_BASEMENT, (ssDoorBasement ? 255 : 0)); // same as this signal
+  Blynk.virtualWrite(CH_LIGHT_STAIR_BASEMENT, (ssDoorToBasement ? 255 : 0)); // same as this signal
 
   Serial.println("Sent to Blynk...");
 }
