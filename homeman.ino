@@ -98,7 +98,7 @@ void setup() {
   pinMode(PIN_AC_POWER_LED_ENTRANCE, OUTPUT);
   //pinMode(PIN_AC_POWER_RADIO, OUTPUT);
 
-  //Serial.begin(19200);
+  Serial.begin(19200);
 //--  Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
   delay(1000);
   dht.begin();
@@ -126,10 +126,10 @@ void blinkPowerLed(){
 }
 
 void loop() {
-  MainServerComm();
+//  MainServerComm();
 
   blinkPowerLed();
-  updateHumidTempe();
+  updateTemp();
 
   getServerTime();
   blinkLed();
@@ -210,9 +210,14 @@ void getServerTime(){
 
 bool updateTemp(){
   bmTemp = dht.readTemperature();
+
 // https://microcontrollerslab.com/lm35-temperature-sensor-with-esp32-web-server/
 
 // https://www.reddit.com/r/esp32/comments/gg0ic6/esp32_with_lm35_temperature_sensor/
+
+  float valRaw = analogRead(PIN_SS_TEMP);
+  float Voltage = (valRaw / 2048.0) * 3300; // 5000 to get millivots.
+  bmTemp = Voltage * 0.1;
 
   return true;
 }

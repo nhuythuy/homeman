@@ -5,6 +5,7 @@
 #define PIN_SS_SUPPLY_VOLT          27 // battery voltage
 
 #define PIN_SS_DHT                  35 // DHT sensor pin
+#define PIN_SS_TEMP                 35 // temperature sensor pin
 #define PIN_SS_DOOR_MAIN            34 // = RX, try use this as DI, together w.   Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
 
 #define PIN_SS_DOOR_BASEMENT        39 // No. 1, door to go down to basement and door to renting area
