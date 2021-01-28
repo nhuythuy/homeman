@@ -22,7 +22,7 @@
 const char* wifiSsid = "VNNO"; // "Thuy's iPhone";
 const char* wifiPassword = WIFI_PW;
 
-#define MAX_SUPPLY_VOLT   16.157    // volt: 10K(9910)+39K(38610) --> 3.3*(9910+38610)/9910 = 16.1570131181 V 
+#define MAX_SUPPLY_VOLT   16.054    // volt: 10K(9990)+39K(38610) --> 3.3*(9990+38610)/9990 = 16.054 V 
 #define DELAY_LONG        5000      // 5,0 seconds
 #define DELAY_SHORT       2500      // 2,5 seconds
 #define MOTION_DELAY      0*60*1000 // 1 mins delay
