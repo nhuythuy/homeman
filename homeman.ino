@@ -218,13 +218,7 @@ void getServerTime(){
 }
 
 bool updateTemp(){
-  bmTemp = dht.readTemperature();
-
-// https://microcontrollerslab.com/lm35-temperature-sensor-with-esp32-web-server/
-
-// https://www.reddit.com/r/esp32/comments/gg0ic6/esp32_with_lm35_temperature_sensor/
-
-  float valRaw = analogRead(PIN_SS_TEMP);
+  int valRaw = analogRead(PIN_SS_TEMP);
   float Voltage = (valRaw / 2048.0) * 3300; // 5000 to get millivots.
   bmTemp = Voltage * 0.1;
 
@@ -274,6 +268,10 @@ void updateSensors(){
   ssBatteryVoltRaw = analogRead(PIN_SS_SUPPLY_VOLT);
   ssBatteryVolt = MAX_SUPPLY_VOLT * ssBatteryVoltRaw / 1023;
 
+  int valRaw = analogRead(PIN_SS_SUPPLY_VOLT);
+  float Voltage = (valRaw / 2048.0) * 3300; // 5000 to get millivots.
+  Serial.println("RAW" + String(valRaw) + " - " + String(Voltage));
+  
   state = digitalRead(PIN_SS_DOOR_MAIN);
   if (state != ssDoorMain){
     writeCayenneDigitalStates(CH_DOOR_MAIN, state);
