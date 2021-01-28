@@ -28,7 +28,6 @@ const char* wifiPassword = WIFI_PW;
 #define MOTION_DELAY      0*60*1000 // 1 mins delay
 
 DHT dht(PIN_SS_DHT, DHT11, 15);
-WiFiClient client;
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "time.nist.gov");
@@ -127,7 +126,7 @@ void blinkPowerLed(){
 }
 
 void loop() {
-//  MainServerComm();
+  MainServerComm();
 
   blinkPowerLed();
   updateTemp();
@@ -371,7 +370,9 @@ void updateSensors(){
 }
 
 void MainServerComm(){
-  clientHome.connect(serverHome, 80);   // Connection to the server
+  if(!clientHome.connect(serverHome, 80))   // Connection to the server
+    return;
+
   digitalWrite(PIN_LED, LOW);       // to show the communication only (inverted logic)
   Serial.println("Connecting to server (Living room)");
 //  clientHome.println("Hello Home server! Are you sleeping?\r");  // sends the message to the server
@@ -411,7 +412,6 @@ void MainServerComm(){
 
   clientHome.flush();
   digitalWrite(PIN_LED, HIGH);
-
 }
 
 // In 3.0.0 there will be a getDay() function.
