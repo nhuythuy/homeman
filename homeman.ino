@@ -370,8 +370,10 @@ void updateSensors(){
 }
 
 void MainServerComm(){
-  if(!clientHome.connect(serverHome, 80))   // Connection to the server
+  if(!clientHome.connect(serverHome, 80)){
+    Serial.println("Cannot connect to server (Living room)!");
     return;
+  }
 
   digitalWrite(PIN_LED, LOW);       // to show the communication only (inverted logic)
   Serial.println("Connecting to server (Living room)");
