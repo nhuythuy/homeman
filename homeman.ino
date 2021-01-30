@@ -1,6 +1,5 @@
 // May 14 2020
 // Author: Thuy Nguyen
-// NOTE: Disconnect Door main sensor cable to upload new code, otherwise not possible
 
 // Ref.:
 // Website: www.arduinesp.com
@@ -17,17 +16,21 @@
 #include "melody.h"
 #include "blynk.h"
 #include <ArduinoJson.h>
+#include <Wire.h>
+#include "ds1621.h"
+#include <Adafruit_ADS1015.h>
 
+const char* wifiSsid = "THUY"; // "VNNO"; // "Thuy";
+const char* wifiPassword = "thuy2105";//WIFI_PW;
 
-const char* wifiSsid = "VNNO"; // "Thuy's iPhone";
-const char* wifiPassword = WIFI_PW;
-
-#define MAX_SUPPLY_VOLT   16.054    // volt: 10K(9990)+39K(38610) --> 3.3*(9990+38610)/9990 = 16.054 V 
-#define DELAY_LONG        5000      // 5,0 seconds
-#define DELAY_SHORT       2500      // 2,5 seconds
-#define MOTION_DELAY      0*60*1000 // 1 mins delay
+#define MAX_SUPPLY_VOLT   1.22*16.054          // volt: 10K(9990)+39K(38610) --> 3.3*(9990+38610)/9990 = 16.054 V 
+#define SUPPLY_VOLT_RATIO 1.22*16.054/1023.0 // 10 bit ADC, 1.18 (calibration factor) 
+#define DELAY_LONG        5000            // 5,0 seconds
+#define DELAY_SHORT       2500            // 2,5 seconds
+#define MOTION_DELAY      0*60*1000       // 1 mins delay
 
 DHT dht(PIN_SS_DHT, DHT11, 15);
+Adafruit_ADS1115 ads(0x49);
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "time.nist.gov");
@@ -92,7 +95,7 @@ void setup() {
   pinMode(PIN_LIGHT_BASEMENT, INPUT);
 //  attachInterrupt(digitalPinToInterrupt(PIN_SS_ENTRANCE_MOTION), detectsMovement, RISING);
 
-
+  analogReadResolution(10);
   pinMode(PIN_LED, OUTPUT);
   pinMode(PIN_TONE_MELODY, OUTPUT);
   pinMode(PIN_AC_POWER_LED_ENTRANCE, OUTPUT);
@@ -102,6 +105,9 @@ void setup() {
 //--  Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
   delay(1000);
   dht.begin();
+  ads.setGain(GAIN_ONE);
+  ads.begin();
+  ds1621Setup();
 
   WIFI_Connect();
   blynkSetup();
@@ -126,7 +132,7 @@ void blinkPowerLed(){
 }
 
 void loop() {
-  MainServerComm();
+//  MainServerComm();
 
   blinkPowerLed();
   updateTemp();
@@ -217,9 +223,11 @@ void getServerTime(){
 }
 
 bool updateTemp(){
-  int valRaw = analogRead(PIN_SS_TEMP);
-  float Voltage = (valRaw / 2048.0) * 3300; // 5000 to get millivots.
-  bmTemp = Voltage * 0.1;
+//  int valRaw = analogRead(PIN_SS_TEMP);
+//  float volt = (valRaw / 1023.0) * 3.3;
+//  bmTemp = 100* volt;
+  bmTemp = ds1621GetTemperature();
+  Serial.println("Temperature: " + String(bmTemp, 1));
 
   return true;
 }
@@ -265,11 +273,24 @@ void updateSensors(){
   bool state;
   
   ssBatteryVoltRaw = analogRead(PIN_SS_SUPPLY_VOLT);
-  ssBatteryVolt = MAX_SUPPLY_VOLT * ssBatteryVoltRaw / 1023;
+  ssBatteryVolt = SUPPLY_VOLT_RATIO * ssBatteryVoltRaw;
 
   int valRaw = analogRead(PIN_SS_SUPPLY_VOLT);
-  float Voltage = (valRaw / 2048.0) * 3300; // 5000 to get millivots.
-  Serial.println("RAW" + String(valRaw) + " - " + String(Voltage));
+  float Voltage = (valRaw / 1023.0) * 3.3;
+  Serial.println("RAW: " + String(valRaw) + " - " + String(Voltage));
+
+  int16_t adc0, adc1, adc2, adc3;
+
+  adc0 = ads.readADC_SingleEnded(0);
+  adc1 = ads.readADC_SingleEnded(1);
+  adc2 = ads.readADC_SingleEnded(2);
+  adc3 = ads.readADC_SingleEnded(3);
+  Serial.println("AIN0: " + String(adc0) + " - " + String(4.096*adc0/65535));
+  Serial.println("AIN1: " + String(adc1) + " - " + String(4.096*adc1/65535));
+  Serial.println("AIN2: " + String(adc2) + " - " + String(4.096*adc2/65535));
+  Serial.println("AIN3: " + String(adc3) + " - " + String(4.096*adc3/65535));
+  
+  Serial.println(" ");
   
   state = digitalRead(PIN_SS_DOOR_MAIN);
   if (state != ssDoorMain){
