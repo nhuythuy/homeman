@@ -5,6 +5,10 @@
 // Website: www.arduinesp.com
 // https://learn.adafruit.com/dht/using-a-dhtxx-sensor
 
+#define ENABLE_WIFI
+#define ENABLE_BLYNK
+#define ENABLE_CAYENNE
+
 #include <DHT.h>
 #include "global_vars.h"
 #include "mydevices.h"
@@ -22,6 +26,7 @@
 
 const char* wifiSsid = "THUY"; // "VNNO"; // "Thuy";
 const char* wifiPassword = "thuy2105";//WIFI_PW;
+
 
 #define MAX_SUPPLY_VOLT   1.22*16.054          // volt: 10K(9990)+39K(38610) --> 3.3*(9990+38610)/9990 = 16.054 V 
 #define SUPPLY_VOLT_RATIO 1.22*16.054/1023.0 // 10 bit ADC, 1.18 (calibration factor) 
@@ -109,8 +114,9 @@ void setup() {
   ads.begin();
   ds1621Setup();
 
+#ifdef ENABLE_WIFI
   WIFI_Connect();
-  blynkSetup();
+#endif
   timeClient.begin(); // Initialize a NTPClient to get time
 // Set offset time in seconds to adjust for your timezone, ex.: GMT +1 = 3600, GMT +8 = 28800, GMT -1 = -3600, GMT 0 = 0
   timeClient.setTimeOffset(3600); // Norway GMT + 1
@@ -132,12 +138,13 @@ void blinkPowerLed(){
 }
 
 void loop() {
+#ifdef ENABLE_WIFI
 //  MainServerComm();
-
+  getServerTime();
+#endif
   blinkPowerLed();
   updateTemp();
 
-  getServerTime();
   blinkLed();
   updateSensors();
   updateActuator();
@@ -169,7 +176,10 @@ void loop() {
   + String(doorBasementOpenedMinutes) + " min - "
   + String(entranceMotionSeconds)  + " sec");
 
+#ifdef ENABLE_WIFI
   Cayenne.loop();
+  blynkLoop();
+#endif
   if(!cloudUploaded && needUploadCloud == true)
   {
     if(cayenneCounter++ > CH_BM_HUMIDITY) // last channel
@@ -177,13 +187,13 @@ void loop() {
     cloudUploaded = true;
   }
 
-  blynkLoop();
+#ifdef ENABLE_WIFI
   if(WiFi.status() == WL_DISCONNECTED){
     Serial.println("WiFi connection lost! Reconnecting...");
     WiFi.disconnect();
     WIFI_Connect();    
   }
-
+#endif
   delayWithErrorCheck();
 }
 
@@ -264,7 +274,9 @@ ICACHE_RAM_ATTR void detectsMovement() {
 
     startMotionTimer = true;
     Serial.println("Light entrance: ON");
+#ifdef ENABLE_WIFI
     writeCayenneDigitalStates(CH_ENTRANCE_LIGHT, true);
+#endif
     lastTrigger = millis();
   }
 }
@@ -294,7 +306,9 @@ void updateSensors(){
   
   state = digitalRead(PIN_SS_DOOR_MAIN);
   if (state != ssDoorMain){
+#ifdef ENABLE_WIFI
     writeCayenneDigitalStates(CH_DOOR_MAIN, state);
+#endif
     if(state)
       doorMainOpenedAt = millis();
     else
@@ -305,8 +319,10 @@ void updateSensors(){
 
   state = digitalRead(PIN_SS_DOOR_TO_BASEMENT);
   if (state != ssDoorToBasement){
+#ifdef ENABLE_WIFI
     writeCayenneDigitalStates(CH_DOOR_TO_BASEMENT, state);
     writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
+#endif
     if(state)
       doorToBasementOpenedAt = millis();
     else
@@ -317,8 +333,10 @@ void updateSensors(){
 
   state = digitalRead(PIN_SS_DOOR_BASEMENT);
   if (state != ssDoorBasement){
+#ifdef ENABLE_WIFI
     writeCayenneDigitalStates(CH_DOOR_BASEMENT, state);
     writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
+#endif
     if(state)
       doorBasementOpenedAt = millis();
     else
@@ -329,14 +347,17 @@ void updateSensors(){
 
   state = !digitalRead(PIN_LIGHT_BASEMENT);
   if (state != ssLightBasementOn){
+#ifdef ENABLE_WIFI
     writeCayenneDigitalStates(CH_LIGHT_BASEMENT, state);
+#endif
     ssLightBasementOn = state;
   }
 
   state = digitalRead(PIN_SS_ENTRANCE_MOTION);
   if (state != ssEntranceMotion){
+#ifdef ENABLE_WIFI
     writeCayenneDigitalStates(CH_ENTRANCE_MOTION, state);
-
+#endif
     if(state)
       entranceMotionDetectedAt = millis();
     else
@@ -350,8 +371,9 @@ void updateSensors(){
   //ssWaterLeak = 0; // digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
   state = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
   if (state != ssWaterLeak){
+#ifdef ENABLE_WIFI
     writeCayenneDigitalStates(CH_WATER_SMOKE_BASEMENT, state);
-
+#endif
 //    if(state)
 //      entranceMotionDetectedAt = millis();
 //    else
@@ -421,7 +443,9 @@ void MainServerComm(){
 
   bool state = doc["ssDoorBack"];
   if (state != ssDoorBack){
+#ifdef ENABLE_WIFI
     writeCayenneDigitalStates(CH_DOOR_BACK, state);
+#endif
     ssDoorBack = state;
   }
 
@@ -450,12 +474,16 @@ void powerRadio(){
       || ((currentDay > 0) && (currentDay < 6) && (currentHour > 9)))){  // weekdays
     //digitalWrite(PIN_AC_POWER_RADIO, true);
     //Serial.println("Radio power: ON");
+#ifdef ENABLE_WIFI
     writeCayenneDigitalStates(CH_POWER_RADIO, true);
+#endif
   }
   else{
     //digitalWrite(PIN_AC_POWER_RADIO, false);
     //Serial.println("Radio power: OFF");
+#ifdef ENABLE_WIFI
     writeCayenneDigitalStates(CH_POWER_RADIO, false);
+#endif
   }
 }
 
@@ -469,8 +497,9 @@ void updateActuator()
     //digitalWrite(PIN_AC_POWER_LED_ENTRANCE, LOW);
     acEntranceLed = false;
     Serial.println("Light entrance: OFF");
+#ifdef ENABLE_WIFI
     writeCayenneDigitalStates(CH_ENTRANCE_LIGHT, false);
-
+#endif
     acActuators &= ~(1 << 0);
     startMotionTimer = false;
   }
