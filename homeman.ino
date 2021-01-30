@@ -28,8 +28,8 @@ const char* wifiSsid = "THUY"; // "VNNO"; // "Thuy";
 const char* wifiPassword = "thuy2105";//WIFI_PW;
 
 #define ADS1115_VOLT_STEP 0.125
-#define MAX_SUPPLY_VOLT   1.22*16.054          // volt: 10K(9990)+39K(38610) --> 3.3*(9990+38610)/9990 = 16.054 V 
-#define SUPPLY_VOLT_RATIO 1.22*16.054/1023.0 // 10 bit ADC, 1.18 (calibration factor) 
+#define MAX_SUPPLY_VOLT   16.054          // volt: 10K(9990)+39K(38610) --> 3.3*(9990+38610)/9990 = 16.054 V 
+#define SUPPLY_VOLT_RATIO 16.054/1023.0 // 10 bit ADC, 1.18 (calibration factor) 
 #define DELAY_LONG        5000            // 5,0 seconds
 #define DELAY_SHORT       2500            // 2,5 seconds
 #define MOTION_DELAY      0*60*1000       // 1 mins delay
@@ -39,6 +39,8 @@ Adafruit_ADS1115 ads(0x49);
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "time.nist.gov");
+
+char* DayOfWeek[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
 bool needUploadCloud = false;
 bool cloudUploaded = false;
@@ -75,6 +77,7 @@ void WIFI_Connect(){
   }
 
   delay(500);
+  Serial.println();
   Serial.println("Connected to wifi");
   Serial.print("Status: ");   Serial.println(WiFi.status());    // Network parameters
   Serial.print("IP: ");       Serial.println(WiFi.localIP());
@@ -292,13 +295,13 @@ void updateSensors(){
 
   ssBatteryVoltRaw = analogRead(PIN_SS_SUPPLY_VOLT);
   ssBatteryVolt = SUPPLY_VOLT_RATIO * ssBatteryVoltRaw;
+//  ssBatteryVolt = MAX_SUPPLY_VOLT * ssBatteryVoltRaw;
 
   int valRaw = analogRead(35);
   float Voltage = (valRaw / 1023.0) * 3.3;
-  Serial.println("RAW: " + String(valRaw) + " - " + String(Voltage));
+  Serial.println("RAW: " + String(valRaw) + " - " + String(Voltage) + " - " + String(ssBatteryVolt));
 
   int16_t adc0, adc1, adc2, adc3;
-
   adc0 = ads.readADC_SingleEnded(0);
   adc1 = ads.readADC_SingleEnded(1);
   adc2 = ads.readADC_SingleEnded(2);
@@ -307,8 +310,7 @@ void updateSensors(){
   Serial.println("AIN1: " + String(adc1) + " - " + String(ADS1115_VOLT_STEP*adc1));
   Serial.println("AIN2: " + String(adc2) + " - " + String(ADS1115_VOLT_STEP*adc2));
   Serial.println("AIN3: " + String(adc3) + " - " + String(ADS1115_VOLT_STEP*adc3));
-  
-  Serial.println(" ");
+  Serial.println();
   
   state = digitalRead(PIN_SS_DOOR_MAIN);
   if (state != ssDoorMain){
@@ -472,7 +474,8 @@ void MainServerComm(){
 void powerRadio(){
   int currentDay = timeClient.getDay();
   int currentHour = timeClient.getHours();
-  Serial.println("Current day:  " + String(currentDay) + ", hour: " + String(currentHour));
+  Serial.println("Current day:  " + String(DayOfWeek[currentDay]) + " (" + String(currentDay) + "), hour: "
+    + String(currentHour));
 
   if ((ssBatteryVolt > 13.0) // only if battery is full enough
     && (currentHour < 20)    // no later than 19:00
