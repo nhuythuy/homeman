@@ -303,10 +303,10 @@ void updateSensors(){
   adc1 = ads.readADC_SingleEnded(1);
   adc2 = ads.readADC_SingleEnded(2);
   adc3 = ads.readADC_SingleEnded(3);
-  Serial.println("AIN0: " + String(adc0) + " - " + String(4.096*adc0/65535) + " - " + String(ADS1115_VOLT_STEP*adc0));
-  Serial.println("AIN1: " + String(adc1) + " - " + String(4.096*adc1/65535) + " - " + String(ADS1115_VOLT_STEP*adc1));
-  Serial.println("AIN2: " + String(adc2) + " - " + String(4.096*adc2/65535) + " - " + String(ADS1115_VOLT_STEP*adc2));
-  Serial.println("AIN3: " + String(adc3) + " - " + String(4.096*adc3/65535) + " - " + String(ADS1115_VOLT_STEP*adc3));
+  Serial.println("AIN0: " + String(adc0) + " - " + String(ADS1115_VOLT_STEP*adc0));
+  Serial.println("AIN1: " + String(adc1) + " - " + String(ADS1115_VOLT_STEP*adc1));
+  Serial.println("AIN2: " + String(adc2) + " - " + String(ADS1115_VOLT_STEP*adc2));
+  Serial.println("AIN3: " + String(adc3) + " - " + String(ADS1115_VOLT_STEP*adc3));
   
   Serial.println(" ");
   
