@@ -37,8 +37,8 @@
 
 #ifndef WIFI_INFO
 #define WIFI_INFO
-char ssid[] = "VNNO";
-char pass[] = WIFI_PW;
+char ssid[] = "THUY"; // "VNNO";
+char pass[] = "thuy2105"; // WIFI_PW;
 #endif
 
 char auth[] = "79pVr226PqcM-DKB7ldkaWVULxeAC5i4";

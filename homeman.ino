@@ -27,7 +27,7 @@
 const char* wifiSsid = "THUY"; // "VNNO"; // "Thuy";
 const char* wifiPassword = "thuy2105";//WIFI_PW;
 
-
+#define ADS1115_VOLT_STEP 0.125
 #define MAX_SUPPLY_VOLT   1.22*16.054          // volt: 10K(9990)+39K(38610) --> 3.3*(9990+38610)/9990 = 16.054 V 
 #define SUPPLY_VOLT_RATIO 1.22*16.054/1023.0 // 10 bit ADC, 1.18 (calibration factor) 
 #define DELAY_LONG        5000            // 5,0 seconds
@@ -55,7 +55,7 @@ WiFiClient clientHome;
 
 void WIFI_Connect(){
   Serial.println();
-  Serial.println("MAC: " + WiFi.macAddress());
+  Serial.println("MAC: " + WiFi.macAddress()); Serial.println();
   Serial.println("Connecting to " + String(wifiSsid));
 
   WiFi.begin(wifiSsid, wifiPassword);
@@ -88,7 +88,9 @@ void WIFI_Connect(){
   Serial.println("Cayenne connecting...");
   Cayenne.begin(dvUsername, dvPassword, dvClientID, wifiSsid, wifiPassword);
   Serial.println("Cayenne connected!");
-  delay(1000); 
+  delay(500);
+  blynkSetup();
+  delay(500);
 }
 
 void setup() {
@@ -139,7 +141,7 @@ void blinkPowerLed(){
 
 void loop() {
 #ifdef ENABLE_WIFI
-//  MainServerComm();
+  MainServerComm();
   getServerTime();
 #endif
   blinkPowerLed();
@@ -177,8 +179,12 @@ void loop() {
   + String(entranceMotionSeconds)  + " sec");
 
 #ifdef ENABLE_WIFI
+#ifdef ENABLE_CAYENNE
   Cayenne.loop();
+#endif
+#ifdef ENABLE_BLYNK
   blynkLoop();
+#endif
 #endif
   if(!cloudUploaded && needUploadCloud == true)
   {
@@ -283,11 +289,11 @@ ICACHE_RAM_ATTR void detectsMovement() {
 
 void updateSensors(){
   bool state;
-  
+
   ssBatteryVoltRaw = analogRead(PIN_SS_SUPPLY_VOLT);
   ssBatteryVolt = SUPPLY_VOLT_RATIO * ssBatteryVoltRaw;
 
-  int valRaw = analogRead(PIN_SS_SUPPLY_VOLT);
+  int valRaw = analogRead(35);
   float Voltage = (valRaw / 1023.0) * 3.3;
   Serial.println("RAW: " + String(valRaw) + " - " + String(Voltage));
 
@@ -297,10 +303,10 @@ void updateSensors(){
   adc1 = ads.readADC_SingleEnded(1);
   adc2 = ads.readADC_SingleEnded(2);
   adc3 = ads.readADC_SingleEnded(3);
-  Serial.println("AIN0: " + String(adc0) + " - " + String(4.096*adc0/65535));
-  Serial.println("AIN1: " + String(adc1) + " - " + String(4.096*adc1/65535));
-  Serial.println("AIN2: " + String(adc2) + " - " + String(4.096*adc2/65535));
-  Serial.println("AIN3: " + String(adc3) + " - " + String(4.096*adc3/65535));
+  Serial.println("AIN0: " + String(adc0) + " - " + String(4.096*adc0/65535) + " - " + String(ADS1115_VOLT_STEP*adc0));
+  Serial.println("AIN1: " + String(adc1) + " - " + String(4.096*adc1/65535) + " - " + String(ADS1115_VOLT_STEP*adc1));
+  Serial.println("AIN2: " + String(adc2) + " - " + String(4.096*adc2/65535) + " - " + String(ADS1115_VOLT_STEP*adc2));
+  Serial.println("AIN3: " + String(adc3) + " - " + String(4.096*adc3/65535) + " - " + String(ADS1115_VOLT_STEP*adc3));
   
   Serial.println(" ");
   
