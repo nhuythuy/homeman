@@ -13,7 +13,7 @@
 #include "global_vars.h"
 #include "mydevices.h"
 #include <WiFi.h>
-#include "wifi_pw.h"
+#include "wifi_cloud.h"
 #include "pin_define.h"
 #include <NTPClient.h>
 #include <WiFiUdp.h>
@@ -24,8 +24,8 @@
 #include "ds1621.h"
 #include <Adafruit_ADS1015.h>
 
-const char* wifiSsid = "THUY"; // "VNNO"; // "Thuy";
-const char* wifiPassword = "thuy2105";//WIFI_PW;
+const char* wifiSsid = WIFI_AP;
+const char* wifiPassword = WIFI_PW;
 
 #define ADS1115_VOLT_STEP 0.125
 #define MAX_SUPPLY_VOLT   16.054          // volt: 10K(9990)+39K(38610) --> 3.3*(9990+38610)/9990 = 16.054 V 

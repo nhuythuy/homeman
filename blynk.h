@@ -1,5 +1,5 @@
 #include <BlynkSimpleEsp32.h>
-#include "wifi_pw.h"
+#include "wifi_cloud.h"
 #include "global_vars.h"
 
 #define MESSAGE_DELAY                       200
@@ -37,11 +37,11 @@
 
 #ifndef WIFI_INFO
 #define WIFI_INFO
-char ssid[] = "THUY"; // "VNNO";
-char pass[] = "thuy2105"; // WIFI_PW;
+char ssid[] = WIFI_AP;
+char pass[] = WIFI_PW;
 #endif
 
-char auth[] = "79pVr226PqcM-DKB7ldkaWVULxeAC5i4";
+char auth[] = BLYNK_PW;
 
 BlynkTimer timer;
 

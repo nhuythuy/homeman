@@ -1,12 +1,13 @@
 #include "global_vars.h"
+#include "wifi_cloud.h"
 #include <CayenneMQTTESP32.h>
 
 // Name convention: Area_SensorType_Time_Type, ex.: DOOR_MAIN_MINUTES_OPENED, LR_HUMIDITY
 
 // Cayenne authentication info. This should be obtained from the Cayenne Dashboard.
-char dvUsername[] = "3541f5b0-d9b3-11ea-883c-638d8ce4c23d";
-char dvPassword[] = "0573b7bfc25b7afb4042b3bb93ed8f16a6dd6fc2";
-char dvClientID[] = "10df0a00-5a78-11eb-883c-638d8ce4c23d";
+char dvUsername[] = CAYENNE_USERNAME;
+char dvPassword[] = CAYENNE_PASSWORD;
+char dvClientID[] = CAYENNE_CLIENT_ID;
 
 #define MESSAGE_DELAY                       200
 
