@@ -33,10 +33,7 @@ void getServerTime(){
     needUploadCloud = false;
   }
   
-  Serial.print("Epoch Time: " + String(timeClient.getEpochTime()) + " - " + timeClient.getFormattedTime());  
-  Serial.println(" Today:  " + String(DayOfWeek[currentDay]) + " (" + String(currentDay) + "), hour: "
-    + String(currentHour));
-
+  Serial.println("Today:  " + String(DayOfWeek[currentDay]) + " (" + String(currentDay) + ") - " + timeClient.getFormattedTime());  
 }
 
 #endif
