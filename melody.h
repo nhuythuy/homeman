@@ -1,5 +1,8 @@
 #include "pitches.h"  // for melody
 
+#ifndef MELODY
+#define MELODY
+
 // notes in the melody:
 int melody[] = { NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4 };
 
@@ -26,3 +29,5 @@ void playMelody(){
 //--    noTone(PIN_TONE_MELODY); // stop the tone playing:
   }  
 }
+
+#endif

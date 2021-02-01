@@ -1,5 +1,8 @@
 #include <Wire.h>            // include Arduino Wire library (required for I2C devices)
 
+#ifndef DS1621
+#define DS1621
+
 // A2, A1 & A0 connected to GND --> 1001000 = 0x48
 #define DS1621_ADDRESS  0x48
 
@@ -27,3 +30,5 @@ float ds1621GetTemperature() {
   // convert raw temperature value to tenths °C then to temp.
   return (raw_t * 10 / 2.0) / 10;
 }
+
+#endif

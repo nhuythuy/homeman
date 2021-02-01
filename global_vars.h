@@ -1,6 +1,14 @@
 #ifndef GLOBAL_VARS
 #define GLOBAL_VARS
 
+#define DELAY_LONG        5000            // 5,0 seconds
+#define DELAY_SHORT       2500            // 2,5 seconds
+
+long delayMs = DELAY_SHORT;
+
+bool PowerLedState = false;
+int PowerLedDelay = 1000;
+
 long globalState = 0;
 int debugCounter = 0;
 int bmHeartbeat = 0;
@@ -44,10 +52,18 @@ int doorBasementOpenedAt = 0;
 int doorBasementOpenedMinutes = 0;
 int doorBackOpenedMinutes = 0;
 
+unsigned long timeNow = millis();
+unsigned long lastTrigger = millis();
+boolean startMotionTimer = false;
+
 int playMelodyCounter = 0;
-int currentHours = -1;
+int currentHour = -1;
+int currentDay = -1;
 
 int entranceMotionDetectedAt = 0;
 int entranceMotionSeconds = 0;
+
+bool needUploadCloud = false;
+bool cloudUploaded = false;
 
 #endif

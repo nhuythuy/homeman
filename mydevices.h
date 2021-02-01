@@ -4,6 +4,9 @@
 
 // Name convention: Area_SensorType_Time_Type, ex.: DOOR_MAIN_MINUTES_OPENED, LR_HUMIDITY
 
+#ifndef MY_DEVICES
+#define MY_DEVICES
+
 // Cayenne authentication info. This should be obtained from the Cayenne Dashboard.
 char dvUsername[] = CAYENNE_USERNAME;
 char dvPassword[] = CAYENNE_PASSWORD;
@@ -114,3 +117,5 @@ CAYENNE_IN(CH_FORCE_RADIO_POWER)
   forceRadioPower = getValue.asInt(); // Get value as integer
 //  Serial.println("Radio power force: " + String(forceRadioPower));
 }
+
+#endif

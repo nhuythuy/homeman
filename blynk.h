@@ -2,6 +2,9 @@
 #include "wifi_cloud.h"
 #include "global_vars.h"
 
+#ifndef BLYNK
+#define BLYNK
+
 #define MESSAGE_DELAY                       200
 
 #define VP_BATT_VOLTAGE                     V1
@@ -120,3 +123,5 @@ void blynkLoop(){
   Blynk.run();
   timer.run(); // Initiates BlynkTimer
 }
+
+#endif

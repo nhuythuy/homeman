@@ -9,47 +9,23 @@
 #define ENABLE_BLYNK
 #define ENABLE_CAYENNE
 
-#include <DHT.h>
-#include "global_vars.h"
-#include "mydevices.h"
 #include <WiFi.h>
+#include "sensors.h"
+#include "actuators.h"
+#include "mydevices.h"
+#include "datetime.h"
 #include "wifi_cloud.h"
 #include "pin_define.h"
-#include <NTPClient.h>
 #include <WiFiUdp.h>
 #include "melody.h"
 #include "blynk.h"
 #include <ArduinoJson.h>
-#include <Wire.h>
-#include "ds1621.h"
-#include <Adafruit_ADS1015.h>
+
 
 const char* wifiSsid = WIFI_AP;
 const char* wifiPassword = WIFI_PW;
 
-#define ADS1115_VOLT_STEP 0.125
-#define MAX_SUPPLY_VOLT   16.054          // volt: 10K(9990)+39K(38610) --> 3.3*(9990+38610)/9990 = 16.054 V 
-#define SUPPLY_VOLT_RATIO 16.054/1023.0 // 10 bit ADC, 1.18 (calibration factor) 
-#define DELAY_LONG        5000            // 5,0 seconds
-#define DELAY_SHORT       2500            // 2,5 seconds
-#define MOTION_DELAY      0*60*1000       // 1 mins delay
 
-DHT dht(PIN_SS_DHT, DHT11, 15);
-Adafruit_ADS1115 ads(0x49);
-
-WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "time.nist.gov");
-
-char* DayOfWeek[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-
-bool needUploadCloud = false;
-bool cloudUploaded = false;
-
-long delayMs = DELAY_LONG;
-
-unsigned long timeNow = millis();
-unsigned long lastTrigger = millis();
-boolean startMotionTimer = false;
 
 IPAddress serverHome(192,168,1,5);          // the fix IP address of the server
 WiFiClient clientHome;
@@ -97,50 +73,21 @@ void WIFI_Connect(){
 }
 
 void setup() {
-  pinMode(PIN_SS_DOOR_MAIN, INPUT);
-  pinMode(PIN_SS_DOOR_TO_BASEMENT, INPUT);
-  pinMode(PIN_SS_DOOR_BASEMENT, INPUT);
-  pinMode(PIN_SS_WATER_SMOKE_BASEMENT, INPUT);
-  pinMode(PIN_SS_ENTRANCE_MOTION, INPUT);
-  pinMode(PIN_LIGHT_BASEMENT, INPUT);
-//  attachInterrupt(digitalPinToInterrupt(PIN_SS_ENTRANCE_MOTION), detectsMovement, RISING);
+  setupSensors();
 
-  analogReadResolution(10);
-  pinMode(PIN_LED, OUTPUT);
-  pinMode(PIN_TONE_MELODY, OUTPUT);
-  pinMode(PIN_AC_POWER_LED_ENTRANCE, OUTPUT);
-  //pinMode(PIN_AC_POWER_RADIO, OUTPUT);
+  setupActuators();
 
   Serial.begin(19200);
 //--  Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
   delay(1000);
-  dht.begin();
-  ads.setGain(GAIN_ONE);
-  ads.begin();
-  ds1621Setup();
 
 #ifdef ENABLE_WIFI
   WIFI_Connect();
+  setupDateTime();
 #endif
-  timeClient.begin(); // Initialize a NTPClient to get time
-// Set offset time in seconds to adjust for your timezone, ex.: GMT +1 = 3600, GMT +8 = 28800, GMT -1 = -3600, GMT 0 = 0
-  timeClient.setTimeOffset(3600); // Norway GMT + 1
 }
 
-bool PowerLedState = false;
-int PowerLedDelay = 1000;
 
-void blinkPowerLed(){
-  PowerLedDelay += 500;
-  if(PowerLedDelay > 5000)
-    PowerLedDelay = 1000;
-
-  for(int i = 0; i < 20; i++){
-    PowerLedState = !PowerLedState;
-    digitalWrite(PIN_AC_POWER_LED_ENTRANCE, PowerLedState);
-    delay(PowerLedDelay);
-  }
-}
 
 void loop() {
 #ifdef ENABLE_WIFI
@@ -206,73 +153,6 @@ void loop() {
   delayWithErrorCheck();
 }
 
-
-void blinkLed(){
-    Serial.print("-");
-    if(debugCounter++ > 80)
-    {
-      debugCounter = 0;
-      Serial.println("!");
-    }
-
-  digitalWrite(PIN_LED, false);
-  delay(1000);
-  digitalWrite(PIN_LED, true);
-  delay(1000);
-}
-
-
-void getServerTime(){
-  Serial.println();
-  timeClient.update();
-  currentHours = timeClient.getHours();
-  int minutes = timeClient.getMinutes();
-  int seconds = timeClient.getSeconds();
-  
-  if((minutes % 1) == 0) // to send every 1 minutes
-    needUploadCloud = true;
-  else
-  {
-    cloudUploaded = false;
-    needUploadCloud = false;
-  }
-  
-  Serial.print("Epoch Time: " + String(timeClient.getEpochTime()));  
-  Serial.println(" - " + timeClient.getFormattedTime());
-}
-
-bool updateTemp(){
-//  int valRaw = analogRead(PIN_SS_TEMP);
-//  float volt = (valRaw / 1023.0) * 3.3;
-//  bmTemp = 100* volt;
-  bmTemp = ds1621GetTemperature();
-  Serial.println("Temperature: " + String(bmTemp, 1));
-
-  return true;
-}
-
-bool updateHumidTempe(){
-  bmHumidity = dht.readHumidity();
-  bmTemp = dht.readTemperature();
-  if (isnan(bmHumidity) || isnan(bmTemp)) {
-    Serial.println("Failed to read from DHT sensor!");
-
-    delayWithErrorCheck();
-    bmHumidity = -100;
-    bmTemp = -100;
-    return false;
-  }
-
-  return true;
-}
-
-void delayWithErrorCheck(){
-    if(globalState > 0)
-    blinkLed();
-  else
-    delay(delayMs);
-}
-
 ICACHE_RAM_ATTR void detectsMovement() {
   Serial.println("MOTION DETECTED!!!");
 
@@ -290,135 +170,6 @@ ICACHE_RAM_ATTR void detectsMovement() {
   }
 }
 
-void updateSensors(){
-  bool state;
-
-  ssBatteryVoltRaw = analogRead(PIN_SS_SUPPLY_VOLT);
-  ssBatteryVolt = SUPPLY_VOLT_RATIO * ssBatteryVoltRaw;
-//  ssBatteryVolt = MAX_SUPPLY_VOLT * ssBatteryVoltRaw;
-
-  int valRaw = analogRead(35);
-  float Voltage = (valRaw / 1023.0) * 3.3;
-  Serial.println("RAW: " + String(valRaw) + " - " + String(Voltage) + " - " + String(ssBatteryVolt));
-
-  int16_t adc0, adc1, adc2, adc3;
-  adc0 = ads.readADC_SingleEnded(0);
-  adc1 = ads.readADC_SingleEnded(1);
-  adc2 = ads.readADC_SingleEnded(2);
-  adc3 = ads.readADC_SingleEnded(3);
-  Serial.println("AIN0: " + String(adc0) + " - " + String(ADS1115_VOLT_STEP*adc0));
-  Serial.println("AIN1: " + String(adc1) + " - " + String(ADS1115_VOLT_STEP*adc1));
-  Serial.println("AIN2: " + String(adc2) + " - " + String(ADS1115_VOLT_STEP*adc2));
-  Serial.println("AIN3: " + String(adc3) + " - " + String(ADS1115_VOLT_STEP*adc3));
-  Serial.println();
-  
-  state = digitalRead(PIN_SS_DOOR_MAIN);
-  if (state != ssDoorMain){
-#ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_DOOR_MAIN, state);
-#endif
-    if(state)
-      doorMainOpenedAt = millis();
-    else
-      doorMainOpenedAt = 0;
-
-    ssDoorMain = state;
-  }
-
-  state = digitalRead(PIN_SS_DOOR_TO_BASEMENT);
-  if (state != ssDoorToBasement){
-#ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_DOOR_TO_BASEMENT, state);
-    writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
-#endif
-    if(state)
-      doorToBasementOpenedAt = millis();
-    else
-      doorToBasementOpenedAt = 0;
-
-    ssDoorToBasement = state;
-  }
-
-  state = digitalRead(PIN_SS_DOOR_BASEMENT);
-  if (state != ssDoorBasement){
-#ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_DOOR_BASEMENT, state);
-    writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
-#endif
-    if(state)
-      doorBasementOpenedAt = millis();
-    else
-      doorBasementOpenedAt = 0;
-
-    ssDoorBasement = state;
-  }
-
-  state = !digitalRead(PIN_LIGHT_BASEMENT);
-  if (state != ssLightBasementOn){
-#ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_LIGHT_BASEMENT, state);
-#endif
-    ssLightBasementOn = state;
-  }
-
-  state = digitalRead(PIN_SS_ENTRANCE_MOTION);
-  if (state != ssEntranceMotion){
-#ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_ENTRANCE_MOTION, state);
-#endif
-    if(state)
-      entranceMotionDetectedAt = millis();
-    else
-      entranceMotionDetectedAt = 0;
-
-    ssEntranceMotion = state;
-  }
-
-  ssDoorDetectors = (ssDoorBasement << 1) | (ssDoorToBasement << 1) | (ssDoorMain << 0);
-
-  //ssWaterLeak = 0; // digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
-  state = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
-  if (state != ssWaterLeak){
-#ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_WATER_SMOKE_BASEMENT, state);
-#endif
-//    if(state)
-//      entranceMotionDetectedAt = millis();
-//    else
-//      entranceMotionDetectedAt = 0;
-
-    ssWaterLeak = state;
-  }
-
-  ssOtherSensors = (ssEntranceMotion << 2) | (ssLightBasementOn << 1) | (ssWaterLeak << 0);
-
-  int gbSensorState = (ssOtherSensors << 8) | ssDoorDetectors;
-  if(gbSensorState != globalState) // send to cloud only if global error triggered
-    needUploadCloud = true;
-
-  globalState = gbSensorState;
-
-  Serial.println();
-  Serial.println("0. Battery volt.:       " + String(ssBatteryVolt) + " - " + String(ssBatteryVoltRaw));
-  Serial.println("1. Temperature:         " + String(bmTemp) + " deg C");
-  Serial.println("2. Humidity:            " + String(bmHumidity) + " %");
-  Serial.println("3. Door sensors:        " + String(ssDoorDetectors, BIN));
-  Serial.println("3.1. Door main:         " + String(ssDoorMain, BIN));
-  Serial.println("3.2. Door to basement:  " + String(ssDoorToBasement, BIN));
-  Serial.println("3.3. Door basement:     " + String(ssDoorBasement, BIN));
-  Serial.println("4. Others sensors:      " + String(ssOtherSensors, BIN));
-  Serial.println("4.1 Light basement:     " + String(ssLightBasementOn, BIN));
-  Serial.println("4.2. Entrance motion:   " + String(ssEntranceMotion, BIN));
-  Serial.println("4.3. Water Smoke:       " + String(ssWaterLeak, BIN));
-  Serial.println("-- Global state:        " + String(globalState, BIN));
-  Serial.println("5. Actuators:           " + String(acActuators, BIN));
-  Serial.println("Radio power force:      " + String(forceRadioPower));
-  Serial.println();
-  if(ssDoorDetectors > 0)
-    forceCamPower = 1;
-  else
-    forceCamPower = 0;
-}
 
 void MainServerComm(){
   if(!clientHome.connect(serverHome, 80)){
@@ -467,69 +218,4 @@ void MainServerComm(){
 
   clientHome.flush();
   digitalWrite(PIN_LED, HIGH);
-}
-
-// In 3.0.0 there will be a getDay() function.
-// It will return 0 - 6, from Sunday to Saturday.
-void powerRadio(){
-  int currentDay = timeClient.getDay();
-  int currentHour = timeClient.getHours();
-  Serial.println("Current day:  " + String(DayOfWeek[currentDay]) + " (" + String(currentDay) + "), hour: "
-    + String(currentHour));
-
-  if ((ssBatteryVolt > 13.0) // only if battery is full enough
-    && (currentHour < 20)    // no later than 19:00
-    && ((((currentDay == 0) || (currentDay == 6)) && (currentHour > 10)) // Sunday or Saturday
-      || ((currentDay > 0) && (currentDay < 6) && (currentHour > 9)))){  // weekdays
-    //digitalWrite(PIN_AC_POWER_RADIO, true);
-    //Serial.println("Radio power: ON");
-#ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_POWER_RADIO, true);
-#endif
-  }
-  else{
-    //digitalWrite(PIN_AC_POWER_RADIO, false);
-    //Serial.println("Radio power: OFF");
-#ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_POWER_RADIO, false);
-#endif
-  }
-}
-
-void updateActuator()
-{
-  timeNow = millis();
-  // Turn off the LED after the number of seconds defined in the MOTION_DELAY variable
-  if(startMotionTimer && (timeNow - lastTrigger > MOTION_DELAY)) {
-    Serial.println(String(timeNow) + " - " + String(lastTrigger));
-    Serial.println("Light stopped...");
-    //digitalWrite(PIN_AC_POWER_LED_ENTRANCE, LOW);
-    acEntranceLed = false;
-    Serial.println("Light entrance: OFF");
-#ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_ENTRANCE_LIGHT, false);
-#endif
-    acActuators &= ~(1 << 0);
-    startMotionTimer = false;
-  }
-
-  powerRadio();
-
-  // play melody only twice if it happens during the sleeping time 22:00 to 8:00
-  // can detect door to basement OPENED/CLOSED only if the solar charger giving power from the battery
-  if((!ssDoorToBasement) && ssLightBasementOn && (ssBatteryVolt > 12.0)){
-    if((currentHours > 8) && (currentHours < 22)){
-      Serial.println("Playing melody...");
-      playMelody();
-    }
-    else{
-      if (playMelodyCounter < 2){
-          playMelody();
-          playMelodyCounter++;
-      }
-    }
-  }
-  else
-    playMelodyCounter = 0;
-
 }
