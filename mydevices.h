@@ -1,6 +1,7 @@
 #include "wifi_cloud.h"
 #include <CayenneMQTTESP32.h>
 
+
 // Name convention: Area_SensorType_Time_Type, ex.: DOOR_MAIN_MINUTES_OPENED, LR_HUMIDITY
 
 #ifndef MY_DEVICES

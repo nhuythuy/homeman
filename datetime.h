@@ -34,11 +34,9 @@ void getServerTime(){
   }
   
   Serial.print("Epoch Time: " + String(timeClient.getEpochTime()) + " - " + timeClient.getFormattedTime());  
-  Serial.println("Current day:  " + String(DayOfWeek[currentDay]) + " (" + String(currentDay) + "), hour: "
+  Serial.println(" Today:  " + String(DayOfWeek[currentDay]) + " (" + String(currentDay) + "), hour: "
     + String(currentHour));
 
 }
 
 #endif
-
-
