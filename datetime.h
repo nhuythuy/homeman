@@ -23,7 +23,6 @@ void getServerTime(){
   currentHour = timeClient.getHours();
   int minutes = timeClient.getMinutes();
   int seconds = timeClient.getSeconds();
-
   
   if((minutes % 1) == 0) // to send every 1 minutes
     needUploadCloud = true;

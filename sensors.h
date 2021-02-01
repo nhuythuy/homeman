@@ -6,9 +6,9 @@
 
 
 #define ADS1115_VOLT_STEP 0.125
-#define MAX_SUPPLY_VOLT   16.054          // volt: 10K(9990)+39K(38610) --> 3.3*(9990+38610)/9990 = 16.054 V 
-#define SUPPLY_VOLT_RATIO 16.054/1023.0   // 10 bit ADC, 1.18 (calibration factor) 
-
+#define MAX_SUPPLY_VOLT   16.054              // volt: 10K(9990)+39K(38610) --> 3.3*(9990+38610)/9990 = 16.054 V 
+#define ADC_MAX_RAW       4095                // 12 bit ADC, 1.18 (calibration factor)
+#define SUPPLY_VOLT_RATIO 16.054/ADC_MAX_RAW 
 
 DHT dht(PIN_SS_DHT, DHT11, 15);
 Adafruit_ADS1115 ads(0x49);
@@ -33,7 +33,7 @@ void setupSensors(){
 
 bool updateTemp(){
   int valRaw = analogRead(PIN_SS_TEMP);
-  float volt = (valRaw / 4095.0) * 3.3;
+  float volt = (valRaw / ADC_MAX_RAW) * 3.3;
 //  bmTemp = 100* volt;
   bmTemp = ds1621GetTemperature();
   Serial.println("Temperature: " + String(bmTemp, 1) + " - " + String(100 * volt));
@@ -72,7 +72,7 @@ void updateSensors(){
 //  ssBatteryVolt = MAX_SUPPLY_VOLT * ssBatteryVoltRaw;
 
   int valRaw = analogRead(35);
-  float Voltage = (valRaw / 1023.0) * 3.3;
+  float Voltage = (valRaw / ADC_MAX_RAW) * 3.3;
   Serial.println("RAW: " + String(valRaw) + " - " + String(Voltage) + " - " + String(ssBatteryVolt));
 
   int16_t adc0, adc1, adc2, adc3;
