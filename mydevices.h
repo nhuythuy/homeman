@@ -1,4 +1,3 @@
-#include "global_vars.h"
 #include "wifi_cloud.h"
 #include <CayenneMQTTESP32.h>
 
@@ -45,6 +44,13 @@ char dvClientID[] = CAYENNE_CLIENT_ID;
 
 
 int cayenneCounter = 0;
+
+void cayenneSetup(){
+  Serial.println("Cayenne connecting...");
+  Cayenne.begin(dvUsername, dvPassword, dvClientID, wifiSsid, wifiPassword);
+  Serial.println("Cayenne connected!");
+  delay(500);
+}
 
 // This function is called at intervals to send sensor data to Cayenne.
 CAYENNE_OUT(CH_BATT_VOLTAGE){

@@ -28,14 +28,14 @@ void setupSensors(){
   dht.begin();
   ads.setGain(GAIN_ONE);
   ads.begin();
-//  ds1621Setup();
+  ds1621Setup();
 }
 
 bool updateTemp(){
   int valRaw = analogRead(PIN_SS_TEMP);
   float volt = (valRaw / 4095.0) * 3.3;
 //  bmTemp = 100* volt;
-//  bmTemp = ds1621GetTemperature();
+  bmTemp = ds1621GetTemperature();
   Serial.println("Temperature: " + String(bmTemp, 1) + " - " + String(100 * volt));
 
   return true;

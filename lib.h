@@ -1,8 +1,8 @@
 #include "global_vars.h"
 #include "pin_define.h"
 
-#ifndef DS1621
-#define DS1621
+#ifndef LIB
+#define LIB
 
 void blinkLed(){
     Serial.print("-");
