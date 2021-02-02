@@ -32,18 +32,15 @@ void setupSensors(){
 }
 
 bool updateTemp(){
-  int valRaw = analogRead(PIN_SS_TEMP);
-  float volt = (valRaw / ADC_MAX_RAW) * 3.3;
-  float lm35Temp = 100* volt;
-  Serial.println("ESP32 Raw: " + String(valRaw) + " - volt: " + String(volt) + " - ESP32 temp: " + String(lm35Temp));
-
+  int16_t adc0 = ads.readADC_SingleEnded(0);
+  float lm35Temp = ADS1115_VOLT_STEP * adc0 / 10;
+  Serial.println("ADS1115 Raw: " + String(adc0) + " - " + String(ADS1115_VOLT_STEP*adc0, 1) + " (mV) - ESP32 temp: " + String(lm35Temp, 1));
 
   bmTemp = ds1621GetTemperature();
   Serial.println("Temperature: " + String(bmTemp, 1) + " - " + String(100 * volt));
 
   return true;
 }
-
 
 void delayWithErrorCheck(){
     if(globalState > 0)
@@ -70,23 +67,7 @@ bool updateHumidTemp(){
 void updateSensors(){
   bool state;
 
-//  ssBatteryVoltRaw = analogRead(PIN_SS_SUPPLY_VOLT);
-//  ssBatteryVolt = SUPPLY_VOLT_RATIO * ssBatteryVoltRaw;
-
-  int16_t adc0, adc1, adc2, adc3;
-  adc0 = ads.readADC_SingleEnded(0);
-//  adc1 = ads.readADC_SingleEnded(1);
-//  adc2 = ads.readADC_SingleEnded(2);
-  adc3 = ads.readADC_SingleEnded(3);
-//  Serial.println("AIN0: " + String(adc0) + " - " + String(ADS1115_VOLT_STEP*adc0));
-//  Serial.println("AIN1: " + String(adc1) + " - " + String(ADS1115_VOLT_STEP*adc1));
-//  Serial.println("AIN2: " + String(adc2) + " - " + String(ADS1115_VOLT_STEP*adc2));
-//  Serial.println("AIN3: " + String(adc3) + " - " + String(ADS1115_VOLT_STEP*adc3));
-//  Serial.println();
-
-  float lm35Temp = ADS1115_VOLT_STEP * adc0 / 10;
-  Serial.println("ADS1115 Raw: " + String(adc0) + " - " + String(ADS1115_VOLT_STEP*adc0) + " (mV) - ESP32 temp: " + String(lm35Temp));
-
+  int16_t adc3 = ads.readADC_SingleEnded(3);
   ssBatteryVolt = BATT_VOLT_RATIO * adc3;
 
   state = digitalRead(PIN_SS_DOOR_MAIN);
@@ -176,9 +157,9 @@ void updateSensors(){
   globalState = gbSensorState;
 
   Serial.println();
-  Serial.println("0. Battery volt.:       " + String(ssBatteryVolt) + " (V)");
-  Serial.println("1. Temperature:         " + String(bmTemp) + " deg C");
-  Serial.println("2. Humidity:            " + String(bmHumidity) + " %");
+  Serial.println("0. Battery volt.:       " + String(ssBatteryVolt, 1) + " (V)");
+  Serial.println("1. Temperature:         " + String(bmTemp, 1) + " deg C");
+  Serial.println("2. Humidity:            " + String(bmHumidity, 1) + " %");
   Serial.println("3. Door sensors:        " + String(ssDoorDetectors, BIN));
   Serial.println("3.1. Door main:         " + String(ssDoorMain, BIN));
   Serial.println("3.2. Door to basement:  " + String(ssDoorToBasement, BIN));
