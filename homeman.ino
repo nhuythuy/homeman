@@ -40,7 +40,7 @@ void setup() {
 // =======================================================
 void loop() {
 #ifdef ENABLE_WIFI
-  MainServerComm();
+  CommServerLivingRoom();
   getServerTime();
 #endif
   blinkPowerLed();

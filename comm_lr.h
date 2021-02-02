@@ -5,7 +5,7 @@ IPAddress serverLivingRoom(192,168,1,5);          // the fix IP address of the s
 WiFiClient clientHome;
 
 
-void MainServerComm(){
+void CommServerLivingRoom(){
   if(!clientHome.connect(serverLivingRoom, 80)){
     Serial.println("Cannot connect to server (Living room)!");
     return;
