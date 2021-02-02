@@ -5,10 +5,10 @@
 #include "mydevices.h"
 
 
-#define ADS1115_VOLT_STEP 0.125
-#define MAX_SUPPLY_VOLT   16.054              // volt: 10K(9990)+39K(38610) --> 3.3*(9990+38610)/9990 = 16.054 V 
-#define ADC_MAX_RAW       4095                // 12 bit ADC, 1.18 (calibration factor)
-#define SUPPLY_VOLT_RATIO 16.054/ADC_MAX_RAW 
+#define ADC_MAX_RAW       4095              // 12 bit ADC, 1.18 (calibration factor)
+#define ADS1115_VOLT_STEP 0.125             // mV
+#define MAX_SUPPLY_VOLT   16.054            // volt: 10K(9990)+39K(38610) --> 3.3*(9990+38610)/9990 = 16.054 V
+#define BATT_VOLT_RATIO   ADS1115_VOLT_STEP * (9990+38610)/(9990 * 1000)
 
 DHT dht(PIN_SS_DHT, DHT11, 15);
 Adafruit_ADS1115 ads(0x49);
@@ -26,7 +26,7 @@ void setupSensors(){
   analogReadResolution(12);
 
   dht.begin();
-  ads.setGain(GAIN_ONE);
+  ads.setGain(GAIN_ONE); // GAIN_ONE --> 1 bit = 0.125mV
   ads.begin();
   ds1621Setup();
 }
@@ -34,7 +34,10 @@ void setupSensors(){
 bool updateTemp(){
   int valRaw = analogRead(PIN_SS_TEMP);
   float volt = (valRaw / ADC_MAX_RAW) * 3.3;
-//  bmTemp = 100* volt;
+  float lm35Temp = 100* volt;
+  Serial.println("ESP32 Raw: " + String(valRaw) + " - volt: " + String(volt) + " - ESP32 temp: " + String(lm35Temp));
+
+
   bmTemp = ds1621GetTemperature();
   Serial.println("Temperature: " + String(bmTemp, 1) + " - " + String(100 * volt));
 
@@ -67,25 +70,25 @@ bool updateHumidTemp(){
 void updateSensors(){
   bool state;
 
-  ssBatteryVoltRaw = analogRead(PIN_SS_SUPPLY_VOLT);
-  ssBatteryVolt = SUPPLY_VOLT_RATIO * ssBatteryVoltRaw;
-//  ssBatteryVolt = MAX_SUPPLY_VOLT * ssBatteryVoltRaw;
-
-  int valRaw = analogRead(35);
-  float Voltage = (valRaw / ADC_MAX_RAW) * 3.3;
-  Serial.println("RAW: " + String(valRaw) + " - " + String(Voltage) + " - " + String(ssBatteryVolt));
+//  ssBatteryVoltRaw = analogRead(PIN_SS_SUPPLY_VOLT);
+//  ssBatteryVolt = SUPPLY_VOLT_RATIO * ssBatteryVoltRaw;
 
   int16_t adc0, adc1, adc2, adc3;
   adc0 = ads.readADC_SingleEnded(0);
-  adc1 = ads.readADC_SingleEnded(1);
-  adc2 = ads.readADC_SingleEnded(2);
+//  adc1 = ads.readADC_SingleEnded(1);
+//  adc2 = ads.readADC_SingleEnded(2);
   adc3 = ads.readADC_SingleEnded(3);
-  Serial.println("AIN0: " + String(adc0) + " - " + String(ADS1115_VOLT_STEP*adc0));
-  Serial.println("AIN1: " + String(adc1) + " - " + String(ADS1115_VOLT_STEP*adc1));
-  Serial.println("AIN2: " + String(adc2) + " - " + String(ADS1115_VOLT_STEP*adc2));
-  Serial.println("AIN3: " + String(adc3) + " - " + String(ADS1115_VOLT_STEP*adc3));
-  Serial.println();
-  
+//  Serial.println("AIN0: " + String(adc0) + " - " + String(ADS1115_VOLT_STEP*adc0));
+//  Serial.println("AIN1: " + String(adc1) + " - " + String(ADS1115_VOLT_STEP*adc1));
+//  Serial.println("AIN2: " + String(adc2) + " - " + String(ADS1115_VOLT_STEP*adc2));
+//  Serial.println("AIN3: " + String(adc3) + " - " + String(ADS1115_VOLT_STEP*adc3));
+//  Serial.println();
+
+  float lm35Temp = ADS1115_VOLT_STEP * adc0 / 10;
+  Serial.println("ADS1115 Raw: " + String(adc0) + " - " + String(ADS1115_VOLT_STEP*adc0) + " (mV) - ESP32 temp: " + String(lm35Temp));
+
+  ssBatteryVolt = BATT_VOLT_RATIO * adc3;
+
   state = digitalRead(PIN_SS_DOOR_MAIN);
   if (state != ssDoorMain){
 #ifdef ENABLE_WIFI
@@ -173,7 +176,7 @@ void updateSensors(){
   globalState = gbSensorState;
 
   Serial.println();
-  Serial.println("0. Battery volt.:       " + String(ssBatteryVolt) + " - " + String(ssBatteryVoltRaw));
+  Serial.println("0. Battery volt.:       " + String(ssBatteryVolt) + " (V)");
   Serial.println("1. Temperature:         " + String(bmTemp) + " deg C");
   Serial.println("2. Humidity:            " + String(bmHumidity) + " %");
   Serial.println("3. Door sensors:        " + String(ssDoorDetectors, BIN));

@@ -20,6 +20,7 @@
 #include "comm_lr.h"
 
 
+// =======================================================
 void setup() {
   setupSensors();
   setupActuators();
@@ -36,8 +37,7 @@ void setup() {
 #endif
 }
 
-
-
+// =======================================================
 void loop() {
 #ifdef ENABLE_WIFI
   MainServerComm();
@@ -102,6 +102,7 @@ void loop() {
   delayWithErrorCheck();
 }
 
+// =======================================================
 ICACHE_RAM_ATTR void detectsMovement() {
   Serial.println("MOTION DETECTED!!!");
 
