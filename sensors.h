@@ -34,10 +34,10 @@ void setupSensors(){
 bool updateTemp(){
   int16_t adc0 = ads.readADC_SingleEnded(0);
   float lm35Temp = ADS1115_VOLT_STEP * adc0 / 10;
-  Serial.println("ADS1115 Raw: " + String(adc0) + " - " + String(ADS1115_VOLT_STEP*adc0, 1) + " (mV) - ESP32 temp: " + String(lm35Temp, 1));
+  Serial.println("LM35 temp.: " + String(lm35Temp, 1));
 
   bmTemp = ds1621GetTemperature();
-  Serial.println("Temperature: " + String(bmTemp, 1) + " - " + String(100 * volt));
+  Serial.println("Temperature: " + String(bmTemp, 1) + " degC");
 
   return true;
 }
