@@ -51,31 +51,8 @@ void loop() {
   updateActuator();
 
   bmRuntimeMinutes = millis() / 60000;
-  
-  if(ssDoorToBasement)
-    doorToBasementOpenedMinutes = (millis() - doorToBasementOpenedAt) / 60000;
-  else
-    doorToBasementOpenedMinutes = 0;
 
-  if(ssDoorBasement)
-    doorBasementOpenedMinutes = (millis() - doorBasementOpenedAt) / 60000;
-  else
-    doorBasementOpenedMinutes = 0;
-
-  if(ssDoorMain)
-    doorMainOpenedMinutes = (millis() - doorMainOpenedAt) / 60000;
-  else
-    doorMainOpenedMinutes = 0;
-
-  if(ssEntranceMotion)
-    entranceMotionSeconds = (millis() - entranceMotionDetectedAt) / 1000;
-  else
-    entranceMotionSeconds = 0;
-
-  Serial.println("Sensors detected: " + String(doorMainOpenedMinutes) + " min - "
-  + String(doorToBasementOpenedMinutes) + " min - "
-  + String(doorBasementOpenedMinutes) + " min - "
-  + String(entranceMotionSeconds)  + " sec");
+  updateDurations();
 
 #ifdef ENABLE_WIFI
 #ifdef ENABLE_CAYENNE
@@ -118,4 +95,31 @@ ICACHE_RAM_ATTR void detectsMovement() {
 #endif
     lastTrigger = millis();
   }
+}
+
+void updateDurations(){
+  if(ssDoorToBasement)
+    doorToBasementOpenedMinutes = (millis() - doorToBasementOpenedAt) / 60000;
+  else
+    doorToBasementOpenedMinutes = 0;
+
+  if(ssDoorBasement)
+    doorBasementOpenedMinutes = (millis() - doorBasementOpenedAt) / 60000;
+  else
+    doorBasementOpenedMinutes = 0;
+
+  if(ssDoorMain)
+    doorMainOpenedMinutes = (millis() - doorMainOpenedAt) / 60000;
+  else
+    doorMainOpenedMinutes = 0;
+
+  if(ssEntranceMotion)
+    entranceMotionSeconds = (millis() - entranceMotionDetectedAt) / 1000;
+  else
+    entranceMotionSeconds = 0;
+
+  Serial.println("Sensors detected: " + String(doorMainOpenedMinutes) + " min - "
+  + String(doorToBasementOpenedMinutes) + " min - "
+  + String(doorBasementOpenedMinutes) + " min - "
+  + String(entranceMotionSeconds)  + " sec");
 }
