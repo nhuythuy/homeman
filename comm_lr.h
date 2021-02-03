@@ -13,15 +13,15 @@ void CommServerLivingRoom(){
 
   digitalWrite(PIN_LED, LOW);       // to show the communication only (inverted logic)
   Serial.println("Connecting to server (Living room)");
-//  clientHome.println("Hello Home server! Are you sleeping?\r");  // sends the message to the server
-//  String answer = clientHome.readStringUntil('\r');   // receives the answer from the sever
+//  clientHome.println("Hello Home server! Are you sleeping?\n");  // sends the message to the server
+//  String answer = clientHome.readStringUntil('\n');   // receives the answer from the sever
 //  Serial.println("from server (Living room): " + answer);
 
   // send client state to the server
   // https://arduinojson.org/v6/example/
 
-  clientHome.println("livingroomstate:" + String(bmHeartbeat++) + "\r");
-  String reply = clientHome.readStringUntil('\r');   // receives the answer from the sever
+  clientHome.println("livingroomstate:" + String(bmHeartbeat++) + "\n");
+  String reply = clientHome.readStringUntil('\n');   // receives the answer from the sever
   Serial.println("from server (Living room): " + reply);
 
   DynamicJsonDocument doc(256);
