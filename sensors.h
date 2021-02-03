@@ -35,6 +35,7 @@ bool updateTemp(){
   int16_t adc0 = ads.readADC_SingleEnded(0);
   float lm35Temp = ADS1115_VOLT_STEP * adc0 / 10;
   Serial.println("LM35 temp.: " + String(lm35Temp, 1));
+  bmTempX = lm35Temp;
 
   bmTemp = ds1621GetTemperature();
   Serial.println("Temperature: " + String(bmTemp, 1) + " degC");

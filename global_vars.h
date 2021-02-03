@@ -16,6 +16,7 @@ int bmHeartbeat = 0;
 // sensors
 float bmHumidity = 0.0;
 float bmTemp = 0.0;
+float bmTempX = 0.0; // extra temp. sensor using LM35
 
 float lrHumidity = 0.0;
 float lrTemp = 0.0;

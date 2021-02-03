@@ -76,7 +76,7 @@ void blynkTimerEvent()
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_BM_TEMPERATURE, bmTemp);
   delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(VP_BM_HUMIDITY, bmHumidity);
+  Blynk.virtualWrite(VP_BM_HUMIDITY, bmTempX); // bmHumidity); temp. borrow this for showing temp. using LM35 sensor
   delay(MESSAGE_DELAY);
 //  Blynk.virtualWrite(VP_ENTRANCE_MOTION_DETECTED_SECONDS, entranceMotionSeconds);
 
