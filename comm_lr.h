@@ -4,6 +4,9 @@
 IPAddress serverLivingRoom(192,168,1,5);          // the fix IP address of the server
 WiFiClient clientHome;
 
+void commServerSetup(){
+  clientHome.setTimeout(3000); // msec
+}
 
 void CommServerLivingRoom(){
   if(!clientHome.connect(serverLivingRoom, 80)){
@@ -23,7 +26,11 @@ void CommServerLivingRoom(){
   clientHome.println("livingroomstate:" + String(bmHeartbeat++) + "\n");
   String reply = clientHome.readStringUntil('\n');   // receives the answer from the sever
   Serial.println("from server (Living room): " + reply);
-
+  if(reply.length() < 10){
+    clientHome.flush();
+    return;
+  }
+  
   DynamicJsonDocument doc(256);
   deserializeJson(doc, reply);
   String node = doc["node"];

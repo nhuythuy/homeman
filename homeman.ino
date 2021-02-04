@@ -34,6 +34,8 @@ void setup() {
 
   cayenneSetup();
   blynkSetup();
+
+  commServerSetup();
 #endif
 }
 
