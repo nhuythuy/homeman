@@ -28,6 +28,10 @@ char dvClientID[] = CAYENNE_CLIENT_ID;
 #define CH_LR_TEMPERATURE                   22
 #define CH_LR_HUMIDITY                      23
 
+#define CH_PS_RUNTIME                       41   // power station
+#define CH_PS_TEMPERATURE                   42
+#define CH_PS_HUMIDITY                      43
+
 // digital states
 #define CH_DOOR_MAIN                51
 #define CH_DOOR_TO_BASEMENT         52
@@ -89,6 +93,11 @@ CAYENNE_OUT(CH_LR_RUNTIME){
   Cayenne.virtualWrite(CH_LR_RUNTIME, lrRuntimeMinutes, "counter");
 }
 
+CAYENNE_OUT(CH_PS_RUNTIME){
+  delay(MESSAGE_DELAY);
+  Cayenne.virtualWrite(CH_PS_RUNTIME, psRuntimeMinutes, "counter");
+}
+
 CAYENNE_OUT(CH_ENTRANCE_MOTION_DETECTED_SECONDS){
   delay(MESSAGE_DELAY);
   Cayenne.virtualWrite(CH_ENTRANCE_MOTION_DETECTED_SECONDS, entranceMotionSeconds, "counter");
@@ -112,6 +121,16 @@ CAYENNE_OUT(CH_LR_TEMPERATURE){
 CAYENNE_OUT(CH_LR_HUMIDITY){
   delay(MESSAGE_DELAY);
   Cayenne.virtualWrite(CH_LR_HUMIDITY, lrHumidity, "rel_hum", "p");
+}
+
+CAYENNE_OUT(CH_PS_TEMPERATURE){
+  delay(MESSAGE_DELAY);
+  Cayenne.celsiusWrite(CH_PS_TEMPERATURE, psTemp);
+}
+
+CAYENNE_OUT(CH_PS_HUMIDITY){
+  delay(MESSAGE_DELAY);
+  Cayenne.virtualWrite(CH_PS_HUMIDITY, psHumidity, "rel_hum", "p");
 }
 
 void writeCayenneDigitalStates(int channelId, int value){

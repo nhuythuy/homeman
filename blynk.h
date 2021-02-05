@@ -22,7 +22,7 @@
 #define VP_LR_TEMPERATURE                   V22
 #define VP_LR_HUMIDITY                      V23
 
-#define VP_PS_RUNTIME                       V41   // living room node
+#define VP_PS_RUNTIME                       V41   // power station node
 #define VP_PS_TEMPERATURE                   V42
 #define VP_PS_HUMIDITY                      V43
 
@@ -93,6 +93,7 @@ void blynkTimerEvent()
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_DOOR_BACK_OPENED_MINUTES, doorBackOpenedMinutes);
   delay(MESSAGE_DELAY);
+
   Blynk.virtualWrite(VP_LR_RUNTIME, lrRuntimeMinutes);
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_LR_TEMPERATURE, lrTemp);
