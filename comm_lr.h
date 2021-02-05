@@ -46,7 +46,7 @@ void CommServerLivingRoom(){
 
   doorBackOpenedMinutes = doc["ssDoorBackOpenMin"];
 
-  Serial.println("from server (Living room): Runtime (" + String(lrRuntimeMinutes)
+  Serial.println("from server (living room): Runtime (" + String(lrRuntimeMinutes)
   + "), Temp: (" + String(lrTemp)
   + "), Humidity: (" + String(lrHumidity)
   + "), Door back: (" + String(ssDoorBack)
