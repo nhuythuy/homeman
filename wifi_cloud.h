@@ -8,6 +8,12 @@
 const char* wifiSsid = WIFI_AP;
 const char* wifiPassword = WIFI_PW;
 
+WiFiClient clientHome;
+
+void commServerSetup(){
+  clientHome.setTimeout(3000); // msec
+}
+
 void WIFI_Connect(){
   Serial.println();
   Serial.println("MAC: " + WiFi.macAddress()); Serial.println();

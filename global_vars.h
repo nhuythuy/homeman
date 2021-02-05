@@ -12,7 +12,6 @@ int PowerLedDelay = 1000;
 
 long globalState = 0;
 int debugCounter = 0;
-int bmHeartbeat = 0;
 
 // sensors
 float bmHumidity = 0.0;
@@ -21,6 +20,9 @@ float bmTempX = 0.0; // extra temp. sensor using LM35
 
 float lrHumidity = 0.0;
 float lrTemp = 0.0;
+
+float lrBatteryVolt = 0.0;
+float psBatteryVolt = 0.0;
 
 int ssBatteryVoltRaw = 0;
 float ssBatteryVolt = 0;
@@ -46,6 +48,8 @@ bool forceRadioPower = 0;
 
 int bmRuntimeMinutes = 0;
 int lrRuntimeMinutes = 0;
+int psRuntimeMinutes = 0;
+
 int doorMainOpenedAt = 0;
 int doorMainOpenedMinutes = 0;
 int doorToBasementOpenedAt = 0;

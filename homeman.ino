@@ -18,6 +18,7 @@
 #include "melody.h"
 #include "blynk.h"
 #include "comm_lr.h"
+#include "comm_ps.h"
 
 
 // =======================================================
@@ -42,8 +43,9 @@ void setup() {
 // =======================================================
 void loop() {
 #ifdef ENABLE_WIFI
-  CommServerLivingRoom();
   getServerTime();
+  CommServerLivingRoom();
+  CommServerPowerStation();
 #endif
   blinkPowerLed();
   updateTemp();
