@@ -22,7 +22,7 @@ void CommServerPowerStation(){
     return;
   }
   
-  DynamicJsonDocument doc(100);
+  DynamicJsonDocument doc(256);
   deserializeJson(doc, reply);
   String node = doc["node"];
   psRuntimeMinutes = doc["runtime"];
