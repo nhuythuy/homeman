@@ -22,6 +22,10 @@
 #define VP_LR_TEMPERATURE                   V22
 #define VP_LR_HUMIDITY                      V23
 
+#define VP_PS_RUNTIME                       V41   // living room node
+#define VP_PS_TEMPERATURE                   V42
+#define VP_PS_HUMIDITY                      V43
+
 // digital states
 #define VP_DOOR_MAIN                V51
 #define VP_DOOR_TO_BASEMENT         V52
@@ -95,6 +99,14 @@ void blynkTimerEvent()
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_LR_HUMIDITY, lrHumidity);
   delay(MESSAGE_DELAY);
+
+  Blynk.virtualWrite(VP_PS_RUNTIME, psRuntimeMinutes);
+  delay(MESSAGE_DELAY);
+  Blynk.virtualWrite(VP_PS_TEMPERATURE, psTemp);
+  delay(MESSAGE_DELAY);
+  Blynk.virtualWrite(VP_PS_HUMIDITY, psHumidity);
+  delay(MESSAGE_DELAY);
+
   Blynk.virtualWrite(VP_DOOR_MAIN, (ssDoorMain ? 255 : 0));
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_DOOR_TO_BASEMENT, (ssDoorToBasement ? 255 : 0));

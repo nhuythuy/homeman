@@ -21,6 +21,10 @@ float bmTempX = 0.0; // extra temp. sensor using LM35
 float lrHumidity = 0.0;
 float lrTemp = 0.0;
 
+
+float psHumidity = 0.0;
+float psTemp = 0.0;
+
 float lrBatteryVolt = 0.0;
 float psBatteryVolt = 0.0;
 
