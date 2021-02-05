@@ -2,7 +2,7 @@
 #define GLOBAL_VARS
 
 #define DELAY_LONG        5000            // 5,0 seconds
-#define DELAY_SHORT       2500            // 2,5 seconds
+#define DELAY_SHORT       1000            // 2,5 seconds
 
 long delayMs = DELAY_SHORT;
 

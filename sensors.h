@@ -71,7 +71,7 @@ void updateSensors(){
   int16_t adc3 = ads.readADC_SingleEnded(3);
   ssBatteryVolt = BATT_VOLT_RATIO * adc3;
 
-  state = digitalRead(PIN_SS_DOOR_MAIN);
+  state = !digitalRead(PIN_SS_DOOR_MAIN);
   if (state != ssDoorMain){
 #ifdef ENABLE_WIFI
     writeCayenneDigitalStates(CH_DOOR_MAIN, state);
