@@ -5,6 +5,7 @@
 #define DELAY_SHORT       1000            // 2,5 seconds
 
 long delayMs = DELAY_SHORT;
+bool stateLed = 0;
 
 bool PowerLedState = false;
 int PowerLedDelay = 1000;

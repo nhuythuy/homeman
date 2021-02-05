@@ -20,8 +20,7 @@ void WIFI_Connect(){
     delay(500);
     Serial.print(".");
 
-    ledStatus = !ledStatus;
-    digitalWrite(PIN_LED, !ledStatus);
+    flipLed();
     if(debugCounter++ > 80)
     {
       debugCounter = 0;

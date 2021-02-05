@@ -14,7 +14,7 @@ void CommServerLivingRoom(){
     return;
   }
 
-  digitalWrite(PIN_LED, LOW);       // to show the communication only (inverted logic)
+  flipLed();
   Serial.println("Connecting to server (Living room)");
 //  clientHome.println("Hello Home server! Are you sleeping?\n");  // sends the message to the server
 //  String answer = clientHome.readStringUntil('\n');   // receives the answer from the sever
@@ -58,5 +58,5 @@ void CommServerLivingRoom(){
   + "), Door back opened: (" + String(doorBackOpenedMinutes) + ") min");
 
   clientHome.flush();
-  digitalWrite(PIN_LED, HIGH);
+  flipLed();
 }

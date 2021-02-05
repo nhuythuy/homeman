@@ -5,18 +5,15 @@
 #ifndef LIB
 #define LIB
 
-void blinkLed(){
-    Serial.print("-");
-    if(debugCounter++ > 80)
-    {
-      debugCounter = 0;
-      Serial.println("!");
-    }
 
-  digitalWrite(PIN_LED, false);
-  delay(1000);
-  digitalWrite(PIN_LED, true);
-  delay(1000);
+void flipLed(){
+  stateLed = !stateLed;
+  digitalWrite(PIN_LED, stateLed);
+}
+
+void blinkLed(){
+  flipLed();
+  flipLed();
 }
 
 void blinkPowerLed(){
