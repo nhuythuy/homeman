@@ -31,7 +31,7 @@ void CommServerPowerStation(){
   String tmp = doc["temp"];
   psTemp = tmp.toFloat();
   String humid = doc["humidity"];
-  lrHumidity = humid.toFloat();
+  psHumidity = humid.toFloat();
 
   Serial.println("from server (power station): Runtime (" + String(psRuntimeMinutes)
   + "), Temp: (" + String(psTemp)
