@@ -12,7 +12,7 @@ char dvUsername[] = CAYENNE_USERNAME;
 char dvPassword[] = CAYENNE_PASSWORD;
 char dvClientID[] = CAYENNE_CLIENT_ID;
 
-#define MESSAGE_DELAY                       200
+#define MESSAGE_DELAY                       100
 
 #define CH_BATT_VOLTAGE                     1
 #define CH_BM_RUNTIME                       2   // basement node
@@ -54,7 +54,7 @@ void cayenneSetup(){
   Serial.println("Cayenne connecting...");
   Cayenne.begin(dvUsername, dvPassword, dvClientID, wifiSsid, wifiPassword);
   Serial.println("Cayenne connected!");
-  delay(500);
+  delay(200);
 }
 
 // This function is called at intervals to send sensor data to Cayenne.

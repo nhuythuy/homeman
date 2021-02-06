@@ -27,7 +27,7 @@ void setup() {
   setupActuators();
 
   Serial.begin(19200); // ESP8266: Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
-  delay(1000);
+  delay(100);
 
 #ifdef ENABLE_WIFI
   WIFI_Connect();
@@ -50,7 +50,7 @@ void loop() {
   blinkPowerLed();
   updateTemp();
 
-  blinkLed();
+  flipLed();
   updateSensors();
   updateActuator();
 
@@ -80,7 +80,6 @@ void loop() {
     WIFI_Connect();    
   }
 #endif
-  delayWithErrorCheck();
 }
 
 // =======================================================

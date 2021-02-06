@@ -43,20 +43,12 @@ bool updateTemp(){
   return true;
 }
 
-void delayWithErrorCheck(){
-    if(globalState > 0)
-    blinkLed();
-  else
-    delay(delayMs);
-}
-
 bool updateHumidTemp(){
   bmHumidity = dht.readHumidity();
   bmTemp = dht.readTemperature();
   if (isnan(bmHumidity) || isnan(bmTemp)) {
     Serial.println("Failed to read from DHT sensor!");
 
-    delayWithErrorCheck();
     bmHumidity = -100;
     bmTemp = -100;
     return false;

@@ -8,7 +8,7 @@ long delayMs = DELAY_SHORT;
 bool stateLed = 0;
 
 bool PowerLedState = false;
-int PowerLedDelay = 1000;
+long PowerLedStartAt = 0;
 
 long globalState = 0;
 int debugCounter = 0;
