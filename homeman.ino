@@ -21,7 +21,7 @@
 #include "comm_lr.h"
 #include "comm_ps.h"
 
-#define WDT_TIMEOUT   8 // 8 sec
+#define WDT_TIMEOUT   300 // 300 sec
 // =======================================================
 void setup() {
   setupSensors();
