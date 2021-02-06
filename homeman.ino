@@ -9,6 +9,7 @@
 #define ENABLE_BLYNK
 #define ENABLE_CAYENNE
 
+#include <esp_task_wdt.h>
 #include "sensors.h"
 #include "actuators.h"
 #include "mydevices.h"
@@ -20,7 +21,7 @@
 #include "comm_lr.h"
 #include "comm_ps.h"
 
-
+#define WDT_TIMEOUT   8 // 8 sec
 // =======================================================
 void setup() {
   setupSensors();
@@ -38,16 +39,20 @@ void setup() {
 
   commServerSetup();
 #endif
+
+  esp_task_wdt_init(WDT_TIMEOUT, true); // enable panic so ESP32 restarts
+  esp_task_wdt_add(NULL);               // add current thread to WDT watch
 }
 
 // =======================================================
 void loop() {
+  esp_task_wdt_reset();
+
 #ifdef ENABLE_WIFI
   getServerTime();
   CommServerLivingRoom();
   CommServerPowerStation();
 #endif
-  blinkPowerLed();
   updateTemp();
 
   flipLed();
