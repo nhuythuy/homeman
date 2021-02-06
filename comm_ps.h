@@ -29,7 +29,7 @@ void CommServerPowerStation(){
   String battvolt = doc["battvolt"];
   psBatteryVolt = battvolt.toFloat();
   String tmp = doc["temp"];
-  psBatteryVolt = tmp.toFloat();
+  psTemp = tmp.toFloat();
   String humid = doc["humidity"];
   lrHumidity = humid.toFloat();
 
