@@ -11,7 +11,7 @@ const char* wifiPassword = WIFI_PW;
 WiFiClient clientHome;
 
 void commServerSetup(){
-  clientHome.setTimeout(3000); // msec
+  clientHome.setTimeout(3000); // msec, 3 sec since other servers all have at least 1 sec delay in loop func
 }
 
 void WIFI_Connect(){
