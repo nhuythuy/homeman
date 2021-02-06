@@ -6,7 +6,7 @@
 #ifndef BLYNK
 #define BLYNK
 
-#define MESSAGE_DELAY                       200
+#define MESSAGE_DELAY                       1
 
 #define VP_BATT_VOLTAGE                     V1
 #define VP_BM_RUNTIME                       V2   // basement node

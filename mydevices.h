@@ -12,7 +12,7 @@ char dvUsername[] = CAYENNE_USERNAME;
 char dvPassword[] = CAYENNE_PASSWORD;
 char dvClientID[] = CAYENNE_CLIENT_ID;
 
-#define MESSAGE_DELAY                       100
+#define MESSAGE_DELAY                       1 // millisec
 
 #define CH_BATT_VOLTAGE                     1
 #define CH_BM_RUNTIME                       2   // basement node
