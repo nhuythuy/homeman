@@ -15,7 +15,7 @@ char dvClientID[] = CAYENNE_CLIENT_ID;
 #define MESSAGE_DELAY                       1 // millisec
 
 #define CH_BATT_VOLTAGE                     1
-#define CH_BM_RUNTIME                       2   // basement node
+#define CH_BM_RUNTIME                       2 // basement node
 #define CH_BM_TEMPERATURE                   3
 #define CH_BM_HUMIDITY                      4
 #define CH_ENTRANCE_MOTION_DETECTED_SECONDS 5
