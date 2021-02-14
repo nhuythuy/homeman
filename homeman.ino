@@ -7,7 +7,7 @@
 
 #define ENABLE_WIFI
 #define ENABLE_BLYNK
-#define ENABLE_CAYENNE
+//#define ENABLE_CAYENNE
 
 #define CAYENNE_DEBUG
 #define CAYENNE_PRINT Serial
@@ -24,7 +24,7 @@
 #include "comm_lr.h"
 #include "comm_ps.h"
 
-#define WDT_TIMEOUT   300 // 300 sec
+#define WDT_TIMEOUT   120 // 120 sec
 
 // =======================================================
 void setup() {
@@ -38,8 +38,12 @@ void setup() {
   WIFI_Connect();
   setupDateTime();
 
+#ifdef ENABLE_CAYENNE
   cayenneSetup();
+#endif
+#ifdef ENABLE_BLYNK
   blynkSetup();
+#endif
 
   commServerSetup();
 #endif
@@ -75,12 +79,12 @@ void loop() {
   blynkLoop();
 #endif
 #endif
-  if(!cloudUploaded && needUploadCloud == true)
-  {
-    if(cayenneCounter++ > CH_BM_HUMIDITY) // last channel
-      cayenneCounter = 0;
-    cloudUploaded = true;
-  }
+//  if(!cloudUploaded && needUploadCloud == true)
+//  {
+//    if(cayenneCounter++ > CH_BM_HUMIDITY) // last channel
+//      cayenneCounter = 0;
+//    cloudUploaded = true;
+//  }
 
 #ifdef ENABLE_WIFI
   if(WiFi.status() == WL_DISCONNECTED){

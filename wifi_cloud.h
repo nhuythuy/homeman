@@ -8,6 +8,8 @@
 const char* wifiSsid = WIFI_AP;
 const char* wifiPassword = WIFI_PW;
 
+int espResetCounter = 0;
+
 WiFiClient clientHome;
 
 void commServerSetup(){
@@ -30,7 +32,13 @@ void WIFI_Connect(){
     if(debugCounter++ > 80)
     {
       debugCounter = 0;
+      espResetCounter++;
       Serial.println("!");
+    }
+
+    if(espResetCounter > 3){ // reset ESP since it cannot connect to wifi after many tries
+      ESP.restart();
+      espResetCounter = 0;
     }
   }
 

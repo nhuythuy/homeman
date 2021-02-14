@@ -13,6 +13,7 @@ char dvPassword[] = CAYENNE_PASSWORD;
 char dvClientID[] = CAYENNE_CLIENT_ID;
 
 #define MESSAGE_DELAY                       1 // millisec
+#define MAX_CAYENNE_SIGNAL                  21 // find the last index and update here
 
 #define CH_BATT_VOLTAGE                     1
 #define CH_BM_RUNTIME                       2 // basement node
@@ -57,81 +58,119 @@ void cayenneSetup(){
   delay(200);
 }
 
-// This function is called at intervals to send sensor data to Cayenne.
-CAYENNE_OUT(CH_BATT_VOLTAGE){
-  delay(MESSAGE_DELAY);
-  Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
+void cayenneLoop(){
+  //blynkReconnect();
+  if(cayenneCounter++ > MAX_CAYENNE_SIGNAL)
+    cayenneCounter = 0;
+
+  if(cayenneCounter == 0)
+    Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
+  if(cayenneCounter == 1)
+    Cayenne.virtualWrite(CH_DOOR_MAIN_OPENED_MINUTES, doorMainOpenedMinutes, "counter");
+  if(cayenneCounter == 2)
+    Cayenne.virtualWrite(CH_DOOR_BACK_OPENED_MINUTES, doorBackOpenedMinutes, "counter");
+  if(cayenneCounter == 3)
+    Cayenne.virtualWrite(CH_DOOR_TO_BASEMENT_OPENED_MINUTES, doorToBasementOpenedMinutes, "counter");
+  if(cayenneCounter == 4)
+    Cayenne.virtualWrite(CH_DOOR_BASEMENT_OPENED_MINUTES, doorBasementOpenedMinutes, "counter");
+  if(cayenneCounter == 5)
+    Cayenne.virtualWrite(CH_BM_RUNTIME, bmRuntimeMinutes, "counter");
+  if(cayenneCounter == 6)
+    Cayenne.virtualWrite(CH_LR_RUNTIME, lrRuntimeMinutes, "counter");
+  if(cayenneCounter == 7)
+    Cayenne.virtualWrite(CH_PS_RUNTIME, psRuntimeMinutes, "counter");
+  if(cayenneCounter == 8)
+    Cayenne.virtualWrite(CH_ENTRANCE_MOTION_DETECTED_SECONDS, entranceMotionSeconds, "counter");
+  if(cayenneCounter == 9)
+    Cayenne.celsiusWrite(CH_BM_TEMPERATURE, bmTemp);
+  if(cayenneCounter == 10)
+    Cayenne.virtualWrite(CH_BM_HUMIDITY, bmHumidity, "rel_hum", "p");
+  if(cayenneCounter == 11)
+    Cayenne.celsiusWrite(CH_LR_TEMPERATURE, lrTemp);
+  if(cayenneCounter == 12)
+    Cayenne.virtualWrite(CH_LR_HUMIDITY, lrHumidity, "rel_hum", "p");
+  if(cayenneCounter == 13)
+    Cayenne.celsiusWrite(CH_PS_TEMPERATURE, psTemp);
+  if(cayenneCounter == 14)
+    Cayenne.virtualWrite(CH_PS_HUMIDITY, psHumidity, "rel_hum", "p");
+
 }
 
-CAYENNE_OUT(CH_DOOR_MAIN_OPENED_MINUTES){
-  delay(MESSAGE_DELAY);
-  Cayenne.virtualWrite(CH_DOOR_MAIN_OPENED_MINUTES, doorMainOpenedMinutes, "counter");
-}
-
-CAYENNE_OUT(CH_DOOR_BACK_OPENED_MINUTES){
-  delay(MESSAGE_DELAY);
-  Cayenne.virtualWrite(CH_DOOR_BACK_OPENED_MINUTES, doorBackOpenedMinutes, "counter");
-}
-
-CAYENNE_OUT(CH_DOOR_TO_BASEMENT_OPENED_MINUTES){
-  delay(MESSAGE_DELAY);
-  Cayenne.virtualWrite(CH_DOOR_TO_BASEMENT_OPENED_MINUTES, doorToBasementOpenedMinutes, "counter");
-}
-
-CAYENNE_OUT(CH_DOOR_BASEMENT_OPENED_MINUTES){
-  delay(MESSAGE_DELAY);
-  Cayenne.virtualWrite(CH_DOOR_BASEMENT_OPENED_MINUTES, doorBasementOpenedMinutes, "counter");
-}
-
-CAYENNE_OUT(CH_BM_RUNTIME){
-  delay(MESSAGE_DELAY);
-  Cayenne.virtualWrite(CH_BM_RUNTIME, bmRuntimeMinutes, "counter");
-}
-
-CAYENNE_OUT(CH_LR_RUNTIME){
-  delay(MESSAGE_DELAY);
-  Cayenne.virtualWrite(CH_LR_RUNTIME, lrRuntimeMinutes, "counter");
-}
-
-CAYENNE_OUT(CH_PS_RUNTIME){
-  delay(MESSAGE_DELAY);
-  Cayenne.virtualWrite(CH_PS_RUNTIME, psRuntimeMinutes, "counter");
-}
-
-CAYENNE_OUT(CH_ENTRANCE_MOTION_DETECTED_SECONDS){
-  delay(MESSAGE_DELAY);
-  Cayenne.virtualWrite(CH_ENTRANCE_MOTION_DETECTED_SECONDS, entranceMotionSeconds, "counter");
-}
-
-CAYENNE_OUT(CH_BM_TEMPERATURE){
-  delay(MESSAGE_DELAY);
-  Cayenne.celsiusWrite(CH_BM_TEMPERATURE, bmTemp);
-}
-
-CAYENNE_OUT(CH_BM_HUMIDITY){
-  delay(MESSAGE_DELAY);
-  Cayenne.virtualWrite(CH_BM_HUMIDITY, bmHumidity, "rel_hum", "p");
-}
-
-CAYENNE_OUT(CH_LR_TEMPERATURE){
-  delay(MESSAGE_DELAY);
-  Cayenne.celsiusWrite(CH_LR_TEMPERATURE, lrTemp);
-}
-
-CAYENNE_OUT(CH_LR_HUMIDITY){
-  delay(MESSAGE_DELAY);
-  Cayenne.virtualWrite(CH_LR_HUMIDITY, lrHumidity, "rel_hum", "p");
-}
-
-CAYENNE_OUT(CH_PS_TEMPERATURE){
-  delay(MESSAGE_DELAY);
-  Cayenne.celsiusWrite(CH_PS_TEMPERATURE, psTemp);
-}
-
-CAYENNE_OUT(CH_PS_HUMIDITY){
-  delay(MESSAGE_DELAY);
-  Cayenne.virtualWrite(CH_PS_HUMIDITY, psHumidity, "rel_hum", "p");
-}
+//// This function is called at intervals to send sensor data to Cayenne.
+//CAYENNE_OUT(CH_BATT_VOLTAGE){
+//  delay(MESSAGE_DELAY);
+//  Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
+//}
+//
+//CAYENNE_OUT(CH_DOOR_MAIN_OPENED_MINUTES){
+//  delay(MESSAGE_DELAY);
+//  Cayenne.virtualWrite(CH_DOOR_MAIN_OPENED_MINUTES, doorMainOpenedMinutes, "counter");
+//}
+//
+//CAYENNE_OUT(CH_DOOR_BACK_OPENED_MINUTES){
+//  delay(MESSAGE_DELAY);
+//  Cayenne.virtualWrite(CH_DOOR_BACK_OPENED_MINUTES, doorBackOpenedMinutes, "counter");
+//}
+//
+//CAYENNE_OUT(CH_DOOR_TO_BASEMENT_OPENED_MINUTES){
+//  delay(MESSAGE_DELAY);
+//  Cayenne.virtualWrite(CH_DOOR_TO_BASEMENT_OPENED_MINUTES, doorToBasementOpenedMinutes, "counter");
+//}
+//
+//CAYENNE_OUT(CH_DOOR_BASEMENT_OPENED_MINUTES){
+//  delay(MESSAGE_DELAY);
+//  Cayenne.virtualWrite(CH_DOOR_BASEMENT_OPENED_MINUTES, doorBasementOpenedMinutes, "counter");
+//}
+//
+//CAYENNE_OUT(CH_BM_RUNTIME){
+//  delay(MESSAGE_DELAY);
+//  Cayenne.virtualWrite(CH_BM_RUNTIME, bmRuntimeMinutes, "counter");
+//}
+//
+//CAYENNE_OUT(CH_LR_RUNTIME){
+//  delay(MESSAGE_DELAY);
+//  Cayenne.virtualWrite(CH_LR_RUNTIME, lrRuntimeMinutes, "counter");
+//}
+//
+//CAYENNE_OUT(CH_PS_RUNTIME){
+//  delay(MESSAGE_DELAY);
+//  Cayenne.virtualWrite(CH_PS_RUNTIME, psRuntimeMinutes, "counter");
+//}
+//
+//CAYENNE_OUT(CH_ENTRANCE_MOTION_DETECTED_SECONDS){
+//  delay(MESSAGE_DELAY);
+//  Cayenne.virtualWrite(CH_ENTRANCE_MOTION_DETECTED_SECONDS, entranceMotionSeconds, "counter");
+//}
+//
+//CAYENNE_OUT(CH_BM_TEMPERATURE){
+//  delay(MESSAGE_DELAY);
+//  Cayenne.celsiusWrite(CH_BM_TEMPERATURE, bmTemp);
+//}
+//
+//CAYENNE_OUT(CH_BM_HUMIDITY){
+//  delay(MESSAGE_DELAY);
+//  Cayenne.virtualWrite(CH_BM_HUMIDITY, bmHumidity, "rel_hum", "p");
+//}
+//
+//CAYENNE_OUT(CH_LR_TEMPERATURE){
+//  delay(MESSAGE_DELAY);
+//  Cayenne.celsiusWrite(CH_LR_TEMPERATURE, lrTemp);
+//}
+//
+//CAYENNE_OUT(CH_LR_HUMIDITY){
+//  delay(MESSAGE_DELAY);
+//  Cayenne.virtualWrite(CH_LR_HUMIDITY, lrHumidity, "rel_hum", "p");
+//}
+//
+//CAYENNE_OUT(CH_PS_TEMPERATURE){
+//  delay(MESSAGE_DELAY);
+//  Cayenne.celsiusWrite(CH_PS_TEMPERATURE, psTemp);
+//}
+//
+//CAYENNE_OUT(CH_PS_HUMIDITY){
+//  delay(MESSAGE_DELAY);
+//  Cayenne.virtualWrite(CH_PS_HUMIDITY, psHumidity, "rel_hum", "p");
+//}
 
 void writeCayenneDigitalStates(int channelId, int value){
   delay(MESSAGE_DELAY);
@@ -143,5 +182,6 @@ CAYENNE_IN(CH_FORCE_RADIO_POWER)
   forceRadioPower = getValue.asInt(); // Get value as integer
 //  Serial.println("Radio power force: " + String(forceRadioPower));
 }
+
 
 #endif
