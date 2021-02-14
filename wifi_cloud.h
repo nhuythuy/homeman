@@ -36,7 +36,7 @@ void WIFI_Connect(){
       Serial.println("!");
     }
 
-    if(espResetCounter > 3){ // reset ESP since it cannot connect to wifi after many tries
+    if(espResetCounter > 2){ // reset ESP since it cannot connect to wifi after many tries
       ESP.restart();
       espResetCounter = 0;
     }
