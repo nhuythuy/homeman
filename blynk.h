@@ -7,7 +7,7 @@ int blynkCounter = 0;
 #ifndef BLYNK
 #define BLYNK
 
-#define MESSAGE_DELAY                       2
+#define MESSAGE_DELAY                       100
 
 #define VP_BATT_VOLTAGE                     V1
 #define VP_BM_RUNTIME                       V2   // basement node
@@ -142,33 +142,6 @@ BLYNK_READ(VP_ENTRANCE_MOTION_DETECTED_SECONDS){
   Blynk.virtualWrite(VP_ENTRANCE_MOTION_DETECTED_SECONDS, entranceMotionSeconds);
 }
 
-BLYNK_READ(VP_DOOR_MAIN){
-  Blynk.virtualWrite(VP_DOOR_MAIN, (ssDoorMain ? 255 : 0));
-}
-
-BLYNK_READ(VP_DOOR_TO_BASEMENT){
-  Blynk.virtualWrite(VP_DOOR_TO_BASEMENT, (ssDoorToBasement ? 255 : 0));
-}
-
-BLYNK_READ(VP_DOOR_BASEMENT){
-  Blynk.virtualWrite(VP_DOOR_BASEMENT, (ssDoorBasement ? 255 : 0));
-}
-
-BLYNK_READ(VP_DOOR_BACK){
-  Blynk.virtualWrite(VP_DOOR_BACK, (ssDoorBack ? 255 : 0));
-}
-
-BLYNK_READ(VP_ENTRANCE_MOTION){
-  Blynk.virtualWrite(VP_ENTRANCE_MOTION, (ssEntranceMotion ? 255 : 0));
-}
-
-BLYNK_READ(CH_LIGHT_BASEMENT){
-  Blynk.virtualWrite(CH_LIGHT_BASEMENT, (ssLightBasementOn ? 255 : 0));
-}
-
-BLYNK_READ(CH_LIGHT_STAIR_BASEMENT){
-  Blynk.virtualWrite(CH_LIGHT_STAIR_BASEMENT, (ssDoorToBasement ? 255 : 0)); // same as this signal
-}
 
 // This function sends Arduino's up time every second to Virtual Pin (5).
 // In the app, Widget's reading frequency should be set to PUSH. This means
@@ -181,6 +154,21 @@ void blynkTimerEvent()
   // Please don't send more that 10 values per second.
   Serial.println("Blynk timer triggered...");
   // for all signals to be sent at once
+
+  Blynk.virtualWrite(VP_DOOR_MAIN, (ssDoorMain ? 255 : 0));
+  delay(MESSAGE_DELAY);
+  Blynk.virtualWrite(VP_DOOR_TO_BASEMENT, (ssDoorToBasement ? 255 : 0));
+  delay(MESSAGE_DELAY);
+  Blynk.virtualWrite(VP_DOOR_BASEMENT, (ssDoorBasement ? 255 : 0));
+  delay(MESSAGE_DELAY);
+  Blynk.virtualWrite(VP_DOOR_BACK, (ssDoorBack ? 255 : 0));
+  delay(MESSAGE_DELAY);
+  Blynk.virtualWrite(VP_ENTRANCE_MOTION, (ssEntranceMotion ? 255 : 0));
+  delay(MESSAGE_DELAY);
+  Blynk.virtualWrite(CH_LIGHT_BASEMENT, (ssLightBasementOn ? 255 : 0));
+  delay(MESSAGE_DELAY);
+  Blynk.virtualWrite(CH_LIGHT_STAIR_BASEMENT, (ssDoorToBasement ? 255 : 0)); // same as this signal
+  delay(MESSAGE_DELAY);
 }
 
 void blynkSetup(){

@@ -32,6 +32,7 @@ void setup() {
   setupActuators();
 
   Serial.begin(19200); // ESP8266: Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
+  SerialBT.begin("HomeMan");
   delay(100);
 
 #ifdef ENABLE_WIFI
@@ -134,8 +135,7 @@ void updateDurations(){
   else
     entranceMotionSeconds = 0;
 
-  Serial.println("Sensors detected: " + String(doorMainOpenedMinutes) + " min - "
-  + String(doorToBasementOpenedMinutes) + " min - "
-  + String(doorBasementOpenedMinutes) + " min - "
-  + String(entranceMotionSeconds)  + " sec");
+  Serial.println("Door main: " + String(doorMainOpenedMinutes) + " min, Door to BM: "
+    + String(doorToBasementOpenedMinutes) + " min, Door BM" + String(doorBasementOpenedMinutes) + " min, Door back: "
+    + String(doorBackOpenedMinutes) + " min, Entrance Motion: " + String(entranceMotionSeconds)  + " sec");
 }

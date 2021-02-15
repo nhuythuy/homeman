@@ -13,10 +13,12 @@ void CommServerPowerStation(){
 
   flipLed();
   Serial.println("Connected to server (power station)!");
+  SerialBT.println("Connected to server (power station)!");
 
   clientHome.println("powerstationstate:" + String(bmRuntimeMinutes) + "\n");
   String reply = clientHome.readStringUntil('\n');   // receives the answer from the sever
   Serial.println("from server (power station): " + reply);
+  SerialBT.println("from server (power station): " + reply);
   if(reply.length() < 10){
     clientHome.flush();
     return;
@@ -34,8 +36,7 @@ void CommServerPowerStation(){
   psHumidity = humid.toFloat();
 
   Serial.println("from server (power station): Runtime (" + String(psRuntimeMinutes)
-  + "), Temp: (" + String(psTemp)
-  + "), Humidity: (" + String(psHumidity)
+  + "), Temp: (" + String(psTemp) + "), Humidity: (" + String(psHumidity)
   + "), Batt. volt.: (" + String(psBatteryVolt) + ")");
 
   clientHome.flush();

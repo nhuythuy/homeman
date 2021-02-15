@@ -12,16 +12,12 @@ void CommServerLivingRoom(){
 
   flipLed();
   Serial.println("Connected to server (living room)!");
-//  clientHome.println("Hello Home server! Are you sleeping?\n");  // sends the message to the server
-//  String answer = clientHome.readStringUntil('\n');   // receives the answer from the sever
-//  Serial.println("from server (living room): " + answer);
-
-  // send client state to the server
-  // https://arduinojson.org/v6/example/
+  SerialBT.println("Connected to server (living room)!");
 
   clientHome.println("livingroomstate:" + String(bmRuntimeMinutes) + "\n");
   String reply = clientHome.readStringUntil('\n');    // receives the answer from the sever
   Serial.println("from server (living room): " + reply);
+  SerialBT.println("from server (living room): " + reply);
   if(reply.length() < 10){
     clientHome.flush();
     return;
@@ -47,8 +43,7 @@ void CommServerLivingRoom(){
   doorBackOpenedMinutes = doc["ssDoorBackOpenMin"];
 
   Serial.println("from server (living room): Runtime (" + String(lrRuntimeMinutes)
-  + "), Temp: (" + String(lrTemp)
-  + "), Humidity: (" + String(lrHumidity)
+  + "), Temp: (" + String(lrTemp) + "), Humidity: (" + String(lrHumidity)
   + "), Door back: (" + String(ssDoorBack)
   + "), Door back opened: (" + String(doorBackOpenedMinutes) + ") min");
 

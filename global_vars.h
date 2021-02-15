@@ -1,8 +1,18 @@
 #ifndef GLOBAL_VARS
 #define GLOBAL_VARS
 
+#include "BluetoothSerial.h"
+
 #define DELAY_LONG        5000            // 5,0 seconds
 #define DELAY_SHORT       1000            // 2,5 seconds
+
+
+// Check if Bluetooth configs are enabled
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+#endif
+
+BluetoothSerial SerialBT;
 
 long delayMs = DELAY_SHORT;
 bool stateLed = 0;

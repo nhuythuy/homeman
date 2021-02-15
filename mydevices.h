@@ -12,7 +12,7 @@ char dvUsername[] = CAYENNE_USERNAME;
 char dvPassword[] = CAYENNE_PASSWORD;
 char dvClientID[] = CAYENNE_CLIENT_ID;
 
-#define MESSAGE_DELAY                       1 // millisec
+#define MESSAGE_DELAY                       100 // millisec
 #define MAX_CAYENNE_SIGNAL                  21 // find the last index and update here
 
 #define CH_BATT_VOLTAGE                     1
