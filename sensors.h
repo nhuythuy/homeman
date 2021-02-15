@@ -2,7 +2,7 @@
 #include <DHT.h>
 #include "ds1621.h"
 #include <Adafruit_ADS1015.h>
-#include "mydevices.h"
+#include "cayenne.h"
 
 
 #define ADC_MAX_RAW       4095              // 12 bit ADC, 1.18 (calibration factor)
