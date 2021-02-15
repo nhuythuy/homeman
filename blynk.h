@@ -8,7 +8,6 @@ int blynkCounter = 0;
 #define BLYNK
 
 #define MESSAGE_DELAY                       2
-#define MAX_BLYNK_SIGNAL                    17 // find the last index and update here
 
 #define VP_BATT_VOLTAGE                     V1
 #define VP_BM_RUNTIME                       V2   // basement node
@@ -81,10 +80,94 @@ BLYNK_WRITE(VP_FORCE_CAMERA_POWER)
   // process received value
 }
 
-BLYNK_READ(VP_DOOR_MAIN)
-{
-  // This command writes Arduino's uptime in seconds to VP_DOOR_MAIN
+// for all signals requested by Blynk app (slow response)
+BLYNK_READ(VP_BATT_VOLTAGE){
+  Blynk.virtualWrite(VP_BATT_VOLTAGE, ssBatteryVolt);
+}
+
+BLYNK_READ(VP_BM_RUNTIME){
+  // This command writes Arduino's uptime in minutes to VP_BM_RUNTIME
+  Blynk.virtualWrite(VP_BM_RUNTIME, bmRuntimeMinutes);
+}
+
+BLYNK_READ(VP_BM_TEMPERATURE){
+  Blynk.virtualWrite(VP_BM_TEMPERATURE, bmTemp);
+}
+
+BLYNK_READ(VP_BM_HUMIDITY){
+  Blynk.virtualWrite(VP_BM_HUMIDITY, bmTempX); // bmHumidity); temp. borrow this for showing temp. using LM35 sensor
+}
+
+BLYNK_READ(VP_DOOR_MAIN_OPENED_MINUTES){
+  Blynk.virtualWrite(VP_DOOR_MAIN_OPENED_MINUTES, doorMainOpenedMinutes);
+}
+
+BLYNK_READ(VP_DOOR_TO_BASEMENT_OPENED_MINUTES){
+  Blynk.virtualWrite(VP_DOOR_TO_BASEMENT_OPENED_MINUTES, doorToBasementOpenedMinutes);
+}
+
+BLYNK_READ(VP_DOOR_BASEMENT_OPENED_MINUTES){
+  Blynk.virtualWrite(VP_DOOR_BASEMENT_OPENED_MINUTES, doorBasementOpenedMinutes);
+}
+
+BLYNK_READ(VP_DOOR_BACK_OPENED_MINUTES){
+  Blynk.virtualWrite(VP_DOOR_BACK_OPENED_MINUTES, doorBackOpenedMinutes);
+}
+
+BLYNK_READ(VP_LR_RUNTIME){
+    Blynk.virtualWrite(VP_LR_RUNTIME, lrRuntimeMinutes);
+}
+
+BLYNK_READ(VP_LR_TEMPERATURE){
+  Blynk.virtualWrite(VP_LR_TEMPERATURE, lrTemp);
+}
+
+BLYNK_READ(VP_LR_HUMIDITY){
+  Blynk.virtualWrite(VP_LR_HUMIDITY, lrHumidity);
+}
+
+BLYNK_READ(VP_PS_RUNTIME){
+  Blynk.virtualWrite(VP_PS_RUNTIME, psRuntimeMinutes);
+}
+
+BLYNK_READ(VP_PS_TEMPERATURE){
+    Blynk.virtualWrite(VP_PS_TEMPERATURE, psTemp);
+}
+
+BLYNK_READ(VP_PS_HUMIDITY){
+  Blynk.virtualWrite(VP_PS_HUMIDITY, psHumidity);
+}
+
+BLYNK_READ(VP_ENTRANCE_MOTION_DETECTED_SECONDS){
+  Blynk.virtualWrite(VP_ENTRANCE_MOTION_DETECTED_SECONDS, entranceMotionSeconds);
+}
+
+BLYNK_READ(VP_DOOR_MAIN){
   Blynk.virtualWrite(VP_DOOR_MAIN, (ssDoorMain ? 255 : 0));
+}
+
+BLYNK_READ(VP_DOOR_TO_BASEMENT){
+  Blynk.virtualWrite(VP_DOOR_TO_BASEMENT, (ssDoorToBasement ? 255 : 0));
+}
+
+BLYNK_READ(VP_DOOR_BASEMENT){
+  Blynk.virtualWrite(VP_DOOR_BASEMENT, (ssDoorBasement ? 255 : 0));
+}
+
+BLYNK_READ(VP_DOOR_BACK){
+  Blynk.virtualWrite(VP_DOOR_BACK, (ssDoorBack ? 255 : 0));
+}
+
+BLYNK_READ(VP_ENTRANCE_MOTION){
+  Blynk.virtualWrite(VP_ENTRANCE_MOTION, (ssEntranceMotion ? 255 : 0));
+}
+
+BLYNK_READ(CH_LIGHT_BASEMENT){
+  Blynk.virtualWrite(CH_LIGHT_BASEMENT, (ssLightBasementOn ? 255 : 0));
+}
+
+BLYNK_READ(CH_LIGHT_STAIR_BASEMENT){
+  Blynk.virtualWrite(CH_LIGHT_STAIR_BASEMENT, (ssDoorToBasement ? 255 : 0)); // same as this signal
 }
 
 // This function sends Arduino's up time every second to Virtual Pin (5).
@@ -93,67 +176,11 @@ BLYNK_READ(VP_DOOR_MAIN)
 void blynkTimerEvent()
 {
   blynkReconnect();
-  if(blynkCounter++ > MAX_BLYNK_SIGNAL)
-    blynkCounter = 0;
   
   // You can send any value at any time.
   // Please don't send more that 10 values per second.
-  Serial.println("Sending to Blynk...");
-
+  Serial.println("Blynk timer triggered...");
   // for all signals to be sent at once
-//  Blynk.virtualWrite(VP_DOOR_MAIN, (ssDoorMain ? 255 : 0));
-//  delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(VP_DOOR_TO_BASEMENT, (ssDoorToBasement ? 255 : 0));
-  delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(VP_DOOR_BASEMENT, (ssDoorBasement ? 255 : 0));
-  delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(VP_DOOR_BACK, (ssDoorBack ? 255 : 0));
-  delay(MESSAGE_DELAY);
-
-
-  // for all other signals: slow response
-  if(blynkCounter == 0)
-    Blynk.virtualWrite(VP_BATT_VOLTAGE, ssBatteryVolt);
-  if(blynkCounter == 1)
-    Blynk.virtualWrite(VP_BM_RUNTIME, bmRuntimeMinutes);
-  if(blynkCounter == 2)
-    Blynk.virtualWrite(VP_BM_TEMPERATURE, bmTemp);
-  if(blynkCounter == 3)
-    Blynk.virtualWrite(VP_BM_HUMIDITY, bmTempX); // bmHumidity); temp. borrow this for showing temp. using LM35 sensor
-  if(blynkCounter == 4)
-//  Blynk.virtualWrite(VP_ENTRANCE_MOTION_DETECTED_SECONDS, entranceMotionSeconds);
-
-  if(blynkCounter == 5)
-    Blynk.virtualWrite(VP_DOOR_MAIN_OPENED_MINUTES, doorMainOpenedMinutes);
-  if(blynkCounter == 6)
-    Blynk.virtualWrite(VP_DOOR_TO_BASEMENT_OPENED_MINUTES, doorToBasementOpenedMinutes);
-  if(blynkCounter == 7)
-    Blynk.virtualWrite(VP_DOOR_BASEMENT_OPENED_MINUTES, doorBasementOpenedMinutes);
-  if(blynkCounter == 8)
-    Blynk.virtualWrite(VP_DOOR_BACK_OPENED_MINUTES, doorBackOpenedMinutes);
-
-  if(blynkCounter == 9)
-    Blynk.virtualWrite(VP_LR_RUNTIME, lrRuntimeMinutes);
-  if(blynkCounter == 10)
-    Blynk.virtualWrite(VP_LR_TEMPERATURE, lrTemp);
-  if(blynkCounter == 11)
-    Blynk.virtualWrite(VP_LR_HUMIDITY, lrHumidity);
-
-  if(blynkCounter == 12)
-    Blynk.virtualWrite(VP_PS_RUNTIME, psRuntimeMinutes);
-  if(blynkCounter == 13)
-    Blynk.virtualWrite(VP_PS_TEMPERATURE, psTemp);
-  if(blynkCounter == 14)
-    Blynk.virtualWrite(VP_PS_HUMIDITY, psHumidity);
-
-  if(blynkCounter == 15)
-    Blynk.virtualWrite(VP_ENTRANCE_MOTION, (ssEntranceMotion ? 255 : 0));
-  if(blynkCounter == 16)
-    Blynk.virtualWrite(CH_LIGHT_BASEMENT, (ssLightBasementOn ? 255 : 0));
-  if(blynkCounter == 17)
-    Blynk.virtualWrite(CH_LIGHT_STAIR_BASEMENT, (ssDoorToBasement ? 255 : 0)); // same as this signal
-
-  Serial.println("Sent to Blynk...");
 }
 
 void blynkSetup(){
