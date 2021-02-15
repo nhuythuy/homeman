@@ -5,7 +5,7 @@
 IPAddress serverLivingRoom(192,168,1,5);          // the fix IP address of the server
 
 void CommServerLivingRoom(){
-  if(!clientHome.connect(serverLivingRoom, 80)){
+  if(!clientHomeLR.connect(serverLivingRoom, 80)){
     Serial.println("Connecting to server (living room) FAILED!");
     return;
   }
@@ -14,12 +14,12 @@ void CommServerLivingRoom(){
   Serial.println("Connected to server (living room)!");
   SerialBT.println("Connected to server (living room)!");
 
-  clientHome.println("livingroomstate:" + String(bmRuntimeMinutes) + "\n");
-  String reply = clientHome.readStringUntil('\n');    // receives the answer from the sever
+  clientHomeLR.println("livingroomstate:" + String(bmRuntimeMinutes) + "\n");
+  String reply = clientHomeLR.readStringUntil('\n');    // receives the answer from the sever
   Serial.println("from server (living room): " + reply);
   SerialBT.println("from server (living room): " + reply);
   if(reply.length() < 10){
-    clientHome.flush();
+    clientHomeLR.flush();
     return;
   }
   
@@ -47,6 +47,6 @@ void CommServerLivingRoom(){
   + "), Door back: (" + String(ssDoorBack)
   + "), Door back opened: (" + String(doorBackOpenedMinutes) + ") min");
 
-  clientHome.flush();
+  clientHomeLR.flush();
   flipLed();
 }

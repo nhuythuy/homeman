@@ -6,7 +6,7 @@ IPAddress serverPowerStation(192,168,1,6);          // the fix IP address of the
 
 
 void CommServerPowerStation(){
-  if(!clientHome.connect(serverPowerStation, 80)){
+  if(!clientHomePS.connect(serverPowerStation, 80)){
     Serial.println("Connecting to server (power station) FAILED!");
     return;
   }
@@ -15,12 +15,12 @@ void CommServerPowerStation(){
   Serial.println("Connected to server (power station)!");
   SerialBT.println("Connected to server (power station)!");
 
-  clientHome.println("powerstationstate:" + String(bmRuntimeMinutes) + "\n");
-  String reply = clientHome.readStringUntil('\n');   // receives the answer from the sever
+  clientHomePS.println("powerstationstate:" + String(bmRuntimeMinutes) + "\n");
+  String reply = clientHomePS.readStringUntil('\n');   // receives the answer from the sever
   Serial.println("from server (power station): " + reply);
   SerialBT.println("from server (power station): " + reply);
   if(reply.length() < 10){
-    clientHome.flush();
+    clientHomePS.flush();
     return;
   }
   
@@ -39,6 +39,6 @@ void CommServerPowerStation(){
   + "), Temp: (" + String(psTemp) + "), Humidity: (" + String(psHumidity)
   + "), Batt. volt.: (" + String(psBatteryVolt) + ")");
 
-  clientHome.flush();
+  clientHomePS.flush();
   flipLed();
 }

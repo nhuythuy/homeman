@@ -10,10 +10,13 @@ const char* wifiPassword = WIFI_PW;
 
 int espResetCounter = 0;
 
-WiFiClient clientHome;
+WiFiClient clientHomeLR;
+WiFiClient clientHomePS;
 
 void commServerSetup(){
-  clientHome.setTimeout(3000); // msec, 3 sec since other servers all have at least 1 sec delay in loop func
+  // msec, 3 sec since other servers all have at least 1 sec delay in loop func
+  clientHomeLR.setTimeout(3000);
+  clientHomePS.setTimeout(3000);
 }
 
 void WIFI_Connect(){
