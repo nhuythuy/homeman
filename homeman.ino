@@ -7,7 +7,7 @@
 
 #define ENABLE_WIFI
 #define ENABLE_BLYNK
-//#define ENABLE_CAYENNE
+#define ENABLE_CAYENNE
 
 #define CAYENNE_DEBUG
 #define CAYENNE_PRINT Serial
@@ -15,11 +15,11 @@
 #include <esp_task_wdt.h>
 #include "sensors.h"
 #include "actuators.h"
-#include "mydevices.h"
 #include "datetime.h"
 #include "wifi_cloud.h"
 #include "pin_define.h"
 #include "melody.h"
+#include "cayenne.h"
 #include "blynk.h"
 #include "comm_lr.h"
 #include "comm_ps.h"

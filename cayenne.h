@@ -58,40 +58,41 @@ void cayenneSetup(){
   delay(200);
 }
 
-void cayenneLoop(){
+//void cayenneLoop(){
+CAYENNE_OUT_DEFAULT(){
   //blynkReconnect();
   if(cayenneCounter++ > MAX_CAYENNE_SIGNAL)
     cayenneCounter = 0;
 
-  if(cayenneCounter == 0)
+//  if(cayenneCounter == 0)
     Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
-  if(cayenneCounter == 1)
+//  if(cayenneCounter == 1)
     Cayenne.virtualWrite(CH_DOOR_MAIN_OPENED_MINUTES, doorMainOpenedMinutes, "counter");
-  if(cayenneCounter == 2)
+//  if(cayenneCounter == 2)
     Cayenne.virtualWrite(CH_DOOR_BACK_OPENED_MINUTES, doorBackOpenedMinutes, "counter");
-  if(cayenneCounter == 3)
+//  if(cayenneCounter == 3)
     Cayenne.virtualWrite(CH_DOOR_TO_BASEMENT_OPENED_MINUTES, doorToBasementOpenedMinutes, "counter");
-  if(cayenneCounter == 4)
+//  if(cayenneCounter == 4)
     Cayenne.virtualWrite(CH_DOOR_BASEMENT_OPENED_MINUTES, doorBasementOpenedMinutes, "counter");
-  if(cayenneCounter == 5)
+//  if(cayenneCounter == 5)
     Cayenne.virtualWrite(CH_BM_RUNTIME, bmRuntimeMinutes, "counter");
-  if(cayenneCounter == 6)
+//  if(cayenneCounter == 6)
     Cayenne.virtualWrite(CH_LR_RUNTIME, lrRuntimeMinutes, "counter");
-  if(cayenneCounter == 7)
+//  if(cayenneCounter == 7)
     Cayenne.virtualWrite(CH_PS_RUNTIME, psRuntimeMinutes, "counter");
-  if(cayenneCounter == 8)
+//  if(cayenneCounter == 8)
     Cayenne.virtualWrite(CH_ENTRANCE_MOTION_DETECTED_SECONDS, entranceMotionSeconds, "counter");
-  if(cayenneCounter == 9)
+//  if(cayenneCounter == 9)
     Cayenne.celsiusWrite(CH_BM_TEMPERATURE, bmTemp);
-  if(cayenneCounter == 10)
+//  if(cayenneCounter == 10)
     Cayenne.virtualWrite(CH_BM_HUMIDITY, bmHumidity, "rel_hum", "p");
-  if(cayenneCounter == 11)
+//  if(cayenneCounter == 11)
     Cayenne.celsiusWrite(CH_LR_TEMPERATURE, lrTemp);
-  if(cayenneCounter == 12)
+//  if(cayenneCounter == 12)
     Cayenne.virtualWrite(CH_LR_HUMIDITY, lrHumidity, "rel_hum", "p");
-  if(cayenneCounter == 13)
+//  if(cayenneCounter == 13)
     Cayenne.celsiusWrite(CH_PS_TEMPERATURE, psTemp);
-  if(cayenneCounter == 14)
+//  if(cayenneCounter == 14)
     Cayenne.virtualWrite(CH_PS_HUMIDITY, psHumidity, "rel_hum", "p");
 
 }
