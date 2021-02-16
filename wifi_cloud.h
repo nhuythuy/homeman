@@ -15,8 +15,8 @@ WiFiClient clientHomePS;
 
 void commServerSetup(){
   // msec, 3 sec since other servers all have at least 1 sec delay in loop func
-  clientHomeLR.setTimeout(3000);
-  clientHomePS.setTimeout(3000);
+  clientHomeLR.setTimeout(1000);
+  clientHomePS.setTimeout(1000);
 }
 
 void WIFI_Connect(){

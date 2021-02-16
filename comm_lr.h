@@ -48,5 +48,6 @@ void CommServerLivingRoom(){
   + "), Door back opened: (" + String(doorBackOpenedMinutes) + ") min");
 
   clientHomeLR.flush();
+  clientHomePS.stop();
   flipLed();
 }

@@ -95,6 +95,15 @@ CAYENNE_OUT_DEFAULT(){
 //  if(cayenneCounter == 14)
     Cayenne.virtualWrite(CH_PS_HUMIDITY, psHumidity, "rel_hum", "p");
 
+  // digital signals
+  Cayenne.virtualWrite(CH_DOOR_MAIN, ssDoorMain, "digital_sensor", "d");
+  Cayenne.virtualWrite(CH_DOOR_TO_BASEMENT, ssDoorToBasement, "digital_sensor", "d");
+  Cayenne.virtualWrite(CH_DOOR_BASEMENT, ssDoorBasement, "digital_sensor", "d");
+  Cayenne.virtualWrite(CH_DOOR_BACK, ssDoorBack, "digital_sensor", "d");
+  Cayenne.virtualWrite(CH_ENTRANCE_MOTION, ssEntranceMotion, "digital_sensor", "d");
+  Cayenne.virtualWrite(CH_LIGHT_BASEMENT, ssLightBasementOn, "digital_sensor", "d");
+  Cayenne.virtualWrite(CH_LIGHT_STAIR_BASEMENT, ssDoorToBasement, "digital_sensor", "d");
+
 }
 
 //// This function is called at intervals to send sensor data to Cayenne.

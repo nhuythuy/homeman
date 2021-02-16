@@ -40,5 +40,6 @@ void CommServerPowerStation(){
   + "), Batt. volt.: (" + String(psBatteryVolt) + ")");
 
   clientHomePS.flush();
+  clientHomePS.stop();
   flipLed();
 }

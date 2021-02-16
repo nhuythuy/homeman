@@ -53,14 +53,21 @@ void setup() {
   esp_task_wdt_add(NULL);               // add current thread to WDT watch
 }
 
+unsigned long previousMillis = millis();
+unsigned long currentMillis = millis();
 // =======================================================
 void loop() {
   esp_task_wdt_reset();
 
 #ifdef ENABLE_WIFI
   getServerTime();
-  CommServerLivingRoom();
-  CommServerPowerStation();
+
+  currentMillis = millis();
+  if(currentMillis - previousMillis > 1000) {
+    previousMillis = currentMillis;   // save the last time  
+    CommServerLivingRoom();
+    CommServerPowerStation();
+  }
 #endif
   updateTemp();
 
