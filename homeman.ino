@@ -9,8 +9,8 @@
 #define ENABLE_BLYNK
 #define ENABLE_CAYENNE
 
-#define CAYENNE_DEBUG
-#define CAYENNE_PRINT Serial
+//#define CAYENNE_DEBUG
+//#define CAYENNE_PRINT Serial
 
 #include <esp_task_wdt.h>
 #include "sensors.h"
@@ -21,8 +21,6 @@
 #include "melody.h"
 #include "cayenne.h"
 #include "blynk.h"
-#include "comm_lr.h"
-#include "comm_ps.h"
 
 #define WDT_TIMEOUT   120 // 120 sec
 
@@ -46,7 +44,7 @@ void setup() {
   blynkSetup();
 #endif
 
-  commServerSetup();
+//  commServerSetup();
 #endif
 
   esp_task_wdt_init(WDT_TIMEOUT, true); // enable panic so ESP32 restarts
@@ -63,11 +61,11 @@ void loop() {
   getServerTime();
 
   currentMillis = millis();
-  if(currentMillis - previousMillis > 1000) {
-    previousMillis = currentMillis;   // save the last time  
-    CommServerLivingRoom();
-    CommServerPowerStation();
-  }
+//  if(currentMillis - previousMillis > 1000) {
+//    previousMillis = currentMillis;   // save the last time  
+//    CommServerLivingRoom();
+//    CommServerPowerStation();
+//  }
 #endif
   updateTemp();
 
