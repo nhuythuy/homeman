@@ -43,8 +43,6 @@ void setup() {
 #ifdef ENABLE_BLYNK
   blynkSetup();
 #endif
-
-//  commServerSetup();
 #endif
 
   esp_task_wdt_init(WDT_TIMEOUT, true); // enable panic so ESP32 restarts
@@ -57,25 +55,23 @@ unsigned long currentMillis = millis();
 void loop() {
   esp_task_wdt_reset();
 
+  currentMillis = millis();
+  bmRuntimeMinutes = currentMillis / 60000;
+  if((currentMillis - previousMillis) > 2000){  // sampling sensors every 2 sec
+    previousMillis = currentMillis;             // save the last time  
+
 #ifdef ENABLE_WIFI
   getServerTime();
-
-  currentMillis = millis();
-//  if(currentMillis - previousMillis > 1000) {
-//    previousMillis = currentMillis;   // save the last time  
-//    CommServerLivingRoom();
-//    CommServerPowerStation();
-//  }
 #endif
-  updateTemp();
+
+    updateTemp();
+    updateBattVolt();
+    updateDurations();
+  }
 
   flipLed();
   updateSensors();
   updateActuator();
-
-  bmRuntimeMinutes = millis() / 60000;
-
-  updateDurations();
 
 #ifdef ENABLE_WIFI
 #ifdef ENABLE_CAYENNE
@@ -85,12 +81,6 @@ void loop() {
   blynkLoop();
 #endif
 #endif
-//  if(!cloudUploaded && needUploadCloud == true)
-//  {
-//    if(cayenneCounter++ > CH_BM_HUMIDITY) // last channel
-//      cayenneCounter = 0;
-//    cloudUploaded = true;
-//  }
 
 #ifdef ENABLE_WIFI
   if(WiFi.status() == WL_DISCONNECTED){
@@ -117,30 +107,4 @@ ICACHE_RAM_ATTR void detectsMovement() {
 #endif
     lastTrigger = millis();
   }
-}
-
-void updateDurations(){
-  if(ssDoorToBasement)
-    doorToBasementOpenedMinutes = (millis() - doorToBasementOpenedAt) / 60000;
-  else
-    doorToBasementOpenedMinutes = 0;
-
-  if(ssDoorBasement)
-    doorBasementOpenedMinutes = (millis() - doorBasementOpenedAt) / 60000;
-  else
-    doorBasementOpenedMinutes = 0;
-
-  if(ssDoorMain)
-    doorMainOpenedMinutes = (millis() - doorMainOpenedAt) / 60000;
-  else
-    doorMainOpenedMinutes = 0;
-
-  if(ssEntranceMotion)
-    entranceMotionSeconds = (millis() - entranceMotionDetectedAt) / 1000;
-  else
-    entranceMotionSeconds = 0;
-
-  Serial.println("Door main: " + String(doorMainOpenedMinutes) + " min, Door to BM: "
-    + String(doorToBasementOpenedMinutes) + " min, Door BM" + String(doorBasementOpenedMinutes) + " min, Door back: "
-    + String(doorBackOpenedMinutes) + " min, Entrance Motion: " + String(entranceMotionSeconds)  + " sec");
 }

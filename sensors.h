@@ -57,12 +57,13 @@ bool updateHumidTemp(){
   return true;
 }
 
-void updateSensors(){
-  bool state;
-
+void updateBattVolt(){
   int16_t adc3 = ads.readADC_SingleEnded(3);
   ssBatteryVolt = BATT_VOLT_RATIO * adc3;
+}
 
+void updateSensors(){
+  bool state;
   state = !digitalRead(PIN_SS_DOOR_MAIN);
   if (state != ssDoorMain){
 #ifdef ENABLE_WIFI
@@ -133,21 +134,11 @@ void updateSensors(){
 #ifdef ENABLE_WIFI
     writeCayenneDigitalStates(CH_WATER_SMOKE_BASEMENT, state);
 #endif
-//    if(state)
-//      entranceMotionDetectedAt = millis();
-//    else
-//      entranceMotionDetectedAt = 0;
-
     ssWaterLeak = state;
   }
 
   ssOtherSensors = (ssEntranceMotion << 2) | (ssLightBasementOn << 1) | (ssWaterLeak << 0);
-
-  int gbSensorState = (ssOtherSensors << 8) | ssDoorDetectors;
-  if(gbSensorState != globalState) // send to cloud only if global error triggered
-    needUploadCloud = true;
-
-  globalState = gbSensorState;
+  globalState = (ssOtherSensors << 8) | ssDoorDetectors;
 
   if(ssDoorDetectors > 0)
     forceCamPower = 1;

@@ -60,4 +60,30 @@ void printDebugSerialBT(){
   SerialBT.println();
 }
 
+void updateDurations(){
+  if(ssDoorToBasement)
+    doorToBasementOpenedMinutes = (millis() - doorToBasementOpenedAt) / 60000;
+  else
+    doorToBasementOpenedMinutes = 0;
+
+  if(ssDoorBasement)
+    doorBasementOpenedMinutes = (millis() - doorBasementOpenedAt) / 60000;
+  else
+    doorBasementOpenedMinutes = 0;
+
+  if(ssDoorMain)
+    doorMainOpenedMinutes = (millis() - doorMainOpenedAt) / 60000;
+  else
+    doorMainOpenedMinutes = 0;
+
+  if(ssEntranceMotion)
+    entranceMotionSeconds = (millis() - entranceMotionDetectedAt) / 1000;
+  else
+    entranceMotionSeconds = 0;
+
+  Serial.println("Door main: " + String(doorMainOpenedMinutes) + " min, Door to BM: "
+    + String(doorToBasementOpenedMinutes) + " min, Door BM" + String(doorBasementOpenedMinutes) + " min, Door back: "
+    + String(doorBackOpenedMinutes) + " min, Entrance Motion: " + String(entranceMotionSeconds)  + " sec");
+}
+
 #endif
