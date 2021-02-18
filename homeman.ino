@@ -9,9 +9,6 @@
 #define ENABLE_BLYNK
 #define ENABLE_CAYENNE
 
-//#define CAYENNE_DEBUG
-//#define CAYENNE_PRINT Serial
-
 #include <esp_task_wdt.h>
 #include "sensors.h"
 #include "actuators.h"

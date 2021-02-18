@@ -10,14 +10,6 @@ const char* wifiPassword = WIFI_PW;
 
 int espResetCounter = 0;
 
-WiFiClient clientHomeLR;
-WiFiClient clientHomePS;
-
-void commServerSetup(){
-  // msec, 3 sec since other servers all have at least 1 sec delay in loop func
-  clientHomeLR.setTimeout(1000);
-  clientHomePS.setTimeout(1000);
-}
 
 void WIFI_Connect(){
   Serial.println();
@@ -25,8 +17,6 @@ void WIFI_Connect(){
   Serial.println("Connecting to " + String(wifiSsid));
 
   WiFi.begin(wifiSsid, wifiPassword);
-
-  bool ledStatus = false;
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
