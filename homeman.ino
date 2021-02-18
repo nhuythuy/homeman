@@ -57,7 +57,7 @@ void loop() {
 
   currentMillis = millis();
   bmRuntimeMinutes = currentMillis / 60000;
-  if((currentMillis - previousMillis) > 2000){  // sampling sensors every 2 sec
+  if(abs(currentMillis - previousMillis) > 2000){  // sampling sensors every 2 sec
     previousMillis = currentMillis;             // save the last time  
 
 #ifdef ENABLE_WIFI
