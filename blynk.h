@@ -174,7 +174,7 @@ void blynkTimerEvent()
 void blynkSetup(){
   Serial.println("Connecting to Blynk ...");
   Blynk.begin(auth, ssid, pass);
-  timer.setInterval(500L, blynkTimerEvent);
+  timer.setInterval(1000L, blynkTimerEvent);
   Serial.println("Connected to Blynk !");
   delay(200);
 }
