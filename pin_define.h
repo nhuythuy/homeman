@@ -30,4 +30,18 @@
 #define FIELD_ID_POWER_CAM  8
 #define FIELD_ID_POWER_LOAD 9
 
+
+/* Pin on external connector: 10 pin
+ * PIN No.  Desc
+ * 1        Door Main
+ * 2        Door BM
+ * 3        Door to BM
+ * 4        Batt Volt.
+ * 5        
+ * 6        
+ * 7        
+ * 8        
+ * 9        Motion Entrance
+ * 10       Water Smoke detector
+*/
 #endif
