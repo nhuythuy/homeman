@@ -18,8 +18,17 @@
 #include "melody.h"
 #include "cayenne.h"
 #include "blynk.h"
+#include "esp_system.h"
 
-#define WDT_TIMEOUT   120 // 120 sec
+#define WDT_TIMEOUT   60 // 60 sec
+
+const int wdtTimeout = 30000;  // 30 sec, time in ms to trigger the watchdog
+hw_timer_t *wdtTimer = NULL;
+// =======================================================
+void IRAM_ATTR resetModule() {
+  ets_printf("reboot\n");
+  esp_restart();
+}
 
 // =======================================================
 void setup() {
@@ -44,6 +53,12 @@ void setup() {
 
   esp_task_wdt_init(WDT_TIMEOUT, true); // enable panic so ESP32 restarts
   esp_task_wdt_add(NULL);               // add current thread to WDT watch
+
+  // another watchdog
+  wdtTimer = timerBegin(0, 80, true);                  //timer 0, div 80
+  timerAttachInterrupt(wdtTimer, &resetModule, true);  //attach callback
+  timerAlarmWrite(wdtTimer, wdtTimeout * 1000, false); //set time in us
+  timerAlarmEnable(wdtTimer);                          //enable interrupt
 }
 
 unsigned long previousMillis = millis();
@@ -51,6 +66,8 @@ unsigned long currentMillis = millis();
 // =======================================================
 void loop() {
   esp_task_wdt_reset();
+  timerWrite(wdtTimer, 0); //reset timer (feed watchdog)
+
 
   currentMillis = millis();
   bmRuntimeMinutes = currentMillis / 60000;

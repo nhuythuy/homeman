@@ -71,7 +71,7 @@ void updateDurations(){
     entranceMotionSeconds = 0;
 
   Serial.println("Door main: " + String(doorMainOpenedMinutes) + " min, Door to BM: "
-    + String(doorToBasementOpenedMinutes) + " min, Door BM" + String(doorBasementOpenedMinutes) + " min, Door back: "
+    + String(doorToBasementOpenedMinutes) + " min, Door BM " + String(doorBasementOpenedMinutes) + " min, Door back: "
     + String(doorBackOpenedMinutes) + " min, Entrance Motion: " + String(entranceMotionSeconds)  + " sec");
 }
 
