@@ -8,9 +8,10 @@
 
 void setupActuators(){
   pinMode(PIN_LED, OUTPUT);
-  pinMode(PIN_TONE_MELODY, OUTPUT);
+  pinMode(PIN_AC_TONE_MELODY, OUTPUT);
   pinMode(PIN_AC_POWER_LED_ENTRANCE, OUTPUT);
   //pinMode(PIN_AC_POWER_RADIO, OUTPUT);
+  pinMode(PIN_AC_SWITCH_POWER_RELAY, OUTPUT);
 }
 
 // In 3.0.0 there will be a getDay() function.
@@ -33,6 +34,18 @@ void powerRadio(){
     writeCayenneDigitalStates(CH_POWER_RADIO, false);
 #endif
   }
+}
+
+void powerSwitchToSolarPower(){
+  if(ssBatteryVoltPS > 13.0){
+    digitalWrite(PIN_AC_SWITCH_POWER_RELAY, HIGH);
+    switchToSolarPower = true;
+  }
+
+  if(ssBatteryVoltPS < 12.5){
+    digitalWrite(PIN_AC_SWITCH_POWER_RELAY, LOW);
+    switchToSolarPower = false;
+  }  
 }
 
 void updateActuator()

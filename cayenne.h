@@ -15,6 +15,7 @@ char dvClientID[] = CAYENNE_CLIENT_ID;
 #define MESSAGE_DELAY                       100 // millisec
 #define MAX_CAYENNE_SIGNAL                  21 // find the last index and update here
 
+#define CH_PS_BATT_VOLTAGE                  0
 #define CH_BATT_VOLTAGE                     1
 #define CH_BM_RUNTIME                       2 // basement node
 #define CH_BM_TEMPERATURE                   3
@@ -59,6 +60,7 @@ void cayenneSetup(){
 CAYENNE_OUT_DEFAULT(){
   //blynkReconnect();
 
+    Cayenne.virtualWrite(CH_PS_BATT_VOLTAGE, ssBatteryVoltPS, "batt", "V");
     Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
     Cayenne.virtualWrite(CH_DOOR_MAIN_OPENED_MINUTES, doorMainOpenedMinutes, "counter");
 //    Cayenne.virtualWrite(CH_DOOR_BACK_OPENED_MINUTES, doorBackOpenedMinutes, "counter");

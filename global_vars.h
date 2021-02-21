@@ -38,6 +38,8 @@ float psTemp = 0.0;
 float lrBatteryVolt = 0.0;
 float psBatteryVolt = 0.0;
 
+bool switchToSolarPower = false;
+
 float ssBatteryVoltPS = 0;
 float ssBatteryVolt = 0;
 bool ssDoorMain = 0;

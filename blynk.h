@@ -38,8 +38,9 @@ int blynkCounter = 0;
 #define VP_LIGHT_STAIR_BASEMENT     V57
 #define VP_ENTRANCE_LIGHT           V58
 #define VP_POWER_RADIO              V59
-#define CH_WATER_SMOKE_BASEMENT     V60
+#define VP_WATER_SMOKE_BASEMENT     V60
 #define VP_WATER_LEAK_1             V61
+#define VP_SWITCH_TO_SOLAR_POWER    V62
 
 #define VP_FORCE_RADIO_POWER        V100
 #define VP_FORCE_CAMERA_POWER       V101
@@ -84,6 +85,10 @@ BLYNK_WRITE(VP_FORCE_CAMERA_POWER)
 // for all signals requested by Blynk app (slow response)
 BLYNK_READ(VP_BATT_VOLTAGE){
   Blynk.virtualWrite(VP_BATT_VOLTAGE, ssBatteryVolt);
+}
+
+BLYNK_READ(VP_PS_BATT_VOLTAGE){
+  Blynk.virtualWrite(VP_PS_BATT_VOLTAGE, ssBatteryVoltPS);
 }
 
 BLYNK_READ(VP_BM_RUNTIME){
@@ -166,9 +171,9 @@ void blynkTimerEvent()
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_ENTRANCE_MOTION, (ssEntranceMotion ? 255 : 0));
   delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(CH_LIGHT_BASEMENT, (ssLightBasementOn ? 255 : 0));
+  Blynk.virtualWrite(VP_LIGHT_BASEMENT, (ssLightBasementOn ? 255 : 0));
   delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(CH_LIGHT_STAIR_BASEMENT, (ssDoorToBasement ? 255 : 0)); // same as this signal
+  Blynk.virtualWrite(VP_LIGHT_STAIR_BASEMENT, (ssDoorToBasement ? 255 : 0)); // same as this signal
   delay(MESSAGE_DELAY);
 }
 

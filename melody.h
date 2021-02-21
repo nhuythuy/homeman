@@ -5,7 +5,7 @@
 #ifndef MELODY
 #define MELODY
 
-//MelodyPlayer player(PIN_TONE_MELODY);
+//MelodyPlayer player(PIN_AC_TONE_MELODY);
 //String notes[] = { "C4", "G3", "G3", "A3", "G3", "SILENCE", "B3", "C4" };
 //
 //void setupMelody(){
