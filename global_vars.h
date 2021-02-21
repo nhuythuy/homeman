@@ -38,7 +38,7 @@ float psTemp = 0.0;
 float lrBatteryVolt = 0.0;
 float psBatteryVolt = 0.0;
 
-int ssBatteryVoltRaw = 0;
+float ssBatteryVoltPS = 0;
 float ssBatteryVolt = 0;
 bool ssDoorMain = 0;
 bool ssDoorToBasement = 0;

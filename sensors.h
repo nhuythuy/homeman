@@ -8,6 +8,7 @@
 #define ADC_MAX_RAW       4095              // 12 bit ADC, 1.18 (calibration factor)
 #define ADS1115_VOLT_STEP 0.125             // mV
 #define MAX_SUPPLY_VOLT   16.054            // volt: 10K(9990)+39K(38610) --> 3.3*(9990+38610)/9990 = 16.054 V
+#define ML35_TEMP_RATIO   ADS1115_VOLT_STEP / 10
 #define BATT_VOLT_RATIO   ADS1115_VOLT_STEP * (9990+38610)/(9990 * 1000)
 
 DHT dht(PIN_SS_DHT, DHT11, 15);
@@ -20,7 +21,7 @@ void setupSensors(){
   pinMode(PIN_SS_DOOR_BASEMENT, INPUT);
   pinMode(PIN_SS_WATER_SMOKE_BASEMENT, INPUT);
   pinMode(PIN_SS_ENTRANCE_MOTION, INPUT);
-  pinMode(PIN_LIGHT_BASEMENT, INPUT);
+  pinMode(PIN_SS_LIGHT_BASEMENT, INPUT);
 //  attachInterrupt(digitalPinToInterrupt(PIN_SS_ENTRANCE_MOTION), detectsMovement, RISING);
 
   analogReadResolution(12);
@@ -33,7 +34,7 @@ void setupSensors(){
 
 bool updateTemp(){
   int16_t adc0 = ads.readADC_SingleEnded(0);
-  float lm35Temp = ADS1115_VOLT_STEP * adc0 / 10;
+  float lm35Temp = ML35_TEMP_RATIO * adc0;
   Serial.println("LM35 temp.: " + String(lm35Temp, 1));
   bmTempX = lm35Temp;
 
@@ -60,6 +61,11 @@ bool updateHumidTemp(){
 void updateBattVolt(){
   int16_t adc3 = ads.readADC_SingleEnded(3);
   ssBatteryVolt = BATT_VOLT_RATIO * adc3;
+}
+
+void updateBattVoltPS(){
+  int16_t adc2 = ads.readADC_SingleEnded(2);
+  ssBatteryVoltPS = BATT_VOLT_RATIO * adc2;
 }
 
 void updateSensors(){
@@ -105,7 +111,7 @@ void updateSensors(){
     ssDoorBasement = state;
   }
 
-  state = !digitalRead(PIN_LIGHT_BASEMENT);
+  state = !digitalRead(PIN_SS_LIGHT_BASEMENT);
   if (state != ssLightBasementOn){
 #ifdef ENABLE_WIFI
     writeCayenneDigitalStates(CH_LIGHT_BASEMENT, state);

@@ -15,7 +15,7 @@
 #define PIN_SS_DOOR_BASEMENT        34 
 #define PIN_SS_ENTRANCE_MOTION      14 // motion sensor for entrance
 
-#define PIN_LIGHT_BASEMENT          15
+#define PIN_SS_LIGHT_BASEMENT          15
 #define PIN_SS_WATER_SMOKE_BASEMENT 12 // smoke, water leak
 
 

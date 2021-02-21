@@ -9,6 +9,7 @@ int blynkCounter = 0;
 
 #define MESSAGE_DELAY                       100
 
+#define VP_PS_BATT_VOLTAGE                  V0
 #define VP_BATT_VOLTAGE                     V1
 #define VP_BM_RUNTIME                       V2   // basement node
 #define VP_BM_TEMPERATURE                   V3
