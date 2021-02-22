@@ -1,6 +1,6 @@
 #include "lib.h"
 #include <DHT.h>
-#include "ds1621.h"
+#include "climate.h"
 #include <Adafruit_ADS1015.h>
 #include "cayenne.h"
 
