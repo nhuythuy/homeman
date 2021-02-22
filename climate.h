@@ -1,11 +1,15 @@
 #include <Wire.h>            // include Arduino Wire library (required for I2C devices)
+#include <DHT.h>
 
 
-#ifndef DS1621
-#define DS1621
+#ifndef CLIMATE
+#define CLIMATE
 
 // A2, A1 & A0 connected to GND --> 1001000 = 0x48
 #define DS1621_ADDRESS  0x48
+
+DHT dht(PIN_SS_DHT, DHT11, 15);
+
 
 void ds1621Setup(){
   Wire.begin();           // join i2c bus
@@ -16,6 +20,12 @@ void ds1621Setup(){
   Wire.beginTransmission(DS1621_ADDRESS); // send repeated start condition
   Wire.write(0xEE);                       // send start temperature conversion command
   Wire.endTransmission();                 // stop transmission and release the I2C bus
+}
+
+void setupClimateSensors(){
+  dht.begin();
+
+  ds1621Setup();
 }
 
 float ds1621GetTemperature() {
@@ -31,5 +41,20 @@ float ds1621GetTemperature() {
   // convert raw temperature value to tenths °C then to temp.
   return (raw_t * 10 / 2.0) / 10;
 }
+
+bool updateStorageClimate(){
+  bmHumidity = dht.readHumidity();
+  bmTemp = dht.readTemperature();
+  if (isnan(bmHumidity) || isnan(bmTemp)) {
+    Serial.println("Failed to read from DHT sensor!");
+
+    bmHumidity = -100;
+    bmTemp = -100;
+    return false;
+  }
+
+  return true;
+}
+
 
 #endif

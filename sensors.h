@@ -1,5 +1,4 @@
 #include "lib.h"
-#include <DHT.h>
 #include "climate.h"
 #include <Adafruit_ADS1015.h>
 #include "cayenne.h"
@@ -11,7 +10,6 @@
 #define ML35_TEMP_RATIO   ADS1115_VOLT_STEP / 10
 #define BATT_VOLT_RATIO   ADS1115_VOLT_STEP * (9990+38610)/(9990 * 1000)
 
-DHT dht(PIN_SS_DHT, DHT11, 15);
 Adafruit_ADS1115 ads(0x49);
 
 
@@ -26,10 +24,9 @@ void setupSensors(){
 
   analogReadResolution(12);
 
-  dht.begin();
   ads.setGain(GAIN_ONE); // GAIN_ONE --> 1 bit = 0.125mV
   ads.begin();
-  ds1621Setup();
+  setupClimateSensors();
 }
 
 bool updateTemp(){
@@ -40,20 +37,6 @@ bool updateTemp(){
 
   bmTemp = ds1621GetTemperature();
   Serial.println("Temperature: " + String(bmTemp, 1) + " degC");
-
-  return true;
-}
-
-bool updateHumidTemp(){
-  bmHumidity = dht.readHumidity();
-  bmTemp = dht.readTemperature();
-  if (isnan(bmHumidity) || isnan(bmTemp)) {
-    Serial.println("Failed to read from DHT sensor!");
-
-    bmHumidity = -100;
-    bmTemp = -100;
-    return false;
-  }
 
   return true;
 }
