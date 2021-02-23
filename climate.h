@@ -43,13 +43,13 @@ float ds1621GetTemperature() {
 }
 
 bool updateStorageClimate(){
-  bmHumidity = dht.readHumidity();
-  bmTemp = dht.readTemperature();
-  if (isnan(bmHumidity) || isnan(bmTemp)) {
+  stHumidity = dht.readHumidity();
+  stTemp = dht.readTemperature();
+  if (isnan(stHumidity) || isnan(stTemp)) {
     Serial.println("Failed to read from DHT sensor!");
 
-    bmHumidity = -100;
-    bmTemp = -100;
+    stHumidity = -100;
+    stTemp = -100;
     return false;
   }
 

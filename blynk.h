@@ -19,6 +19,8 @@ int blynkCounter = 0;
 #define VP_DOOR_TO_BASEMENT_OPENED_MINUTES  V7
 #define VP_DOOR_BASEMENT_OPENED_MINUTES     V8
 #define VP_DOOR_BACK_OPENED_MINUTES         V9
+#define VP_ST_TEMPERATURE                   V10
+#define VP_ST_HUMIDITY                      V11
 
 #define VP_LR_RUNTIME                       V21   // living room node
 #define VP_LR_TEMPERATURE                   V22
@@ -102,6 +104,14 @@ BLYNK_READ(VP_BM_TEMPERATURE){
 
 BLYNK_READ(VP_BM_HUMIDITY){
   Blynk.virtualWrite(VP_BM_HUMIDITY, bmTempX); // bmHumidity); temp. borrow this for showing temp. using LM35 sensor
+}
+
+BLYNK_READ(VP_ST_TEMPERATURE){
+  Blynk.virtualWrite(VP_ST_TEMPERATURE, stTemp);
+}
+
+BLYNK_READ(VP_ST_HUMIDITY){
+  Blynk.virtualWrite(VP_ST_HUMIDITY, bmHumidity);
 }
 
 BLYNK_READ(VP_DOOR_MAIN_OPENED_MINUTES){

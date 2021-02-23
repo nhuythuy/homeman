@@ -25,6 +25,8 @@ char dvClientID[] = CAYENNE_CLIENT_ID;
 #define CH_DOOR_TO_BASEMENT_OPENED_MINUTES  7
 #define CH_DOOR_BASEMENT_OPENED_MINUTES     8
 #define CH_DOOR_BACK_OPENED_MINUTES         9
+#define CH_ST_TEMPERATURE                   10
+#define CH_ST_HUMIDITY                      11
 
 #define CH_LR_RUNTIME                       21   // living room node
 #define CH_LR_TEMPERATURE                   22
@@ -72,6 +74,8 @@ CAYENNE_OUT_DEFAULT(){
     Cayenne.virtualWrite(CH_ENTRANCE_MOTION_DETECTED_SECONDS, entranceMotionSeconds, "counter");
     Cayenne.celsiusWrite(CH_BM_TEMPERATURE, bmTemp);
     Cayenne.virtualWrite(CH_BM_HUMIDITY, bmHumidity, "rel_hum", "p");
+    Cayenne.celsiusWrite(CH_ST_TEMPERATURE, stTemp);
+    Cayenne.virtualWrite(CH_ST_HUMIDITY, stHumidity, "rel_hum", "p");
 //    Cayenne.celsiusWrite(CH_LR_TEMPERATURE, lrTemp);
 //    Cayenne.virtualWrite(CH_LR_HUMIDITY, lrHumidity, "rel_hum", "p");
 //    Cayenne.celsiusWrite(CH_PS_TEMPERATURE, psTemp);
