@@ -7,7 +7,7 @@
 // inputs
 #define PIN_SS_SUPPLY_VOLT          32 // battery voltage
 
-#define PIN_SS_DHT                  35 // DHT sensor pin
+#define PIN_SS_DHT                  19 // DHT sensor pin
 #define PIN_SS_TEMP                 35 // temperature sensor pin
 #define PIN_SS_DOOR_MAIN            36 // = RX, try use this as DI, together w.   Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
 

@@ -56,7 +56,7 @@ void updateSensors(){
   state = !digitalRead(PIN_SS_DOOR_MAIN);
   if (state != ssDoorMain){
 #ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_DOOR_MAIN, state);
+    writeCayenneDigitalState(CH_DOOR_MAIN, state);
 #endif
     if(state)
       doorMainOpenedAt = millis();
@@ -69,8 +69,8 @@ void updateSensors(){
   state = digitalRead(PIN_SS_DOOR_TO_BASEMENT);
   if (state != ssDoorToBasement){
 #ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_DOOR_TO_BASEMENT, state);
-    writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
+    writeCayenneDigitalState(CH_DOOR_TO_BASEMENT, state);
+    writeCayenneDigitalState(CH_LIGHT_STAIR_BASEMENT, state);
 #endif
     if(state)
       doorToBasementOpenedAt = millis();
@@ -83,8 +83,8 @@ void updateSensors(){
   state = digitalRead(PIN_SS_DOOR_BASEMENT);
   if (state != ssDoorBasement){
 #ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_DOOR_BASEMENT, state);
-    writeCayenneDigitalStates(CH_LIGHT_STAIR_BASEMENT, state);
+    writeCayenneDigitalState(CH_DOOR_BASEMENT, state);
+    writeCayenneDigitalState(CH_LIGHT_STAIR_BASEMENT, state);
 #endif
     if(state)
       doorBasementOpenedAt = millis();
@@ -97,7 +97,7 @@ void updateSensors(){
   state = !digitalRead(PIN_SS_LIGHT_BASEMENT);
   if (state != ssLightBasementOn){
 #ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_LIGHT_BASEMENT, state);
+    writeCayenneDigitalState(CH_LIGHT_BASEMENT, state);
 #endif
     ssLightBasementOn = state;
   }
@@ -105,7 +105,7 @@ void updateSensors(){
   state = digitalRead(PIN_SS_ENTRANCE_MOTION);
   if (state != ssEntranceMotion){
 #ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_ENTRANCE_MOTION, state);
+    writeCayenneDigitalState(CH_ENTRANCE_MOTION, state);
 #endif
     if(state)
       entranceMotionDetectedAt = millis();
@@ -121,7 +121,7 @@ void updateSensors(){
   state = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
   if (state != ssWaterLeak){
 #ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_WATER_SMOKE_BASEMENT, state);
+    writeCayenneDigitalState(CH_WATER_SMOKE_BASEMENT, state);
 #endif
     ssWaterLeak = state;
   }

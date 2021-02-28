@@ -117,7 +117,7 @@ ICACHE_RAM_ATTR void detectsMovement() {
     startMotionTimer = true;
     Serial.println("Light entrance: ON");
 #ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_ENTRANCE_LIGHT, true);
+    writeCayenneDigitalState(CH_ENTRANCE_LIGHT, true);
 #endif
     lastTrigger = millis();
   }

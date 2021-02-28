@@ -59,6 +59,11 @@ void cayenneSetup(){
   delay(200);
 }
 
+void writeCayenneDigitalState(int channelId, int value){
+  delay(MESSAGE_DELAY);
+  Cayenne.virtualWrite(channelId, value, "digital_sensor", "d");
+}
+
 CAYENNE_OUT_DEFAULT(){
   //blynkReconnect();
 
@@ -82,20 +87,16 @@ CAYENNE_OUT_DEFAULT(){
 //    Cayenne.virtualWrite(CH_PS_HUMIDITY, psHumidity, "rel_hum", "p");
 
   // digital signals
-  Cayenne.virtualWrite(CH_DOOR_MAIN, ssDoorMain, "digital_sensor", "d");
-  Cayenne.virtualWrite(CH_DOOR_TO_BASEMENT, ssDoorToBasement, "digital_sensor", "d");
-  Cayenne.virtualWrite(CH_DOOR_BASEMENT, ssDoorBasement, "digital_sensor", "d");
-//  Cayenne.virtualWrite(CH_DOOR_BACK, ssDoorBack, "digital_sensor", "d");
-  Cayenne.virtualWrite(CH_ENTRANCE_MOTION, ssEntranceMotion, "digital_sensor", "d");
-  Cayenne.virtualWrite(CH_LIGHT_BASEMENT, ssLightBasementOn, "digital_sensor", "d");
-  Cayenne.virtualWrite(CH_LIGHT_STAIR_BASEMENT, ssDoorToBasement, "digital_sensor", "d");
+  writeCayenneDigitalState(CH_DOOR_MAIN, ssDoorMain);
+  writeCayenneDigitalState(CH_DOOR_TO_BASEMENT, ssDoorToBasement);
+  writeCayenneDigitalState(CH_DOOR_BASEMENT, ssDoorBasement);
+//  writeCayenneDigitalState(CH_DOOR_BACK, ssDoorBack);
+  writeCayenneDigitalState(CH_ENTRANCE_MOTION, ssEntranceMotion);
+  writeCayenneDigitalState(CH_LIGHT_BASEMENT, ssLightBasementOn);
+  writeCayenneDigitalState(CH_LIGHT_STAIR_BASEMENT, ssDoorToBasement);
 
 }
 
-void writeCayenneDigitalStates(int channelId, int value){
-  delay(MESSAGE_DELAY);
-  Cayenne.virtualWrite(channelId, value, "digital_sensor", "d");
-}
 
 CAYENNE_IN(CH_FORCE_RADIO_POWER)
 {

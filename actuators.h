@@ -24,14 +24,14 @@ void powerRadio(){
     //digitalWrite(PIN_AC_POWER_RADIO, true);
     //Serial.println("Radio power: ON");
 #ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_POWER_RADIO, true);
+    writeCayenneDigitalState(CH_POWER_RADIO, true);
 #endif
   }
   else{
     //digitalWrite(PIN_AC_POWER_RADIO, false);
     //Serial.println("Radio power: OFF");
 #ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_POWER_RADIO, false);
+    writeCayenneDigitalState(CH_POWER_RADIO, false);
 #endif
   }
 }
@@ -59,7 +59,7 @@ void updateActuator()
     acEntranceLed = false;
     Serial.println("Light entrance: OFF");
 #ifdef ENABLE_WIFI
-    writeCayenneDigitalStates(CH_ENTRANCE_LIGHT, false);
+    writeCayenneDigitalState(CH_ENTRANCE_LIGHT, false);
 #endif
     acActuators &= ~(1 << 0);
     startMotionTimer = false;
