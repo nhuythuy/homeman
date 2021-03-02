@@ -1,34 +1,197 @@
-//#include <melody_player.h>
-//#include <melody_factory.h>
-
+#include <Tone32.h>
 
 #ifndef MELODY
 #define MELODY
 
-//MelodyPlayer player(PIN_AC_TONE_MELODY);
-//String notes[] = { "C4", "G3", "G3", "A3", "G3", "SILENCE", "B3", "C4" };
-//
-//void setupMelody(){
-//}
-//
-//void playMelody(){
-//  Serial.println();
-//  Serial.println("Melody Player - Simple Play (blocking vs non-blocking play");  
-//  Serial.println("Loading melody...");
-//  // Load and play a correct melody
-//  Melody melody = MelodyFactory.load("Nice Melody", 175, notes, 8);
-//  
-//  Serial.println(String(" Title:") + melody.getTitle());
-//  Serial.println(String(" Time unit:") + melody.getTimeUnit());
-//  Serial.print("Play in blocking mode...");
-//  player.play(melody);
-//  Serial.println("The end!");
-//
-//  delay(500);
-//
-//  Serial.print("Play in non-blocking mode...");
-//  player.playAsync(melody);
-//  Serial.println(" not the end!");
-//}
+// https://github.com/ShivamJoker/twinkle-twinkle-melody-esp32/blob/master/twinkle-twinkle.ino
+
+#define BUZZER_PIN PIN_AC_TONE_MELODY
+#define BUZZER_CHANNEL 0
+
+void playMelody()
+{
+    // twinkle twinkle little star
+
+    tone(BUZZER_PIN, NOTE_C4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_C4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_G4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_G4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_A4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_A4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_G4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(650);
+
+    //   How i wonder what you are
+
+    tone(BUZZER_PIN, NOTE_F4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_F4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_E4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_E4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_D4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_D4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_C4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(650);
+
+    // up above the world so high
+
+    tone(BUZZER_PIN, NOTE_G4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_G4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_F4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_F4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_E4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_E4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_D4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(650);
+
+    // like a diamond in the sky
+
+    tone(BUZZER_PIN, NOTE_G4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_G4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_F4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_F4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_E4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_E4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_D4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(650);
+
+    // twinkle twinkle little star
+
+    tone(BUZZER_PIN, NOTE_C4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_C4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_G4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_G4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_A4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_A4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_G4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(650);
+
+    //   How i wonder what you are
+
+    tone(BUZZER_PIN, NOTE_F4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_F4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_E4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_E4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_D4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_D4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(100);
+
+    tone(BUZZER_PIN, NOTE_C4, 650, BUZZER_CHANNEL);
+    noTone(BUZZER_PIN, BUZZER_CHANNEL);
+    delay(650);
+    
+    // end of song
+    delay(5000);
+}
 
 #endif

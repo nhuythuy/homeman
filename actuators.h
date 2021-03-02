@@ -72,11 +72,11 @@ void updateActuator()
   if((!ssDoorToBasement) && ssLightBasementOn && (ssBatteryVolt > 12.0)){
     if((currentHour > 8) && (currentHour < 22)){
       Serial.println("Playing melody...");
-//      playMelody();
+      playMelody();
     }
     else{
       if (playMelodyCounter < 2){
-//          playMelody();
+          playMelody();
           playMelodyCounter++;
       }
     }
