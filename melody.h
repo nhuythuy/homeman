@@ -191,7 +191,6 @@ void playMelody()
     delay(650);
     
     // end of song
-    delay(5000);
 }
 
 #endif
