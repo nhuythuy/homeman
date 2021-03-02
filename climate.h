@@ -53,6 +53,7 @@ bool updateStorageClimate(){
     return false;
   }
 
+  Serial.println("ST Temp.: " + String(stTemp, 1) + " degC, ST Humidity.: " + String(stHumidity, 1) + " %");
   return true;
 }
 
