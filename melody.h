@@ -189,7 +189,7 @@ void playMelody()
     tone(BUZZER_PIN, NOTE_C4, 650, BUZZER_CHANNEL);
     noTone(BUZZER_PIN, BUZZER_CHANNEL);
     delay(650);
-    
+    digitalWrite(BUZZER_PIN, LOW);
     // end of song
 }
 
