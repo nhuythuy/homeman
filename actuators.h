@@ -48,7 +48,7 @@ void powerSwitchToSolarPower(){
   }  
 }
 
-void updateActuator()
+void updateActuators()
 {
   timeNow = millis();
   // Turn off the LED after the number of seconds defined in the MOTION_DELAY variable
@@ -69,7 +69,7 @@ void updateActuator()
 
   // play melody only twice if it happens during the sleeping time 22:00 to 8:00
   // can detect door to basement OPENED/CLOSED only if the solar charger giving power from the battery
-  if((!ssDoorToBasement) && ssLightBasementOn && (ssBatteryVolt > 12.0)){
+  if((!ssDoorToBasement) && ssLightBasementOn && (ssBatteryVolt > 11.8)){
     if((currentHour > 8) && (currentHour < 22)){
       Serial.println("Playing melody...");
       playMelody();

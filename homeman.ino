@@ -79,7 +79,7 @@ void loop() {
 
   flipLed();
   updateSensors();
-  updateActuator();
+  updateActuators();
 
 #ifdef ENABLE_WIFI
 #ifdef ENABLE_CAYENNE
