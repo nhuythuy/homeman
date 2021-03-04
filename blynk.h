@@ -111,7 +111,7 @@ BLYNK_READ(VP_ST_TEMPERATURE){
 }
 
 BLYNK_READ(VP_ST_HUMIDITY){
-  Blynk.virtualWrite(VP_ST_HUMIDITY, bmHumidity);
+  Blynk.virtualWrite(VP_ST_HUMIDITY, stHumidity);
 }
 
 BLYNK_READ(VP_DOOR_MAIN_OPENED_MINUTES){

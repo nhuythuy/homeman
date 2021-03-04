@@ -38,6 +38,8 @@ bool updateTemp(){
   bmTemp = ds1621GetTemperature();
   Serial.println("Temperature: " + String(bmTemp, 1) + " degC");
 
+  updateStorageClimate();
+
   return true;
 }
 
