@@ -64,7 +64,7 @@ void loop() {
   timerWrite(wdtTimer, 0); //reset timer (feed watchdog)
 
   currentMillis = millis();
-  bmRuntimeMinutes = currentMillis / 60000;
+  runtimeMinutes = currentMillis / 60000;
   if(abs(currentMillis - previousMillis) > 2000){  // sampling sensors every 2 sec
     previousMillis = currentMillis;             // save the last time  
 

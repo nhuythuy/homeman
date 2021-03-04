@@ -70,7 +70,7 @@ CAYENNE_OUT_DEFAULT(){
 //    Cayenne.virtualWrite(CH_DOOR_BACK_OPENED_MINUTES, doorBackOpenedMinutes, "counter");
     Cayenne.virtualWrite(CH_DOOR_TO_BASEMENT_OPENED_MINUTES, doorToBasementOpenedMinutes, "counter");
     Cayenne.virtualWrite(CH_DOOR_BASEMENT_OPENED_MINUTES, doorBasementOpenedMinutes, "counter");
-    Cayenne.virtualWrite(CH_BM_RUNTIME, bmRuntimeMinutes, "counter");
+    Cayenne.virtualWrite(CH_BM_RUNTIME, runtimeMinutes, "counter");
     Cayenne.virtualWrite(CH_ENTRANCE_MOTION_DETECTED_SECONDS, entranceMotionSeconds, "counter");
     Cayenne.celsiusWrite(CH_BM_TEMPERATURE, bmTemp);
     Cayenne.virtualWrite(CH_BM_HUMIDITY, bmHumidity, "rel_hum", "p");

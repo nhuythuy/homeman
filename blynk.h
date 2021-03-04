@@ -90,7 +90,7 @@ BLYNK_READ(VP_BATT_VOLTAGE){
 
 BLYNK_READ(VP_SR_RUNTIME){
   // This command writes Arduino's uptime in minutes to VP_SR_RUNTIME
-  Blynk.virtualWrite(VP_SR_RUNTIME, bmRuntimeMinutes);
+  Blynk.virtualWrite(VP_SR_RUNTIME, runtimeMinutes);
 }
 
 BLYNK_READ(VP_BM_TEMPERATURE){
