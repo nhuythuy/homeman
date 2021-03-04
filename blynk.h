@@ -81,6 +81,7 @@ BLYNK_WRITE(VP_FORCE_BLUETOOTH_DEBUG)
 {
   int pinVal = param.asInt();
   enableBluetoothDebug = (boolean)pinVal;
+  Serial.println("Bluetooth debug: " + String(enableBluetoothDebug));
 }
 
 // for all signals requested by Blynk app (slow response)
