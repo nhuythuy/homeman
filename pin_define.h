@@ -32,7 +32,7 @@
 #define FIELD_ID_POWER_LOAD 9
 
 
-/* Pin on external connector: 10 pin
+/* Pin assignment on external connector: 10 pin
  * PIN No.  Desc
  * 1        Door Main
  * 2        Door BM
@@ -45,4 +45,16 @@
  * 9        Motion Entrance
  * 10       Water Smoke detector
 */
+
+/* Pin assignment on 8-pin connector
+ * Pin No.  Description
+ * 1        5V
+ * 2        GND
+ * 3
+ * 4
+ * 5
+ * 6
+ * 7
+ * 8        DHT serial signal
+ */
 #endif

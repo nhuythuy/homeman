@@ -25,16 +25,12 @@ char dvClientID[] = CAYENNE_CLIENT_ID;
 #define CH_DOOR_TO_BASEMENT_OPENED_MINUTES  7
 #define CH_DOOR_BASEMENT_OPENED_MINUTES     8
 #define CH_DOOR_BACK_OPENED_MINUTES         9
-#define CH_ST_TEMPERATURE                   10
-#define CH_ST_HUMIDITY                      11
 
-#define CH_LR_RUNTIME                       21   // living room node
-#define CH_LR_TEMPERATURE                   22
-#define CH_LR_HUMIDITY                      23
+#define CH_BM_TEMPERATURE                   20
+#define CH_BM_HUMIDITY                      21
+#define CH_ST_TEMPERATURE                   22
+#define CH_SR_TEMPERATURE                   23
 
-#define CH_PS_RUNTIME                       41   // power station
-#define CH_PS_TEMPERATURE                   42
-#define CH_PS_HUMIDITY                      43
 
 // digital states
 #define CH_DOOR_MAIN                51
@@ -50,6 +46,7 @@ char dvClientID[] = CAYENNE_CLIENT_ID;
 #define CH_WATER_LEAK_1             61
 
 #define CH_FORCE_RADIO_POWER        100
+#define CH_FORCE_CAMERA_POWER       101
 
 
 void cayenneSetup(){
@@ -74,17 +71,11 @@ CAYENNE_OUT_DEFAULT(){
     Cayenne.virtualWrite(CH_DOOR_TO_BASEMENT_OPENED_MINUTES, doorToBasementOpenedMinutes, "counter");
     Cayenne.virtualWrite(CH_DOOR_BASEMENT_OPENED_MINUTES, doorBasementOpenedMinutes, "counter");
     Cayenne.virtualWrite(CH_BM_RUNTIME, bmRuntimeMinutes, "counter");
-//    Cayenne.virtualWrite(CH_LR_RUNTIME, lrRuntimeMinutes, "counter");
-//    Cayenne.virtualWrite(CH_PS_RUNTIME, psRuntimeMinutes, "counter");
     Cayenne.virtualWrite(CH_ENTRANCE_MOTION_DETECTED_SECONDS, entranceMotionSeconds, "counter");
     Cayenne.celsiusWrite(CH_BM_TEMPERATURE, bmTemp);
     Cayenne.virtualWrite(CH_BM_HUMIDITY, bmHumidity, "rel_hum", "p");
     Cayenne.celsiusWrite(CH_ST_TEMPERATURE, stTemp);
-    Cayenne.virtualWrite(CH_ST_HUMIDITY, stHumidity, "rel_hum", "p");
-//    Cayenne.celsiusWrite(CH_LR_TEMPERATURE, lrTemp);
-//    Cayenne.virtualWrite(CH_LR_HUMIDITY, lrHumidity, "rel_hum", "p");
-//    Cayenne.celsiusWrite(CH_PS_TEMPERATURE, psTemp);
-//    Cayenne.virtualWrite(CH_PS_HUMIDITY, psHumidity, "rel_hum", "p");
+    Cayenne.celsiusWrite(CH_SR_TEMPERATURE, srTemp);
 
   // digital signals
   writeCayenneDigitalState(CH_DOOR_MAIN, ssDoorMain);

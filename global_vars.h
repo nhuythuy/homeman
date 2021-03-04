@@ -17,6 +17,8 @@ BluetoothSerial SerialBT;
 long delayMs = DELAY_SHORT;
 bool stateLed = 0;
 
+bool enableBluetoothDebug = false;
+
 bool PowerLedState = false;
 long PowerLedStartAt = 0;
 
@@ -24,22 +26,11 @@ long globalState = 0;
 int debugCounter = 0;
 
 // sensors
-float bmHumidity = 0.0;
-float bmTemp = 0.0;
-float bmTempX = 0.0; // extra temp. sensor using LM35
+float srTemp = 0.0;     // stair
+float stTemp = 0.0;     // storage temp. sensor using LM35
 
-float stHumidity = 0.0;
-float stTemp = 0.0;
-
-float lrHumidity = 0.0;
-float lrTemp = 0.0;
-
-
-float psHumidity = 0.0;
-float psTemp = 0.0;
-
-float lrBatteryVolt = 0.0;
-float psBatteryVolt = 0.0;
+float bmHumidity = 0.0; // basement (rent out) humidity
+float bmTemp = 0.0;     // basement temp.
 
 bool switchToSolarPower = false;
 
@@ -66,8 +57,6 @@ bool forceCamPower = 0;
 bool forceRadioPower = 0;
 
 int bmRuntimeMinutes = 0;
-int lrRuntimeMinutes = 0;
-int psRuntimeMinutes = 0;
 
 int doorMainOpenedAt = 0;
 int doorMainOpenedMinutes = 0;

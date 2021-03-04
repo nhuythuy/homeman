@@ -97,6 +97,9 @@ void loop() {
     WIFI_Connect();    
   }
 #endif
+
+  if(enableBluetoothDebug)
+    printDebugSerialBT();
 }
 
 // =======================================================

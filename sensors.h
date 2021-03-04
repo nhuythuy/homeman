@@ -31,14 +31,13 @@ void setupSensors(){
 
 bool updateTemp(){
   int16_t adc0 = ads.readADC_SingleEnded(0);
-  float lm35Temp = ML35_TEMP_RATIO * adc0;
-  Serial.println("LM35 temp.: " + String(lm35Temp, 1));
-  bmTempX = lm35Temp;
+  stTemp = ML35_TEMP_RATIO * adc0;
+  Serial.println("Storage temp.: " + String(stTemp, 1));
 
-  bmTemp = ds1621GetTemperature();
-  Serial.println("Temperature: " + String(bmTemp, 1) + " degC");
+  srTemp = ds1621GetTemperature();
+  Serial.println("Stair temp.: " + String(srTemp, 1) + " degC");
 
-  updateStorageClimate();
+  updateBasementClimate();
 
   return true;
 }

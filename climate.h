@@ -42,18 +42,18 @@ float ds1621GetTemperature() {
   return (raw_t * 10 / 2.0) / 10;
 }
 
-bool updateStorageClimate(){
-  stHumidity = dht.readHumidity();
-  stTemp = dht.readTemperature();
-  if (isnan(stHumidity) || isnan(stTemp)) {
+bool updateBasementClimate(){
+  bmTemp = dht.readTemperature();
+  bmHumidity = dht.readHumidity();
+  if (isnan(bmHumidity) || isnan(bmTemp)) {
     Serial.println("Failed to read from DHT sensor!");
 
-    stHumidity = -100;
-    stTemp = -100;
+    bmTemp = -100;
+    bmHumidity = -100;
     return false;
   }
 
-  Serial.println("ST Temp.: " + String(stTemp, 1) + " degC, ST Humidity.: " + String(stHumidity, 1) + " %");
+  Serial.println("Basement Temp.: " + String(bmTemp, 1) + " degC, Humidity.: " + String(bmHumidity, 1) + " %");
   return true;
 }
 
