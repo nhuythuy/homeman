@@ -18,6 +18,8 @@ int blynkCounter = 0;
 #define VP_DOOR_BASEMENT_OPENED_MINUTES     V8
 //#define VP_DOOR_BACK_OPENED_MINUTES         V9
 
+#define VP_SYSTEM_TIME                      V10
+
 #define VP_BM_TEMPERATURE                   V20
 #define VP_BM_HUMIDITY                      V21
 #define VP_ST_TEMPERATURE                   V22
@@ -128,6 +130,10 @@ BLYNK_READ(VP_DOOR_BASEMENT_OPENED_MINUTES){
 
 BLYNK_READ(VP_ENTRANCE_MOTION_DETECTED_SECONDS){
   Blynk.virtualWrite(VP_ENTRANCE_MOTION_DETECTED_SECONDS, entranceMotionSeconds);
+}
+
+BLYNK_READ(VP_SYSTEM_TIME){
+  Blynk.virtualWrite(VP_SYSTEM_TIME, systemHourMinute);
 }
 
 

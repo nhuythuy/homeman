@@ -22,7 +22,8 @@ void getServerTime(){
   currentDay = timeClient.getDay();
   currentHour = timeClient.getHours();
   int minutes = timeClient.getMinutes();
-  int seconds = timeClient.getSeconds();
+
+  systemHourMinute = (float)currentHour + minutes / 100.0;
   
   if((minutes % 1) == 0) // to send every 1 minutes
     needUploadCloud = true;
