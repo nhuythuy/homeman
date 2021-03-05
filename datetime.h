@@ -21,11 +21,11 @@ void getServerTime(){
   timeClient.update();
   currentDay = timeClient.getDay();
   currentHour = timeClient.getHours();
-  int minutes = timeClient.getMinutes();
+  currentMin = timeClient.getMinutes();
 
-  systemHourMinute = (float)currentHour + minutes / 100.0;
+  systemHourMinute = (float)currentHour + currentMin / 100.0;
   
-  if((minutes % 1) == 0) // to send every 1 minutes
+  if((currentMin % 1) == 0) // to send every 1 minutes
     needUploadCloud = true;
   else
   {
