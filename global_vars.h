@@ -18,6 +18,7 @@ long delayMs = DELAY_SHORT;
 bool stateLed = 0;
 
 bool enableBluetoothDebug = false;
+bool enableSpeaker = true;
 
 bool PowerLedState = false;
 long PowerLedStartAt = 0;

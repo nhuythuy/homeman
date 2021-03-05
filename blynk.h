@@ -39,6 +39,8 @@ int blynkCounter = 0;
 #define VP_WATER_LEAK_1             V61
 #define VP_SWITCH_TO_SOLAR_POWER    V62
 
+#define VP_ENABLE_SPEAKER           V70
+
 #define VP_FORCE_RADIO_POWER        V100
 #define VP_FORCE_CAMERA_POWER       V101
 #define VP_FORCE_BLUETOOTH_DEBUG    V102
@@ -77,6 +79,13 @@ BLYNK_WRITE(VP_FORCE_RADIO_POWER)
 BLYNK_WRITE(VP_FORCE_CAMERA_POWER)
 {
   int pinVal = param.asInt();
+}
+
+BLYNK_WRITE(VP_ENABLE_SPEAKER)
+{
+  int pinVal = param.asInt();
+  enableSpeaker = (boolean)pinVal;
+  Serial.println("Enable speaker: " + String(enableSpeaker));
 }
 
 BLYNK_WRITE(VP_FORCE_BLUETOOTH_DEBUG)
