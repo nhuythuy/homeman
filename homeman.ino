@@ -9,7 +9,6 @@
 #define ENABLE_BLYNK
 #define ENABLE_CAYENNE
 
-#include <esp_task_wdt.h>
 #include "sensors.h"
 #include "actuators.h"
 #include "datetime.h"
@@ -18,10 +17,9 @@
 #include "melody.h"
 #include "cayenne.h"
 #include "blynk.h"
-#include "esp_system.h"
 
 
-const int wdtTimeout = 30000;  // 30 sec, time in ms to trigger the watchdog
+const int wdtTimeout = 15000;  // 10 sec, time in ms to trigger the watchdog
 hw_timer_t *wdtTimer = NULL;
 // =======================================================
 void IRAM_ATTR resetModule() {
