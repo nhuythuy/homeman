@@ -9,6 +9,7 @@
 #define ENABLE_BLYNK
 #define ENABLE_CAYENNE
 
+
 #include "sensors.h"
 #include "actuators.h"
 #include "datetime.h"
@@ -33,7 +34,9 @@ void setup() {
   setupActuators();
 
   Serial.begin(19200); // ESP8266: Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
+#ifdef ENABLE_BLUETOOTH
   SerialBT.begin("HomeMan");
+#endif
   delay(100);
 
 #ifdef ENABLE_WIFI
@@ -96,8 +99,10 @@ void loop() {
   }
 #endif
 
+#ifdef ENABLE_BLUETOOTH
   if(enableBluetoothDebug)
     printDebugSerialBT();
+#endif
 }
 
 // =======================================================

@@ -30,6 +30,7 @@ void printDebugSerial(){
 //  Serial.println();
 }
 
+#ifdef ENABLE_BLUETOOTH
 void printDebugSerialBT(){
   SerialBT.println();
   SerialBT.println("0. Battery volt.:       " + String(ssBatteryVolt, 1) + " (V)");
@@ -48,6 +49,7 @@ void printDebugSerialBT(){
   SerialBT.println("Radio power force:      " + String(forceRadioPower));
   SerialBT.println();
 }
+#endif
 
 void updateDurations(){
   if(ssDoorToBasement)
