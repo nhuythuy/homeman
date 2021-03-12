@@ -76,9 +76,9 @@ void loop() {
   getServerTime();
 #endif
 
-//    updateTemp();
-//    updateBattVolt();
-//    updateDurations();
+    updateTemp();
+    updateBattVolt();
+    updateDurations();
   }
 
   flipLed();
