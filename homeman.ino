@@ -56,6 +56,8 @@ void setup() {
   timerAttachInterrupt(wdtTimer, &resetModule, true);  //attach callback
   timerAlarmWrite(wdtTimer, wdtTimeout * 1000, false); //set time in us
   timerAlarmEnable(wdtTimer);                          //enable interrupt
+
+  heartbeat(" <3 Initial heartbeat");
 }
 
 unsigned long previousMillis = millis();
@@ -63,6 +65,7 @@ unsigned long currentMillis = millis();
 // =======================================================
 void loop() {
   timerWrite(wdtTimer, 0); //reset timer (feed watchdog)
+  heartbeat(" <3 Still alive!");
 
   currentMillis = millis();
   runtimeMinutes = currentMillis / 60000;
@@ -73,9 +76,9 @@ void loop() {
   getServerTime();
 #endif
 
-    updateTemp();
-    updateBattVolt();
-    updateDurations();
+//    updateTemp();
+//    updateBattVolt();
+//    updateDurations();
   }
 
   flipLed();
@@ -121,4 +124,19 @@ ICACHE_RAM_ATTR void detectsMovement() {
 #endif
     lastTrigger = millis();
   }
+}
+
+// =======================================================
+// Utility function to handle heartbeat pulse generation LED and a serial message
+// https://chrisramsay.co.uk/posts/2015/04/giving-an-arduino-a-heartbeat/
+void heartbeat(String message) {
+  pinMode(PIN_HEART_BEAT_PULSE, OUTPUT);  // Sink current to drain charge from C2
+  digitalWrite(PIN_HEART_BEAT_PULSE, LOW);
+
+  flipLed();
+  delay(300);                             // Give enough time for C2 to discharge (should discharge in 50 ms)
+  pinMode(PIN_HEART_BEAT_PULSE, INPUT);   // Return to high impedance
+  flipLed();
+
+  Serial.println(message);
 }

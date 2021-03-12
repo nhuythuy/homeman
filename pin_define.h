@@ -18,7 +18,7 @@
 #define PIN_SS_LIGHT_BASEMENT       15
 #define PIN_SS_WATER_SMOKE_BASEMENT 12 // smoke, water leak
 
-
+#define PIN_HEART_BEAT_PULSE        13 // must work as both IN and OUT
 // outputs
 #define PIN_LED                     2   // same as built in LED GPIO2
 #define PIN_AC_TONE_MELODY          4
