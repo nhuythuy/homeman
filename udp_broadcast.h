@@ -10,19 +10,13 @@
 WiFiUDP udp;
 
 #define BROADCAST_IP    "192.168.1.255"
-#define BROADCAST_PORT  5678
+#define BROADCAST_PORT  45678
 
 #define BUFFER_LENGTH   200
 
 byte buffJson[BUFFER_LENGTH];
 String sJson;
 
-int findLength(){
-  for (int i = 0; i < BUFFER_LENGTH; i++){
-     if (buffJson[i] == 0x00)
-       return i;
-  }
-}
 
 void buildMessage(){
   // https://arduinojson.org/v6/example/

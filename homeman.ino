@@ -106,7 +106,7 @@ void loop() {
 
 
 #ifdef ENABLE_WIFI
-  sendBroadcast();
+//  sendBroadcast();
 #endif
 
 }
