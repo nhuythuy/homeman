@@ -15,6 +15,7 @@ WiFiUDP udp;
 #define BUFFER_LENGTH   200
 
 byte buffJson[BUFFER_LENGTH];
+String sJson;
 
 int findLength(){
   for (int i = 0; i < BUFFER_LENGTH; i++){
@@ -42,18 +43,23 @@ void buildMessage(){
   doc["ssWaterLeak"] = ssWaterLeak;
   doc["acActuators"] = acActuators;
 
-  memset(buffJson, 0x00, sizeof(buffJson));
-  serializeJson(doc, buffJson);
-
+  serializeJson(doc, sJson);
 }
 
 void sendBroadcast(){
-  int len = findLength();
+  buildMessage();
+  int len = sJson.length();
+  memset(buffJson, 0x00, sizeof(buffJson));
+
+  byte plain[len];
+  sJson.getBytes(plain, sJson.length());
+
   udp.beginPacket(BROADCAST_IP,BROADCAST_PORT);
-  udp.write(buffJson, len);
+  udp.write(plain, len);
   udp.endPacket();
 
   Serial.println("Broadcast sent: " + String(len));
+  Serial.println("Json: " + sJson);
 }
 
 void broadcastStates(){
