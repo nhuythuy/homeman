@@ -73,6 +73,19 @@ void loop() {
     previousMillis = currentMillis;             // save the last time  
 
 #ifdef ENABLE_WIFI
+#ifdef ENABLE_CAYENNE
+  Cayenne.loop();
+#endif
+#ifdef ENABLE_BLYNK
+  blynkLoop();
+#endif
+
+  if(WiFi.status() == WL_DISCONNECTED){
+    Serial.println("WiFi connection lost! Reconnecting...");
+    WiFi.disconnect();
+    WIFI_Connect();    
+  }
+
   getServerTime();
 #endif
 
@@ -84,23 +97,6 @@ void loop() {
   flipLed();
   updateSensors();
   updateActuators();
-
-#ifdef ENABLE_WIFI
-#ifdef ENABLE_CAYENNE
-  Cayenne.loop();
-#endif
-#ifdef ENABLE_BLYNK
-  blynkLoop();
-#endif
-#endif
-
-#ifdef ENABLE_WIFI
-  if(WiFi.status() == WL_DISCONNECTED){
-    Serial.println("WiFi connection lost! Reconnecting...");
-    WiFi.disconnect();
-    WIFI_Connect();    
-  }
-#endif
 
 #ifdef ENABLE_BLUETOOTH
   if(enableBluetoothDebug)
