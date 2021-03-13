@@ -18,6 +18,7 @@
 #include "melody.h"
 #include "cayenne.h"
 #include "blynk.h"
+#include "udp_broadcast.h"
 
 
 const int wdtTimeout = 15000;  // 10 sec, time in ms to trigger the watchdog
@@ -102,6 +103,12 @@ void loop() {
   if(enableBluetoothDebug)
     printDebugSerialBT();
 #endif
+
+
+#ifdef ENABLE_WIFI
+  sendBroadcast();
+#endif
+
 }
 
 // =======================================================
