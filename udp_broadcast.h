@@ -35,6 +35,8 @@ void buildMessage(){
   doc["humidity"] = String(bmHumidity, 2);
   doc["ssDoorMain"] = ssDoorMain;
   doc["doorMainOpenedMinutes"] = doorMainOpenedMinutes;
+  doc["ssDoorToBasement"] = ssDoorToBasement;
+  doc["doorToBasementOpenedMinutes"] = doorToBasementOpenedMinutes;
   doc["ssDoorBasement"] = ssDoorBasement;
   doc["doorBasementOpenedMinutes"] = doorBasementOpenedMinutes;
   doc["ssLightBasementOn"] = ssLightBasementOn;
@@ -59,7 +61,6 @@ void sendBroadcast(){
   udp.endPacket();
 
   Serial.println("Broadcast sent: " + String(len));
-  Serial.println("Json: " + sJson);
 }
 
 void broadcastStates(){
