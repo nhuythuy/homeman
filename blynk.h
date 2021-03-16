@@ -59,6 +59,7 @@ BlynkTimer timer;
 
 void blynkReconnect() {
   if (!Blynk.connected()) {
+    yield();
     if (Blynk.connect()) {
       BLYNK_LOG("Reconnected");
     }

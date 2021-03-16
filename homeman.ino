@@ -7,7 +7,7 @@
 
 #define ENABLE_WIFI
 #define ENABLE_BLYNK
-#define ENABLE_CAYENNE
+//#define ENABLE_CAYENNE
 
 
 #include "sensors.h"
@@ -65,6 +65,7 @@ unsigned long previousMillis = millis();
 unsigned long currentMillis = millis();
 // =======================================================
 void loop() {
+  yield();
   timerWrite(wdtTimer, 0); //reset timer (feed watchdog)
   heartbeat(" <3 Still alive!");
 
@@ -78,23 +79,31 @@ void loop() {
   Cayenne.loop();
 #endif
 #ifdef ENABLE_BLYNK
+  yield();
   blynkLoop();
-#endif
 
   if(WiFi.status() == WL_DISCONNECTED){
     Serial.println("WiFi connection lost! Reconnecting...");
     WiFi.disconnect();
     WIFI_Connect();    
+
   }
 
+#endif
+  yield();
   getServerTime();
+//  sendBroadcast();
+
+
 #endif
 
+    yield();
     updateTemp();
     updateBattVolt();
     updateDurations();
   }
 
+  yield();
   flipLed();
   updateSensors();
   updateActuators();
@@ -104,10 +113,6 @@ void loop() {
     printDebugSerialBT();
 #endif
 
-
-#ifdef ENABLE_WIFI
-//  sendBroadcast();
-#endif
 
 }
 

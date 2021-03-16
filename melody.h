@@ -12,6 +12,7 @@ void playMelody()
 {
     // twinkle twinkle little star
 
+    yield();
     tone(BUZZER_PIN, NOTE_C4, 650, BUZZER_CHANNEL);
     noTone(BUZZER_PIN, BUZZER_CHANNEL);
     delay(100);
@@ -42,6 +43,7 @@ void playMelody()
 
     //   How i wonder what you are
 
+    yield();
     tone(BUZZER_PIN, NOTE_F4, 650, BUZZER_CHANNEL);
     noTone(BUZZER_PIN, BUZZER_CHANNEL);
     delay(100);
@@ -72,6 +74,7 @@ void playMelody()
 
     // up above the world so high
 
+    yield();
     tone(BUZZER_PIN, NOTE_G4, 650, BUZZER_CHANNEL);
     noTone(BUZZER_PIN, BUZZER_CHANNEL);
     delay(100);
@@ -102,6 +105,7 @@ void playMelody()
 
     // like a diamond in the sky
 
+    yield();
     tone(BUZZER_PIN, NOTE_G4, 650, BUZZER_CHANNEL);
     noTone(BUZZER_PIN, BUZZER_CHANNEL);
     delay(100);
@@ -132,6 +136,7 @@ void playMelody()
 
     // twinkle twinkle little star
 
+    yield();
     tone(BUZZER_PIN, NOTE_C4, 650, BUZZER_CHANNEL);
     noTone(BUZZER_PIN, BUZZER_CHANNEL);
     delay(100);
@@ -162,6 +167,7 @@ void playMelody()
 
     //   How i wonder what you are
 
+    yield();
     tone(BUZZER_PIN, NOTE_F4, 650, BUZZER_CHANNEL);
     noTone(BUZZER_PIN, BUZZER_CHANNEL);
     delay(100);
