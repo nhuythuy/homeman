@@ -57,8 +57,4 @@ void sendBroadcast(){
   Serial.println("Broadcast sent: " + String(len));
 }
 
-void broadcastStates(){
-  //udp.broadcastTo(BROADCAST_IP, BROADCAST_PORT);  
-}
-
 #endif

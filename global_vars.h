@@ -1,7 +1,12 @@
 #ifndef GLOBAL_VARS
 #define GLOBAL_VARS
 
+#define ENABLE_WIFI
+#define ENABLE_BLYNK
+#define ENABLE_CAYENNE
+
 //#define ENABLE_BLUETOOTH
+#define ENABLE_UDP_DEBUG
 
 #ifdef ENABLE_BLUETOOTH
 #include "BluetoothSerial.h"
@@ -23,6 +28,7 @@ BluetoothSerial SerialBT;
 long delayMs = DELAY_SHORT;
 bool stateLed = 0;
 
+bool enableUdpDebug = false;
 bool enableBluetoothDebug = false;
 bool enableSpeaker = true;
 

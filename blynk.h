@@ -44,6 +44,7 @@ int blynkCounter = 0;
 #define VP_FORCE_RADIO_POWER        V100
 #define VP_FORCE_CAMERA_POWER       V101
 #define VP_FORCE_BLUETOOTH_DEBUG    V102
+#define VP_FORCE_UDP_DEBUG          V103
 
 //#define BLYNK_PRINT Serial
 
@@ -94,6 +95,13 @@ BLYNK_WRITE(VP_FORCE_BLUETOOTH_DEBUG)
   int pinVal = param.asInt();
   enableBluetoothDebug = (boolean)pinVal;
   Serial.println("Bluetooth debug: " + String(enableBluetoothDebug));
+}
+
+BLYNK_WRITE(VP_FORCE_UDP_DEBUG)
+{
+  int pinVal = param.asInt();
+  enableUdpDebug = (boolean)pinVal;
+  Serial.println("UDP debug: " + String(enableUdpDebug));
 }
 
 // for all signals requested by Blynk app (slow response)
