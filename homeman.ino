@@ -15,15 +15,10 @@
 #include "cayenne.h"
 #include "blynk.h"
 #include "udp_broadcast.h"
+#include <esp_task_wdt.h>
 
 
-const int wdtTimeout = 15000;  // 10 sec, time in ms to trigger the watchdog
-hw_timer_t *wdtTimer = NULL;
-// =======================================================
-void IRAM_ATTR resetModule() {
-  ets_printf("reboot\n");
-  esp_restart();
-}
+#define WDT_TIMEOUT 15    // 15 seconds
 
 // =======================================================
 void setup() {
@@ -48,13 +43,8 @@ void setup() {
 #endif
 #endif
 
-  // another watchdog
-  wdtTimer = timerBegin(0, 80, true);                  //timer 0, div 80
-  timerAttachInterrupt(wdtTimer, &resetModule, true);  //attach callback
-  timerAlarmWrite(wdtTimer, wdtTimeout * 1000, false); //set time in us
-  timerAlarmEnable(wdtTimer);                          //enable interrupt
-
-  heartbeat(" <3 Initial heartbeat");
+  esp_task_wdt_init(WDT_TIMEOUT, true); //enable panic so ESP32 restarts
+  esp_task_wdt_add(NULL); //add current thread to WDT watch
 }
 
 unsigned long previousMillis = millis();
@@ -62,7 +52,7 @@ unsigned long currentMillis = millis();
 // =======================================================
 void loop() {
   yield();
-  timerWrite(wdtTimer, 0); //reset timer (feed watchdog)
+  esp_task_wdt_reset();
 
   currentMillis = millis();
   runtimeMinutes = currentMillis / 60000;
@@ -90,7 +80,7 @@ void loop() {
     Serial.println("Runtime: " + String(runtimeMinutes)); // for debugging, check if watchdog works
 
 #ifdef ENABLE_UDP_DEBUG
-    if(enableUdpDebug)
+    if(enableUdpDebug && (runtimeMinutes % 2 == 0))
       sendBroadcast();
 #endif
 

@@ -23,7 +23,7 @@ void buildMessage(){
 
   DynamicJsonDocument doc(256);
   doc["node"] = "homeman";
-  doc["runtime"] = runtimeMinutes;
+  doc["runtime"] = String(runtimeMinutes);
   doc["battvolt"] = String(ssBatteryVolt, 2);
   doc["temp"] = String(bmTemp, 2);
   doc["humidity"] = String(bmHumidity, 2);
@@ -37,7 +37,7 @@ void buildMessage(){
   doc["ssEntranceMotion"] = ssEntranceMotion;
   doc["entranceMotionSeconds"] = entranceMotionSeconds;
   doc["ssWaterLeak"] = ssWaterLeak;
-  doc["acActuators"] = acActuators;
+//  doc["acActuators"] = acActuators;
 
   serializeJson(doc, sJson);
 }

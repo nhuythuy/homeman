@@ -167,16 +167,19 @@ void blynkTimerEvent()
   Serial.println("Blynk timer triggered...");
   // for all signals to be sent at once
 
+  yield();
   Blynk.virtualWrite(VP_DOOR_MAIN, (ssDoorMain ? 255 : 0));
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_DOOR_TO_BASEMENT, (ssDoorToBasement ? 255 : 0));
   delay(MESSAGE_DELAY);
+  yield();
   Blynk.virtualWrite(VP_DOOR_BASEMENT, (ssDoorBasement ? 255 : 0));
   delay(MESSAGE_DELAY);
 //  Blynk.virtualWrite(VP_DOOR_BACK, (ssDoorBack ? 255 : 0));
 //  delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_ENTRANCE_MOTION, (ssEntranceMotion ? 255 : 0));
   delay(MESSAGE_DELAY);
+  yield();
   Blynk.virtualWrite(VP_LIGHT_BASEMENT, (ssLightBasementOn ? 255 : 0));
   delay(MESSAGE_DELAY);
   Blynk.virtualWrite(VP_LIGHT_STAIR_BASEMENT, (ssDoorToBasement ? 255 : 0)); // same as this signal
