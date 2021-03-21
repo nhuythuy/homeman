@@ -87,6 +87,7 @@ void loop() {
 #endif
     yield();
     getServerTime();
+    Serial.println("Runtime: " + String(runtimeMinutes)); // for debugging, check if watchdog works
 
 #ifdef ENABLE_UDP_DEBUG
     if(enableUdpDebug)
