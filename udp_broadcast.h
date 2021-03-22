@@ -9,22 +9,22 @@
 
 WiFiUDP udp;
 
-#define BROADCAST_IP    "192.168.1.255"
-#define BROADCAST_PORT  45678
+#define UDP_BROADCAST_IP    "192.168.1.255"
+#define UDP_BROADCAST_PORT  45678
 
-#define BUFFER_LENGTH   200
-byte buffJson[BUFFER_LENGTH];
+#define UDP_BUFFER_LENGTH   200
+byte buffJson[UDP_BUFFER_LENGTH];
 
 
-int buildMessage(unsigned long rt){
+int buildMessage(){
   // https://arduinojson.org/v6/example/
 
   DynamicJsonDocument doc(256);
   doc["node"] = "homeman";
-  doc["runtime"] = rt;
-  doc["battvolt"] = String(ssBatteryVolt, 2);
-  doc["temp"] = String(bmTemp, 2);
-  doc["humidity"] = String(bmHumidity, 2);
+  doc["runtime"] = runtimeMinutes;
+  doc["battvolt"] = ssBatteryVolt;
+  doc["temp"] = bmTemp;
+  doc["humidity"] = bmHumidity;
   doc["ssDoorMain"] = ssDoorMain;
   doc["doorMainOpenedMinutes"] = doorMainOpenedMinutes;
   doc["ssDoorToBasement"] = ssDoorToBasement;
@@ -37,14 +37,14 @@ int buildMessage(unsigned long rt){
   doc["ssWaterLeak"] = ssWaterLeak;
 //  doc["acActuators"] = acActuators;
 
-  memset(buffJson, 0x00, BUFFER_LENGTH);
-  return serializeJson(doc, buffJson, BUFFER_LENGTH);
+  memset(buffJson, 0x00, UDP_BUFFER_LENGTH);
+  return serializeJson(doc, buffJson, UDP_BUFFER_LENGTH);
 }
 
-void sendBroadcast(unsigned long rt){
-  int len = buildMessage(rt);
+void sendBroadcast(){
+  int len = buildMessage();
 
-  udp.beginPacket(BROADCAST_IP, BROADCAST_PORT);
+  udp.beginPacket(UDP_BROADCAST_IP, UDP_BROADCAST_PORT);
   udp.write(buffJson, len);
   udp.endPacket();
 

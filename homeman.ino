@@ -83,8 +83,8 @@ void loop() {
     Serial.println("Runtime: " + String(runtimeMinutes)); // for debugging, check if watchdog works
 
 #ifdef ENABLE_UDP_DEBUG
-    if(enableUdpDebug && (currentMillis % 5 == 0)) // every 5 min
-      sendBroadcast(runtimeMinutes);
+    if(enableUdpDebug && (currentSeconds % 5 == 0)) // every 5 min
+      sendBroadcast();
 #endif
 
 #endif
@@ -102,7 +102,7 @@ void loop() {
   updateActuators();
 
 #ifdef ENABLE_BLUETOOTH
-  if(enableBluetoothDebug && (currentMillis % 5 == 0))
+  if(enableBluetoothDebug && (currentSeconds % 5 == 0))
     printDebugSerialBT();
 #endif
 
