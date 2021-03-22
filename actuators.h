@@ -23,14 +23,14 @@ void powerRadio(){
       || ((currentDay > 0) && (currentDay < 6) && (currentHour > 9)))){  // weekdays
     //digitalWrite(PIN_AC_POWER_RADIO, true);
     //Serial.println("Radio power: ON");
-#ifdef ENABLE_WIFI
+#ifdef ENABLE_CAYENNE
     writeCayenneDigitalState(CH_POWER_RADIO, true);
 #endif
   }
   else{
     //digitalWrite(PIN_AC_POWER_RADIO, false);
     //Serial.println("Radio power: OFF");
-#ifdef ENABLE_WIFI
+#ifdef ENABLE_CAYENNE
     writeCayenneDigitalState(CH_POWER_RADIO, false);
 #endif
   }
@@ -58,7 +58,7 @@ void updateActuators()
     //digitalWrite(PIN_AC_POWER_LED_ENTRANCE, LOW);
     acEntranceLed = false;
     Serial.println("Light entrance: OFF");
-#ifdef ENABLE_WIFI
+#ifdef ENABLE_CAYENNE
     writeCayenneDigitalState(CH_ENTRANCE_LIGHT, false);
 #endif
     acActuators &= ~(1 << 0);

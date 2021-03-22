@@ -11,6 +11,10 @@ void flipLed(){
   digitalWrite(PIN_LED, stateLed);
 }
 
+float round2(float value) {
+  return (int)(value * 100 + 0.5) / 100.0;
+}
+
 void printDebugSerial(){
 //  Serial.println();
 //  Serial.println("0. Battery volt.:       " + String(ssBatteryVolt, 1) + " (V)");
