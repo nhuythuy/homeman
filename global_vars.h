@@ -2,10 +2,10 @@
 #define GLOBAL_VARS
 
 #define ENABLE_WIFI
-//#define ENABLE_BLYNK
+#define ENABLE_BLYNK
 //#define ENABLE_CAYENNE
 
-#define ENABLE_BLUETOOTH
+//define ENABLE_BLUETOOTH
 #define ENABLE_UDP_DEBUG
 
 #ifdef ENABLE_BLUETOOTH

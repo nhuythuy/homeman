@@ -23,7 +23,7 @@
 // =======================================================
 void setup() {
   setupSensors();
-  setupActuators();
+//  setupActuators();
 
   Serial.begin(19200); // ESP8266: Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
 #ifdef ENABLE_BLUETOOTH
@@ -68,8 +68,9 @@ void loop() {
 #endif
 #ifdef ENABLE_BLYNK
     yield();
-    blynkLoop();
-  
+    blynkLoop();  
+#endif
+
     if(WiFi.status() == WL_DISCONNECTED){
       Serial.println("WiFi connection lost! Reconnecting...");
       WiFi.disconnect();
@@ -77,7 +78,6 @@ void loop() {
   
     }
 
-#endif
     yield();
     getServerTime();
     Serial.println("Runtime: " + String(runtimeMinutes)); // for debugging, check if watchdog works
@@ -86,12 +86,11 @@ void loop() {
     if(enableUdpDebug && (currentSeconds % 5 == 0)) // every 5 min
       sendBroadcast();
 #endif
-
 #endif
 
     yield();
-    updateTemp();
-    updateBattVolt();
+//    updateTemp();
+//    updateBattVolt();
     updateDurations();
   }
 
@@ -99,7 +98,7 @@ void loop() {
   yield();
   updateSensors();
   yield();
-  updateActuators();
+//  updateActuators();
 
 #ifdef ENABLE_BLUETOOTH
   if(enableBluetoothDebug && (currentSeconds % 5 == 0))
@@ -119,7 +118,7 @@ ICACHE_RAM_ATTR void detectsMovement() {
 
     startMotionTimer = true;
     Serial.println("Light entrance: ON");
-#ifdef ENABLE_WIFI
+#ifdef ENABLE_CAYENNE
     writeCayenneDigitalState(CH_ENTRANCE_LIGHT, true);
 #endif
     lastTrigger = millis();

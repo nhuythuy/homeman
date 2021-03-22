@@ -25,7 +25,7 @@ void ds1621Setup(){
 void setupClimateSensors(){
   dht.begin();
 
-  ds1621Setup();
+//  ds1621Setup();
 }
 
 float ds1621GetTemperature() {

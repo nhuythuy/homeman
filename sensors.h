@@ -12,6 +12,12 @@
 
 Adafruit_ADS1115 ads(0x49);
 
+void setupAds1115(){
+  analogReadResolution(12);
+  ads.setGain(GAIN_ONE); // GAIN_ONE --> 1 bit = 0.125mV
+  ads.begin();
+  
+}
 
 void setupSensors(){
   pinMode(PIN_SS_DOOR_MAIN, INPUT);
@@ -22,11 +28,9 @@ void setupSensors(){
   pinMode(PIN_SS_LIGHT_BASEMENT, INPUT);
 //  attachInterrupt(digitalPinToInterrupt(PIN_SS_ENTRANCE_MOTION), detectsMovement, RISING);
 
-  analogReadResolution(12);
-
-  ads.setGain(GAIN_ONE); // GAIN_ONE --> 1 bit = 0.125mV
-  ads.begin();
-  setupClimateSensors();
+//  setupAds1115();
+  
+//  setupClimateSensors();
 }
 
 bool updateTemp(){
@@ -34,8 +38,8 @@ bool updateTemp(){
   stTemp = ML35_TEMP_RATIO * adc0;
   Serial.println("Storage temp.: " + String(stTemp, 1));
 
-  srTemp = ds1621GetTemperature();
-  Serial.println("Stair temp.: " + String(srTemp, 1) + " degC");
+//  srTemp = ds1621GetTemperature();
+//  Serial.println("Stair temp.: " + String(srTemp, 1) + " degC");
 
   updateBasementClimate();
 
@@ -44,8 +48,7 @@ bool updateTemp(){
 
 void updateBattVolt(){
   int16_t adc3 = ads.readADC_SingleEnded(3);
-  int rounded = 100 * BATT_VOLT_RATIO * adc3;
-  ssBatteryVolt = rounded / 100.0;
+  ssBatteryVolt = round2(BATT_VOLT_RATIO * adc3);
   Serial.println("Batt. Volt.: " + String(ssBatteryVolt) + " V");
 }
 
@@ -58,7 +61,7 @@ void updateSensors(){
   bool state;
   state = !digitalRead(PIN_SS_DOOR_MAIN);
   if (state != ssDoorMain){
-#ifdef ENABLE_WIFI
+#ifdef ENABLE_CAYENNE
     writeCayenneDigitalState(CH_DOOR_MAIN, state);
 #endif
     if(state)
@@ -71,7 +74,7 @@ void updateSensors(){
 
   state = digitalRead(PIN_SS_DOOR_TO_BASEMENT);
   if (state != ssDoorToBasement){
-#ifdef ENABLE_WIFI
+#ifdef ENABLE_CAYENNE
     writeCayenneDigitalState(CH_DOOR_TO_BASEMENT, state);
     writeCayenneDigitalState(CH_LIGHT_STAIR_BASEMENT, state);
 #endif
@@ -85,7 +88,7 @@ void updateSensors(){
 
   state = digitalRead(PIN_SS_DOOR_BASEMENT);
   if (state != ssDoorBasement){
-#ifdef ENABLE_WIFI
+#ifdef ENABLE_CAYENNE
     writeCayenneDigitalState(CH_DOOR_BASEMENT, state);
     writeCayenneDigitalState(CH_LIGHT_STAIR_BASEMENT, state);
 #endif
@@ -99,7 +102,7 @@ void updateSensors(){
 
   state = !digitalRead(PIN_SS_LIGHT_BASEMENT);
   if (state != ssLightBasementOn){
-#ifdef ENABLE_WIFI
+#ifdef ENABLE_CAYENNE
     writeCayenneDigitalState(CH_LIGHT_BASEMENT, state);
 #endif
     ssLightBasementOn = state;
@@ -107,7 +110,7 @@ void updateSensors(){
 
   state = digitalRead(PIN_SS_ENTRANCE_MOTION);
   if (state != ssEntranceMotion){
-#ifdef ENABLE_WIFI
+#ifdef ENABLE_CAYENNE
     writeCayenneDigitalState(CH_ENTRANCE_MOTION, state);
 #endif
     if(state)
@@ -123,7 +126,7 @@ void updateSensors(){
   //ssWaterLeak = 0; // digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
   state = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
   if (state != ssWaterLeak){
-#ifdef ENABLE_WIFI
+#ifdef ENABLE_CAYENNE
     writeCayenneDigitalState(CH_WATER_SMOKE_BASEMENT, state);
 #endif
     ssWaterLeak = state;
