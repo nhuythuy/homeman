@@ -43,7 +43,7 @@ bool updateTemp(){
 }
 
 void updateBattVolt(){
-  int16_t adc3 = 32766; // ads.readADC_SingleEnded(3);
+  int16_t adc3 = ads.readADC_SingleEnded(3);
   int rounded = 100 * BATT_VOLT_RATIO * adc3;
   ssBatteryVolt = rounded / 100.0;
   Serial.println("Batt. Volt.: " + String(ssBatteryVolt) + " V");
