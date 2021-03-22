@@ -49,12 +49,15 @@ void setup() {
 
 unsigned long previousMillis = millis();
 unsigned long currentMillis = millis();
+unsigned long currentSeconds = millis();
+
 // =======================================================
 void loop() {
   yield();
   esp_task_wdt_reset();
 
   currentMillis = millis();
+  currentSeconds = currentMillis / 1000;
   runtimeMinutes = currentMillis / 60000;
   if(abs(currentMillis - previousMillis) > 2000){   // sampling sensors every 2 sec
     previousMillis = currentMillis;                 // save the last time  
@@ -80,8 +83,8 @@ void loop() {
     Serial.println("Runtime: " + String(runtimeMinutes)); // for debugging, check if watchdog works
 
 #ifdef ENABLE_UDP_DEBUG
-    if(enableUdpDebug && (runtimeMinutes % 2 == 0))
-      sendBroadcast();
+    if(enableUdpDebug && (currentMillis % 5 == 0)) // every 5 min
+      sendBroadcast(runtimeMinutes);
 #endif
 
 #endif
@@ -99,7 +102,7 @@ void loop() {
   updateActuators();
 
 #ifdef ENABLE_BLUETOOTH
-  if(enableBluetoothDebug)
+  if(enableBluetoothDebug && (currentMillis % 5 == 0))
     printDebugSerialBT();
 #endif
 

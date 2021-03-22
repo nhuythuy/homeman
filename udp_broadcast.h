@@ -18,40 +18,40 @@ byte buffJson[BUFFER_LENGTH];
 String sJson;
 
 
-void buildMessage(){
+void buildMessage(unsigned long rt){
   // https://arduinojson.org/v6/example/
 
   DynamicJsonDocument doc(256);
   doc["node"] = "homeman";
-  doc["runtime"] = String(runtimeMinutes);
-  doc["battvolt"] = String(ssBatteryVolt, 2);
-  doc["temp"] = String(bmTemp, 2);
-  doc["humidity"] = String(bmHumidity, 2);
-  doc["ssDoorMain"] = ssDoorMain;
-  doc["doorMainOpenedMinutes"] = doorMainOpenedMinutes;
-  doc["ssDoorToBasement"] = ssDoorToBasement;
-  doc["doorToBasementOpenedMinutes"] = doorToBasementOpenedMinutes;
-  doc["ssDoorBasement"] = ssDoorBasement;
-  doc["doorBasementOpenedMinutes"] = doorBasementOpenedMinutes;
-  doc["ssLightBasementOn"] = ssLightBasementOn;
-  doc["ssEntranceMotion"] = ssEntranceMotion;
-  doc["entranceMotionSeconds"] = entranceMotionSeconds;
-  doc["ssWaterLeak"] = ssWaterLeak;
+  doc["runtime"] = String(rt);
+//  doc["battvolt"] = String(ssBatteryVolt, 2);
+//  doc["temp"] = String(bmTemp, 2);
+//  doc["humidity"] = String(bmHumidity, 2);
+//  doc["ssDoorMain"] = ssDoorMain;
+//  doc["doorMainOpenedMinutes"] = doorMainOpenedMinutes;
+//  doc["ssDoorToBasement"] = ssDoorToBasement;
+//  doc["doorToBasementOpenedMinutes"] = doorToBasementOpenedMinutes;
+//  doc["ssDoorBasement"] = ssDoorBasement;
+//  doc["doorBasementOpenedMinutes"] = doorBasementOpenedMinutes;
+//  doc["ssLightBasementOn"] = ssLightBasementOn;
+//  doc["ssEntranceMotion"] = ssEntranceMotion;
+//  doc["entranceMotionSeconds"] = entranceMotionSeconds;
+//  doc["ssWaterLeak"] = ssWaterLeak;
 //  doc["acActuators"] = acActuators;
 
   serializeJson(doc, sJson);
 }
 
-void sendBroadcast(){
-  buildMessage();
+void sendBroadcast(unsigned long rt){
+  buildMessage(rt);
   int len = sJson.length();
   memset(buffJson, 0x00, sizeof(buffJson));
 
   byte plain[len];
   sJson.getBytes(plain, sJson.length());
 
-  udp.beginPacket(BROADCAST_IP,BROADCAST_PORT);
-  udp.write(plain, len);
+  udp.beginPacket(BROADCAST_IP, BROADCAST_PORT);
+  udp.write(plain, len + 1);
   udp.endPacket();
 
   Serial.println("Broadcast sent: " + String(len));
