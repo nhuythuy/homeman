@@ -29,12 +29,12 @@ int buildMessage(){
   doc["doorMainOpenedMinutes"] = doorMainOpenedMinutes;
   doc["ssDoorToBasement"] = ssDoorToBasement;
   doc["doorToBasementOpenedMinutes"] = doorToBasementOpenedMinutes;
-  doc["ssDoorBasement"] = ssDoorBasement;
-  doc["doorBasementOpenedMinutes"] = doorBasementOpenedMinutes;
-  doc["ssLightBasementOn"] = ssLightBasementOn;
-  doc["ssEntranceMotion"] = ssEntranceMotion;
-  doc["entranceMotionSeconds"] = entranceMotionSeconds;
-  doc["ssWaterLeak"] = ssWaterLeak;
+//  doc["ssDoorBasement"] = ssDoorBasement;
+//  doc["doorBasementOpenedMinutes"] = doorBasementOpenedMinutes;
+//  doc["ssLightBasementOn"] = ssLightBasementOn;
+//  doc["ssEntranceMotion"] = ssEntranceMotion;
+//  doc["entranceMotionSeconds"] = entranceMotionSeconds;
+//  doc["ssWaterLeak"] = ssWaterLeak;
 //  doc["acActuators"] = acActuators;
 
   memset(buffJson, 0x00, UDP_BUFFER_LENGTH);
