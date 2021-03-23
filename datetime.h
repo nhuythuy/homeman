@@ -6,7 +6,7 @@
 #define DATE_TIME
 
 WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "time.nist.gov");
+NTPClient timeClient(ntpUDP);
 char* DayOfWeek[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
 void setupDateTime(){
