@@ -28,7 +28,7 @@ void setupSensors(){
   pinMode(PIN_SS_LIGHT_BASEMENT, INPUT);
 //  attachInterrupt(digitalPinToInterrupt(PIN_SS_ENTRANCE_MOTION), detectsMovement, RISING);
 
-//  setupAds1115();
+  setupAds1115();
   
 //  setupClimateSensors();
 }

@@ -33,7 +33,7 @@ void setup() {
 
 #ifdef ENABLE_WIFI
   WIFI_Connect();
-  setupDateTime();
+//  setupDateTime();
 
 #ifdef ENABLE_CAYENNE
   cayenneSetup();
@@ -79,7 +79,7 @@ void loop() {
     }
 
     yield();
-    getServerTime();
+//    getServerTime();
     Serial.println("Runtime: " + String(runtimeMinutes)); // for debugging, check if watchdog works
 
 #ifdef ENABLE_UDP_DEBUG
@@ -89,8 +89,8 @@ void loop() {
 #endif
 
     yield();
-//    updateTemp();
-//    updateBattVolt();
+    updateTemp();
+    updateBattVolt();
     updateDurations();
   }
 
