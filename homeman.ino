@@ -64,23 +64,14 @@ void loop() {
 
 #ifdef ENABLE_WIFI
 #ifdef ENABLE_CAYENNE
-    Cayenne.loop();
+    cayenneLoop();
 #endif
 #ifdef ENABLE_BLYNK
-    yield();
     blynkLoop();  
 #endif
 
-    if(WiFi.status() == WL_DISCONNECTED){
-      Serial.println("WiFi connection lost! Reconnecting...");
-      WiFi.disconnect();
-      WIFI_Connect();    
-  
-    }
-
-    yield();
-//    getServerTime();
-    Serial.println("Runtime: " + String(runtimeMinutes)); // for debugging, check if watchdog works
+    wifiCheckReconnect();
+    getServerTime();
 
 #ifdef ENABLE_UDP_DEBUG
     if(enableUdpDebug && (currentSeconds % 5 == 0)) // every 5 min
@@ -88,16 +79,12 @@ void loop() {
 #endif
 #endif
 
-    yield();
-    updateTemp();
-    updateBattVolt();
+    updateSlowAnalogSensors();
     updateDurations();
   }
 
   flipLed();
-  yield();
-  updateSensors();
-  yield();
+  updateDigitalSensors();
 //  updateActuators();
 
 #ifdef ENABLE_BLUETOOTH
@@ -110,7 +97,7 @@ void loop() {
 // =======================================================
 ICACHE_RAM_ATTR void detectsMovement() {
   Serial.println("MOTION DETECTED!!!");
-
+  yield();
   if(ssBatteryVolt > 12.50){
     //digitalWrite(PIN_AC_POWER_LED_ENTRANCE, HIGH);
     acEntranceLed = true;
@@ -118,9 +105,6 @@ ICACHE_RAM_ATTR void detectsMovement() {
 
     startMotionTimer = true;
     Serial.println("Light entrance: ON");
-#ifdef ENABLE_CAYENNE
-    writeCayenneDigitalState(CH_ENTRANCE_LIGHT, true);
-#endif
     lastTrigger = millis();
   }
 }

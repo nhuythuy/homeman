@@ -19,11 +19,13 @@ byte buffJson[UDP_BUFFER_LENGTH];
 int buildMessage(){
   // https://arduinojson.org/v6/example/
 
+  yield();
   DynamicJsonDocument doc(256);
   doc["node"] = "homeman";
   doc["runtime"] = runtimeMinutes;
   doc["battvolt"] = ssBatteryVolt;
   doc["temp"] = bmTemp;
+  yield();
   doc["humidity"] = bmHumidity;
   doc["ssDoorMain"] = ssDoorMain;
   doc["doorMainOpenedMinutes"] = doorMainOpenedMinutes;
@@ -37,6 +39,7 @@ int buildMessage(){
 //  doc["ssWaterLeak"] = ssWaterLeak;
 //  doc["acActuators"] = acActuators;
 
+  yield();
   memset(buffJson, 0x00, UDP_BUFFER_LENGTH);
   return serializeJson(doc, buffJson, UDP_BUFFER_LENGTH);
 }
@@ -44,6 +47,7 @@ int buildMessage(){
 void sendBroadcast(){
   int len = buildMessage();
 
+  yield();
   udp.beginPacket(UDP_BROADCAST_IP, UDP_BROADCAST_PORT);
   udp.write(buffJson, len);
   udp.endPacket();

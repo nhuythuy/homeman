@@ -7,6 +7,7 @@
 
 
 void flipLed(){
+  yield();
   stateLed = !stateLed;
   digitalWrite(PIN_LED, stateLed);
 }

@@ -17,6 +17,7 @@ void setupDateTime(){
 
 
 void getServerTime(){
+  yield();
   Serial.println();
   timeClient.update();
   currentDay = timeClient.getDay();

@@ -57,7 +57,16 @@ void updateBattVoltPS(){
   ssBatteryVoltPS = BATT_VOLT_RATIO * adc2;
 }
 
-void updateSensors(){
+
+void updateSlowAnalogSensors(){
+  yield();
+  updateTemp();
+  yield();
+  updateBattVolt();
+}
+
+void updateDigitalSensors(){
+  yield();
   bool state;
   state = !digitalRead(PIN_SS_DOOR_MAIN);
   if (state != ssDoorMain){

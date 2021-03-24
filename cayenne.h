@@ -50,13 +50,15 @@ char dvClientID[] = CAYENNE_CLIENT_ID;
 
 
 void cayenneSetup(){
+  yield();
   Serial.println("Cayenne connecting...");
   Cayenne.begin(dvUsername, dvPassword, dvClientID, wifiSsid, wifiPassword);
   Serial.println("Cayenne connected!");
-  delay(200);
+  delay(100);
 }
 
 void writeCayenneDigitalState(int channelId, int value){
+  yield();
   delay(MESSAGE_DELAY);
   Cayenne.virtualWrite(channelId, value, "digital_sensor", "d");
 }
@@ -95,5 +97,9 @@ CAYENNE_IN(CH_FORCE_RADIO_POWER)
 //  Serial.println("Radio power force: " + String(forceRadioPower));
 }
 
+void cayenneLoop(){
+  yield();
+  Cayenne.loop();
+}
 
 #endif

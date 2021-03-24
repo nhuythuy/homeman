@@ -48,8 +48,8 @@ void powerSwitchToSolarPower(){
   }  
 }
 
-void updateActuators()
-{
+void updateActuators(){
+  yield();
   timeNow = millis();
   // Turn off the LED after the number of seconds defined in the MOTION_DELAY variable
   if(startMotionTimer && (timeNow - lastTrigger > MOTION_DELAY)) {
