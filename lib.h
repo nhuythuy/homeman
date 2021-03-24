@@ -23,7 +23,7 @@ void printDebugSerial(){
 //  Serial.println("2. Humidity:            " + String(bmHumidity, 1) + " %");
 //  Serial.println("3. Door sensors:        " + String(ssDoorDetectors, BIN));
 //  Serial.println("3.1. Door main:         " + String(ssDoorMain, BIN));
-//  Serial.println("3.2. Door to basement:  " + String(ssDoorToBasement, BIN));
+//  Serial.println("3.2. Door to basement:  " + String(ssDoorStairBm, BIN));
 //  Serial.println("3.3. Door basement:     " + String(ssDoorBasement, BIN));
 //  Serial.println("4. Others sensors:      " + String(ssOtherSensors, BIN));
 //  Serial.println("4.1 Light basement:     " + String(ssLightBasementOn, BIN));
@@ -46,7 +46,7 @@ void printDebugSerialBT(){
   yield();
   SerialBT.println("3. Door sensors:        " + String(ssDoorDetectors, BIN));
   SerialBT.println("3.1. Door main:         " + String(ssDoorMain, BIN));
-  SerialBT.println("3.2. Door to basement:  " + String(ssDoorToBasement, BIN));
+  SerialBT.println("3.2. Door to basement:  " + String(ssDoorStairBm, BIN));
   SerialBT.println("3.3. Door basement:     " + String(ssDoorBasement, BIN));
   yield();
   SerialBT.println("4. Others sensors:      " + String(ssOtherSensors, BIN));
@@ -64,10 +64,10 @@ void printDebugSerialBT(){
 
 void updateDurations(){
   yield();
-  if(ssDoorToBasement)
-    doorToBasementOpenedMinutes = (millis() - doorToBasementOpenedAt) / 60000;
+  if(ssDoorStairBm)
+    doorStairBmOpenedMinutes = (millis() - doorStairBmOpenedAt) / 60000;
   else
-    doorToBasementOpenedMinutes = 0;
+    doorStairBmOpenedMinutes = 0;
 
   if(ssDoorBasement)
     doorBasementOpenedMinutes = (millis() - doorBasementOpenedAt) / 60000;
@@ -87,7 +87,7 @@ void updateDurations(){
 
   yield();
   Serial.println("Door main: " + String(doorMainOpenedMinutes) + " min, Door to BM: "
-    + String(doorToBasementOpenedMinutes) + " min, Door BM " + String(doorBasementOpenedMinutes) + " min, Door back: "
+    + String(doorStairBmOpenedMinutes) + " min, Door BM " + String(doorBasementOpenedMinutes) + " min, Door back: "
     + String(doorBackOpenedMinutes) + " min, Entrance Motion: " + String(entranceMotionSeconds)  + " sec");
 }
 

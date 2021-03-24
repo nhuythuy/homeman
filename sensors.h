@@ -21,7 +21,7 @@ void setupAds1115(){
 
 void setupSensors(){
   pinMode(PIN_SS_DOOR_MAIN, INPUT);
-  pinMode(PIN_SS_DOOR_TO_BASEMENT, INPUT);
+  pinMode(PIN_SS_DOOR_STAIR_BM, INPUT);
   pinMode(PIN_SS_DOOR_BASEMENT, INPUT);
   pinMode(PIN_SS_WATER_SMOKE_BASEMENT, INPUT);
   pinMode(PIN_SS_ENTRANCE_MOTION, INPUT);
@@ -81,18 +81,18 @@ void updateDigitalSensors(){
     ssDoorMain = state;
   }
 
-  state = digitalRead(PIN_SS_DOOR_TO_BASEMENT);
-  if (state != ssDoorToBasement){
+  state = digitalRead(PIN_SS_DOOR_STAIR_BM);
+  if (state != ssDoorStairBm){
 #ifdef ENABLE_CAYENNE
-    writeCayenneDigitalState(CH_DOOR_TO_BASEMENT, state);
+    writeCayenneDigitalState(CH_DOOR_STAIR_BM, state);
     writeCayenneDigitalState(CH_LIGHT_STAIR_BASEMENT, state);
 #endif
     if(state)
-      doorToBasementOpenedAt = millis();
+      doorStairBmOpenedAt = millis();
     else
-      doorToBasementOpenedAt = 0;
+      doorStairBmOpenedAt = 0;
 
-    ssDoorToBasement = state;
+    ssDoorStairBm = state;
   }
 
   state = digitalRead(PIN_SS_DOOR_BASEMENT);
@@ -130,7 +130,7 @@ void updateDigitalSensors(){
     ssEntranceMotion = state;
   }
 
-  ssDoorDetectors = (ssDoorBasement << 1) | (ssDoorToBasement << 1) | (ssDoorMain << 0);
+  ssDoorDetectors = (ssDoorBasement << 1) | (ssDoorStairBm << 1) | (ssDoorMain << 0);
 
   //ssWaterLeak = 0; // digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);
   state = digitalRead(PIN_SS_WATER_SMOKE_BASEMENT);

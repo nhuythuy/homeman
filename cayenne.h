@@ -22,7 +22,7 @@ char dvClientID[] = CAYENNE_CLIENT_ID;
 #define CH_BM_HUMIDITY                      4
 #define CH_ENTRANCE_MOTION_DETECTED_SECONDS 5
 #define CH_DOOR_MAIN_OPENED_MINUTES         6
-#define CH_DOOR_TO_BASEMENT_OPENED_MINUTES  7
+#define CH_DOOR_STAIR_BM_OPENED_MINUTES     7
 #define CH_DOOR_BASEMENT_OPENED_MINUTES     8
 #define CH_DOOR_BACK_OPENED_MINUTES         9
 
@@ -34,7 +34,7 @@ char dvClientID[] = CAYENNE_CLIENT_ID;
 
 // digital states
 #define CH_DOOR_MAIN                51
-#define CH_DOOR_TO_BASEMENT         52
+#define CH_DOOR_STAIR_BM            52
 #define CH_DOOR_BASEMENT            53
 #define CH_DOOR_BACK                54
 #define CH_ENTRANCE_MOTION          55
@@ -70,7 +70,7 @@ CAYENNE_OUT_DEFAULT(){
     Cayenne.virtualWrite(CH_BATT_VOLTAGE, ssBatteryVolt, "batt", "V");
     Cayenne.virtualWrite(CH_DOOR_MAIN_OPENED_MINUTES, doorMainOpenedMinutes, "counter");
 //    Cayenne.virtualWrite(CH_DOOR_BACK_OPENED_MINUTES, doorBackOpenedMinutes, "counter");
-    Cayenne.virtualWrite(CH_DOOR_TO_BASEMENT_OPENED_MINUTES, doorToBasementOpenedMinutes, "counter");
+    Cayenne.virtualWrite(CH_DOOR_STAIR_BM_OPENED_MINUTES, doorStairBmOpenedMinutes, "counter");
     Cayenne.virtualWrite(CH_DOOR_BASEMENT_OPENED_MINUTES, doorBasementOpenedMinutes, "counter");
     Cayenne.virtualWrite(CH_BM_RUNTIME, runtimeMinutes, "counter");
     Cayenne.virtualWrite(CH_ENTRANCE_MOTION_DETECTED_SECONDS, entranceMotionSeconds, "counter");
@@ -81,12 +81,12 @@ CAYENNE_OUT_DEFAULT(){
 
   // digital signals
   writeCayenneDigitalState(CH_DOOR_MAIN, ssDoorMain);
-  writeCayenneDigitalState(CH_DOOR_TO_BASEMENT, ssDoorToBasement);
+  writeCayenneDigitalState(CH_DOOR_STAIR_BM, ssDoorStairBm);
   writeCayenneDigitalState(CH_DOOR_BASEMENT, ssDoorBasement);
 //  writeCayenneDigitalState(CH_DOOR_BACK, ssDoorBack);
   writeCayenneDigitalState(CH_ENTRANCE_MOTION, ssEntranceMotion);
   writeCayenneDigitalState(CH_LIGHT_BASEMENT, ssLightBasementOn);
-  writeCayenneDigitalState(CH_LIGHT_STAIR_BASEMENT, ssDoorToBasement);
+  writeCayenneDigitalState(CH_LIGHT_STAIR_BASEMENT, ssDoorStairBm);
 
 }
 

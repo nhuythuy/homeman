@@ -14,7 +14,7 @@ int blynkCounter = 0;
 #define VP_SR_RUNTIME                       V2   // basement node
 #define VP_ENTRANCE_MOTION_DETECTED_SECONDS V5
 #define VP_DOOR_MAIN_OPENED_MINUTES         V6
-#define VP_DOOR_TO_BASEMENT_OPENED_MINUTES  V7
+#define VP_DOOR_STAIR_BM_OPENED_MINUTES     V7
 #define VP_DOOR_BASEMENT_OPENED_MINUTES     V8
 //#define VP_DOOR_BACK_OPENED_MINUTES         V9
 
@@ -27,7 +27,7 @@ int blynkCounter = 0;
 
 // digital states
 #define VP_DOOR_MAIN                V51
-#define VP_DOOR_TO_BASEMENT         V52
+#define VP_DOOR_STAIR_BM            V52
 #define VP_DOOR_BASEMENT            V53
 //#define VP_DOOR_BACK                V54
 #define VP_ENTRANCE_MOTION          V55
@@ -134,8 +134,8 @@ BLYNK_READ(VP_DOOR_MAIN_OPENED_MINUTES){
   Blynk.virtualWrite(VP_DOOR_MAIN_OPENED_MINUTES, doorMainOpenedMinutes);
 }
 
-BLYNK_READ(VP_DOOR_TO_BASEMENT_OPENED_MINUTES){
-  Blynk.virtualWrite(VP_DOOR_TO_BASEMENT_OPENED_MINUTES, doorToBasementOpenedMinutes);
+BLYNK_READ(VP_DOOR_STAIR_BM_OPENED_MINUTES){
+  Blynk.virtualWrite(VP_DOOR_STAIR_BM_OPENED_MINUTES, doorStairBmOpenedMinutes);
 }
 
 BLYNK_READ(VP_DOOR_BASEMENT_OPENED_MINUTES){
@@ -170,7 +170,7 @@ void blynkTimerEvent()
   yield();
   Blynk.virtualWrite(VP_DOOR_MAIN, (ssDoorMain ? 255 : 0));
   delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(VP_DOOR_TO_BASEMENT, (ssDoorToBasement ? 255 : 0));
+  Blynk.virtualWrite(VP_DOOR_STAIR_BM, (ssDoorStairBm ? 255 : 0));
   delay(MESSAGE_DELAY);
   yield();
   Blynk.virtualWrite(VP_DOOR_BASEMENT, (ssDoorBasement ? 255 : 0));
@@ -182,7 +182,7 @@ void blynkTimerEvent()
   yield();
   Blynk.virtualWrite(VP_LIGHT_BASEMENT, (ssLightBasementOn ? 255 : 0));
   delay(MESSAGE_DELAY);
-  Blynk.virtualWrite(VP_LIGHT_STAIR_BASEMENT, (ssDoorToBasement ? 255 : 0)); // same as this signal
+  Blynk.virtualWrite(VP_LIGHT_STAIR_BASEMENT, (ssDoorStairBm ? 255 : 0)); // same as this signal
   delay(MESSAGE_DELAY);
 }
 

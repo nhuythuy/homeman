@@ -29,8 +29,8 @@ int buildMessage(){
   doc["humidity"] = bmHumidity;
   doc["ssDoorMain"] = ssDoorMain;
   doc["doorMainOpenedMinutes"] = doorMainOpenedMinutes;
-  doc["ssDoorToBasement"] = ssDoorToBasement;
-  doc["doorToBasementOpenedMinutes"] = doorToBasementOpenedMinutes;
+  doc["ssDoorStairBm"] = ssDoorStairBm;
+  doc["doorStairBmOpenedMinutes"] = doorStairBmOpenedMinutes;
 //  doc["ssDoorBasement"] = ssDoorBasement;
 //  doc["doorBasementOpenedMinutes"] = doorBasementOpenedMinutes;
 //  doc["ssLightBasementOn"] = ssLightBasementOn;

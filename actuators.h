@@ -69,7 +69,7 @@ void updateActuators(){
 
   // play melody only twice if it happens during the sleeping time 22:00 to 8:00
   // can detect door to basement OPENED/CLOSED only if the solar charger giving power from the battery
-  if((!ssDoorToBasement) && ssLightBasementOn && (ssBatteryVolt > 11.8)){
+  if((!ssDoorStairBm) && ssLightBasementOn && (ssBatteryVolt > 11.8)){
     if((currentHour > 8) && (currentHour < 22)){
       Serial.println("Playing melody...");
       playMelody();
