@@ -71,7 +71,8 @@ void loop() {
 #endif
 
     wifiCheckReconnect();
-    getServerTime();
+//    getServerTime();
+  systemHourMinute = (float)currentSeconds / 100.0;
 
 #ifdef ENABLE_UDP_DEBUG
     if(enableUdpDebug && (currentSeconds % 5 == 0)) // every 5 min

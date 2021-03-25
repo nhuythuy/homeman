@@ -160,6 +160,7 @@ BLYNK_READ(VP_SYSTEM_TIME){
 // that you define how often to send data to Blynk App.
 void blynkTimerEvent()
 {
+  yield();
   blynkReconnect();
   
   // You can send any value at any time.
