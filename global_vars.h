@@ -1,8 +1,8 @@
 #ifndef GLOBAL_VARS
 #define GLOBAL_VARS
 
-#define ENABLE_WIFI
-#define ENABLE_BLYNK
+//#define ENABLE_WIFI
+//#define ENABLE_BLYNK
 //#define ENABLE_CAYENNE
 
 //#define ENABLE_BLUETOOTH

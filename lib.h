@@ -18,21 +18,21 @@ float round2(float value) {
 
 void printDebugSerial(){
 //  Serial.println();
-//  Serial.println("0. Battery volt.:       " + String(ssBatteryVolt, 1) + " (V)");
-//  Serial.println("1. Temperature:         " + String(bmTemp, 1) + " deg C");
-//  Serial.println("2. Humidity:            " + String(bmHumidity, 1) + " %");
-//  Serial.println("3. Door sensors:        " + String(ssDoorDetectors, BIN));
-//  Serial.println("3.1. Door main:         " + String(ssDoorMain, BIN));
-//  Serial.println("3.2. Door to basement:  " + String(ssDoorStairBm, BIN));
-//  Serial.println("3.3. Door basement:     " + String(ssDoorBasement, BIN));
-//  Serial.println("4. Others sensors:      " + String(ssOtherSensors, BIN));
-//  Serial.println("4.1 Light basement:     " + String(ssLightBasementOn, BIN));
-//  Serial.println("4.2. Entrance motion:   " + String(ssEntranceMotion, BIN));
-//  Serial.println("4.3. Water Smoke:       " + String(ssWaterLeak, BIN));
-//  Serial.println("5. Runtime:             " + String(runtimeMinutes));
+//  Serial.println("0. Battery volt.:         " + String(ssBatteryVolt, 1) + " (V)");
+//  Serial.println("1. Temperature:           " + String(bmTemp, 1) + " deg C");
+//  Serial.println("2. Humidity:              " + String(bmHumidity, 1) + " %");
+//  Serial.println("3. Door sensors:          " + String(ssDoorDetectors, BIN));
+//  Serial.println("3.1. Door main:           " + String(ssDoorMain, BIN));
+//  Serial.println("3.2. Door stair basement: " + String(ssDoorStairBm, BIN));
+//  Serial.println("3.3. Door basement:       " + String(ssDoorBasement, BIN));
+//  Serial.println("4. Others sensors:        " + String(ssOtherSensors, BIN));
+//  Serial.println("4.1 Light basement:       " + String(ssLightBasementOn, BIN));
+//  Serial.println("4.2. Entrance motion:     " + String(ssEntranceMotion, BIN));
+//  Serial.println("4.3. Water Smoke:         " + String(ssWaterLeak, BIN));
+//  Serial.println("5. Runtime:               " + String(runtimeMinutes));
 //  Serial.println("--------------------------------------------");
-//  Serial.println("20. Actuators:           " + String(acActuators, BIN));
-//  Serial.println("Radio power force:      " + String(forceRadioPower));
+//  Serial.println("20. Actuators:            " + String(acActuators, BIN));
+//  Serial.println("Radio power force:        " + String(forceRadioPower));
 //  Serial.println();
 }
 
@@ -40,24 +40,24 @@ void printDebugSerial(){
 void printDebugSerialBT(){
   yield();
   SerialBT.println();
-  SerialBT.println("0. Battery volt.:       " + String(ssBatteryVolt, 1) + " (V)");
-  SerialBT.println("1. Temperature:         " + String(bmTemp, 1) + " deg C");
-  SerialBT.println("2. Humidity:            " + String(bmHumidity, 1) + " %");
+  SerialBT.println("0. Battery volt.:         " + String(ssBatteryVolt, 1) + " (V)");
+  SerialBT.println("1. Temperature:           " + String(bmTemp, 1) + " deg C");
+  SerialBT.println("2. Humidity:              " + String(bmHumidity, 1) + " %");
   yield();
-  SerialBT.println("3. Door sensors:        " + String(ssDoorDetectors, BIN));
-  SerialBT.println("3.1. Door main:         " + String(ssDoorMain, BIN));
-  SerialBT.println("3.2. Door to basement:  " + String(ssDoorStairBm, BIN));
-  SerialBT.println("3.3. Door basement:     " + String(ssDoorBasement, BIN));
+  SerialBT.println("3. Door sensors:          " + String(ssDoorDetectors, BIN));
+  SerialBT.println("3.1. Door main:           " + String(ssDoorMain, BIN));
+  SerialBT.println("3.2. Door stair basement: " + String(ssDoorStairBm, BIN));
+  SerialBT.println("3.3. Door basement:       " + String(ssDoorBasement, BIN));
   yield();
-  SerialBT.println("4. Others sensors:      " + String(ssOtherSensors, BIN));
-  SerialBT.println("4.1 Light basement:     " + String(ssLightBasementOn, BIN));
-  SerialBT.println("4.2. Entrance motion:   " + String(ssEntranceMotion, BIN));
-  SerialBT.println("4.3. Water Smoke:       " + String(ssWaterLeak, BIN));
+  SerialBT.println("4. Others sensors:        " + String(ssOtherSensors, BIN));
+  SerialBT.println("4.1 Light basement:       " + String(ssLightBasementOn, BIN));
+  SerialBT.println("4.2. Entrance motion:     " + String(ssEntranceMotion, BIN));
+  SerialBT.println("4.3. Water Smoke:         " + String(ssWaterLeak, BIN));
   yield();
-  SerialBT.println("5. Runtime:             " + String(runtimeMinutes));
+  SerialBT.println("5. Runtime:               " + String(runtimeMinutes));
   SerialBT.println("--------------------------------------------");
-  SerialBT.println("20. Actuators:           " + String(acActuators, BIN));
-  SerialBT.println("Radio power force:      " + String(forceRadioPower));
+  SerialBT.println("20. Actuators:            " + String(acActuators, BIN));
+  SerialBT.println("Radio power force:        " + String(forceRadioPower));
   SerialBT.println();
 }
 #endif
@@ -86,7 +86,7 @@ void updateDurations(){
     entranceMotionSeconds = 0;
 
   yield();
-  Serial.println("Door main: " + String(doorMainOpenedMinutes) + " min, Door to BM: "
+  Serial.println("Door main: " + String(doorMainOpenedMinutes) + " min, Door stair BM: "
     + String(doorStairBmOpenedMinutes) + " min, Door BM " + String(doorBasementOpenedMinutes) + " min, Door back: "
     + String(doorBackOpenedMinutes) + " min, Entrance Motion: " + String(entranceMotionSeconds)  + " sec");
 }
