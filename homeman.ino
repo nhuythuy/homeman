@@ -15,6 +15,7 @@
 #include "cayenne.h"
 #include "blynk.h"
 #include "udp_broadcast.h"
+#include "ota.h"
 #include <esp_task_wdt.h>
 
 
@@ -31,6 +32,7 @@ void setup() {
 #endif
   delay(100);
 
+  setupOTA();
 #ifdef ENABLE_WIFI
   WIFI_Connect();
 //  setupDateTime();
@@ -53,6 +55,7 @@ unsigned long currentSeconds = millis();
 
 // =======================================================
 void loop() {
+  loopOTA();
   yield();
   esp_task_wdt_reset();
 
@@ -62,6 +65,7 @@ void loop() {
   if(abs(currentMillis - previousMillis) > 2000){   // sampling sensors every 2 sec
     previousMillis = currentMillis;                 // save the last time  
 
+  Serial.println("Runtime (min): " + String(runtimeMinutes));
 #ifdef ENABLE_WIFI
 #ifdef ENABLE_CAYENNE
     cayenneLoop();
