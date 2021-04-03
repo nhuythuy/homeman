@@ -26,7 +26,7 @@ void setup() {
   setupSensors();
 //  setupActuators();
 
-  Serial.begin(19200); // ESP8266: Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
+  Serial.begin(115200); // ESP8266: Serial.begin(19200, SERIAL_8N1, SERIAL_TX_ONLY);
 #ifdef ENABLE_BLUETOOTH
   SerialBT.begin("HomeMan");
 #endif
