@@ -15,7 +15,6 @@
 #include "cayenne.h"
 #include "blynk.h"
 #include "udp_broadcast.h"
-#include "ota.h"
 #include <esp_task_wdt.h>
 
 
@@ -32,7 +31,6 @@ void setup() {
 #endif
   delay(100);
 
-  setupOTA();
 #ifdef ENABLE_WIFI
   WIFI_Connect();
 //  setupDateTime();
@@ -55,7 +53,6 @@ unsigned long currentSeconds = millis();
 
 // =======================================================
 void loop() {
-  loopOTA();
   yield();
   esp_task_wdt_reset();
 

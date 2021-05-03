@@ -1,7 +1,7 @@
 #ifndef GLOBAL_VARS
 #define GLOBAL_VARS
 
-//#define ENABLE_WIFI
+#define ENABLE_WIFI
 //#define ENABLE_BLYNK
 //#define ENABLE_CAYENNE
 
@@ -69,7 +69,7 @@ int acActuators = 0;
 bool forceCamPower = 0;
 bool forceRadioPower = 0;
 
-int runtimeMinutes = 0;
+long runtimeMinutes = 0;
 
 int doorMainOpenedAt = 0;
 int doorMainOpenedMinutes = 0;
